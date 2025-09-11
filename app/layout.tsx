@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { PWAInstaller } from "./components/PWAInstaller";
+import { StructuredData } from "./components/seo/StructuredData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,6 +95,14 @@ export default function RootLayout({
         {/* Google Search Console 인증 */}
         <meta name="google-site-verification" content="-FZw_8bxUpyUpVyhH0AKVeIM6UemTMyJ3JL6NTtVuuM" />
         
+        {/* RSS Feed */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="다모아봄 RSS Feed"
+          href="/rss"
+        />
+        
         {/* Google AdSense */}
         <Script
           async
@@ -106,6 +115,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        <StructuredData />
         <PWAInstaller />
         {children}
       </body>
