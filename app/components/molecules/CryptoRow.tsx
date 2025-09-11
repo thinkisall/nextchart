@@ -29,14 +29,17 @@ export function CryptoRow({
   };
 
   const formatVolume = (volume: number) => {
-    if (volume >= 1e9) {
-      return `${(volume / 1e9).toFixed(2)}B`;
-    } else if (volume >= 1e6) {
-      return `${(volume / 1e6).toFixed(1)}M`;
+    if (volume >= 1e12) {
+      return `${(volume / 1e12).toFixed(1)}조`;
+    } else if (volume >= 1e8) {
+      const eok = (volume / 1e8).toFixed(0);
+      return `${eok}억`;
+    } else if (volume >= 1e4) {
+      return `${(volume / 1e4).toFixed(0)}만`;
     } else if (volume >= 1e3) {
-      return `${(volume / 1e3).toFixed(1)}K`;
+      return `${(volume / 1e3).toFixed(0)}천`;
     }
-    return volume.toFixed(2);
+    return volume.toFixed(0);
   };
 
   const getRankIcon = (index: number) => {
@@ -109,7 +112,7 @@ export function CryptoRow({
             <div>
               <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">거래량</div>
               <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                {formatVolume(crypto.volume)}
+                {formatVolume(crypto.volume)}원
               </div>
             </div>
             {crypto.sector && (
@@ -190,7 +193,7 @@ export function CryptoRow({
       
       <td className="px-6 py-5 text-right">
         <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 tabular-nums">
-          {formatVolume(crypto.volume)}
+          {formatVolume(crypto.volume)}원
         </div>
       </td>
       
