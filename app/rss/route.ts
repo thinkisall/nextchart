@@ -4,6 +4,44 @@ import { CRYPTO_SECTORS } from '../lib/crypto'
 export async function GET() {
   const baseUrl = 'https://www.damoabom.com'
   const currentDate = new Date().toISOString()
+  const buildDate = new Date().toUTCString()
+  
+  // XML 특수문자 이스케이프 함수
+  const escapeXml = (text: string) => {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;')
+  }
+  
+  // 섹터 아이템들 생성
+  const sectorItems = Array.from(new Set(Object.values(CRYPTO_SECTORS)))
+    .map((sector) => {
+      const encodedSector = encodeURIComponent(sector)
+      const escapedSector = escapeXml(sector)
+      
+      return `    <item>
+      <title>${escapedSector} 섹터 암호화폐 시세</title>
+      <description>${escapedSector} 섹터에 속한 암호화폐들의 실시간 시세 및 분석 정보</description>
+      <link>${baseUrl}/sector/${encodedSector}</link>
+      <guid isPermaLink="true">${baseUrl}/sector/${encodedSector}</guid>
+      <pubDate>${buildDate}</pubDate>
+      <category>${escapedSector}</category>
+      <content:encoded><![CDATA[
+        <h2>${escapedSector} 섹터 분석</h2>
+        <p>${escapedSector} 섹터에 속한 암호화폐들의 상세 정보:</p>
+        <ul>
+          <li>섹터별 코인 목록 및 시가총액</li>
+          <li>실시간 가격 변동 추이</li>
+          <li>섹터 전체 성과 분석</li>
+          <li>주요 코인들의 기술적 지표</li>
+        </ul>
+        <p>투자 결정에 도움이 되는 전문적인 섹터 분석을 제공합니다.</p>
+      ]]></content:encoded>
+    </item>`
+    }).join('\n')
   
   // RSS 피드 XML 생성
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -13,8 +51,8 @@ export async function GET() {
     <description>실시간 암호화폐 시세, 섹터 분석 및 트레이딩 정보를 제공하는 전문 플랫폼</description>
     <link>${baseUrl}</link>
     <language>ko-KR</language>
-    <lastBuildDate>${currentDate}</lastBuildDate>
-    <pubDate>${currentDate}</pubDate>
+    <lastBuildDate>${buildDate}</lastBuildDate>
+    <pubDate>${buildDate}</pubDate>
     <ttl>60</ttl>
     <atom:link href="${baseUrl}/rss" rel="self" type="application/rss+xml"/>
     <managingEditor>contact@damoabom.com (다모아봄)</managingEditor>
@@ -22,14 +60,16 @@ export async function GET() {
     <category>투자/금융</category>
     <category>암호화폐</category>
     <category>블록체인</category>
+    <generator>Next.js RSS Generator</generator>
+    <copyright>Copyright 2024 다모아봄. All rights reserved.</copyright>
     
-    <!-- 메인 페이지 -->
     <item>
       <title>실시간 암호화폐 시세 대시보드</title>
       <description>빗썸 API를 활용한 실시간 암호화폐 가격 정보 및 섹터별 분석</description>
       <link>${baseUrl}</link>
       <guid isPermaLink="true">${baseUrl}</guid>
-      <pubDate>${currentDate}</pubDate>
+      <pubDate>${buildDate}</pubDate>
+      <category>대시보드</category>
       <content:encoded><![CDATA[
         <h2>실시간 암호화폐 시세</h2>
         <p>다모아봄에서 제공하는 실시간 암호화폐 시세 정보:</p>
@@ -44,35 +84,14 @@ export async function GET() {
       ]]></content:encoded>
     </item>
     
-    ${Array.from(new Set(Object.values(CRYPTO_SECTORS)))
-      .map((sector) => `
-    <item>
-      <title>${sector} 섹터 암호화폐 시세</title>
-      <description>${sector} 섹터에 속한 암호화폐들의 실시간 시세 및 분석 정보</description>
-      <link>${baseUrl}/sector/${encodeURIComponent(sector)}</link>
-      <guid isPermaLink="true">${baseUrl}/sector/${encodeURIComponent(sector)}</guid>
-      <pubDate>${currentDate}</pubDate>
-      <category>${sector}</category>
-      <content:encoded><![CDATA[
-        <h2>${sector} 섹터 분석</h2>
-        <p>${sector} 섹터에 속한 암호화폐들의 상세 정보:</p>
-        <ul>
-          <li>섹터별 코인 목록 및 시가총액</li>
-          <li>실시간 가격 변동 추이</li>
-          <li>섹터 전체 성과 분석</li>
-          <li>주요 코인들의 기술적 지표</li>
-        </ul>
-        <p>투자 결정에 도움이 되는 전문적인 섹터 분석을 제공합니다.</p>
-      ]]></content:encoded>
-    </item>`).join('')}
+${sectorItems}
     
-    <!-- 추가 피처들 -->
     <item>
       <title>암호화폐 섹터 분석 도구</title>
       <description>전문적인 암호화폐 섹터 분석 및 비교 도구</description>
       <link>${baseUrl}#sector-analysis</link>
       <guid isPermaLink="false">sector-analysis-${Date.now()}</guid>
-      <pubDate>${currentDate}</pubDate>
+      <pubDate>${buildDate}</pubDate>
       <category>분석도구</category>
       <content:encoded><![CDATA[
         <h2>고급 섹터 분석 기능</h2>
@@ -92,7 +111,7 @@ export async function GET() {
       <description>설정한 가격대에 도달 시 즉시 알림을 받을 수 있는 서비스</description>
       <link>${baseUrl}#price-alerts</link>
       <guid isPermaLink="false">price-alerts-${Date.now()}</guid>
-      <pubDate>${currentDate}</pubDate>
+      <pubDate>${buildDate}</pubDate>
       <category>알림서비스</category>
       <content:encoded><![CDATA[
         <h2>스마트 가격 알림</h2>
@@ -111,9 +130,14 @@ export async function GET() {
 </rss>`
 
   return new NextResponse(rssXml, {
+    status: 200,
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600', // 1시간 캐시
+      'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+      'X-Content-Type-Options': 'nosniff',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'Content-Type',
     },
   })
 }
