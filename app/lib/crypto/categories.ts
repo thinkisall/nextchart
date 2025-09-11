@@ -105,6 +105,7 @@ export const CRYPTO_CATEGORIES = {
     "TDROP",
     "MOC", // 모스코인
     "NXPC", // 넥스페이스
+    "BEAM",
   ],
   M2E: ["GRND"], // 슈퍼워크
   MEME: [

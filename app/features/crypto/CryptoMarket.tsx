@@ -67,7 +67,7 @@ export function CryptoMarket() {
   };
 
   const handleCryptoClick = (crypto: CryptoPrice) => {
-    console.log('Selected crypto:', crypto);
+    // 클릭 이벤트 처리 로직을 여기에 추가할 수 있습니다
   };
 
   const handleFilteredDataChange = useCallback((filtered: CryptoPrice[]) => {
@@ -77,10 +77,8 @@ export function CryptoMarket() {
   // 컴포넌트 마운트 시 SSE 연결 확인만 수행
   useEffect(() => {
     if (isClient && !sseConnected && sseData.length === 0) {
-      console.log('메인 페이지: SSE 연결 상태 확인');
       const timer = setTimeout(() => {
         if (!sseConnected) {
-          console.log('메인 페이지: SSE 재연결 시도');
           sseReconnect();
         }
       }, 1000);
@@ -93,27 +91,6 @@ export function CryptoMarket() {
   const displayData = sseData.length > 0 ? sseData : prices;
   const finalDisplayData = filteredData.length > 0 ? filteredData : displayData;
   const isLoading = false; // SSE는 로딩 상태가 없음
-
-  // 디버깅을 위한 로그
-  useEffect(() => {
-    console.log('=== 메인 페이지 데이터 상태 ===');
-    console.log('sseData.length:', sseData.length);
-    console.log('prices.length:', prices.length);
-    console.log('displayData.length:', displayData.length);
-    console.log('finalDisplayData.length:', finalDisplayData.length);
-    console.log('sseConnected:', sseConnected);
-    console.log('filteredData.length:', filteredData.length);
-  }, [sseData.length, prices.length, displayData.length, finalDisplayData.length, sseConnected, filteredData.length]);
-
-  // 개발 모드에서 섹터 매핑 상태 디버그
-  useEffect(() => {
-    if (displayData.length > 0 && process.env.NODE_ENV === 'development') {
-      import('../../lib/crypto/debug').then(({ logMappingStatus }) => {
-        const symbols = displayData.map(crypto => crypto.symbol);
-        logMappingStatus(symbols);
-      });
-    }
-  }, [displayData]);
 
   // 가격 알림 체크
   useEffect(() => {

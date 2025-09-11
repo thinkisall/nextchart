@@ -2,7 +2,7 @@
 async function testMarketAPI() {
   try {
     console.log('Testing market API...');
-    const response = await fetch('http://localhost:3005/api/market');
+    const response = await fetch('http://localhost:3001/api/market');
     const data = await response.json();
     
     console.log('Market API response status:', response.status);
@@ -26,7 +26,7 @@ async function testMarketAPI() {
 async function testCryptoAPI() {
   try {
     console.log('Testing crypto API...');
-    const response = await fetch('http://localhost:3005/api/crypto');
+    const response = await fetch('http://localhost:3001/api/crypto');
     const data = await response.json();
     
     console.log('Crypto API response status:', response.status);

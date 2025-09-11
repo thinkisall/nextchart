@@ -90,7 +90,7 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
           change_amount: changeAmount,
           high_price: parseFloat(tickerData.max_price) || currentPrice,
           low_price: parseFloat(tickerData.min_price) || currentPrice,
-          volume: parseFloat(tickerData.units_traded_24H) || 0,
+          volume: parseFloat(tickerData.acc_trade_value_24H) || 0, // 24시간 거래금액
           is_positive: changeAmount >= 0,
           sector: cryptoInfo.sector,
         };
@@ -132,7 +132,7 @@ export async function getTicker(symbol: string): Promise<CryptoPrice | null> {
       change_amount: changeAmount,
       high_price: parseFloat(ticker.max_price),
       low_price: parseFloat(ticker.min_price),
-      volume: parseFloat(ticker.units_traded_24H),
+      volume: parseFloat(ticker.acc_trade_value_24H), // 일관성을 위해 거래금액 사용
       is_positive: changeAmount >= 0,
     };
   } catch (error) {

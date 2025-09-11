@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { CryptoPrice } from '../../lib/types';
 import { SECTOR_COLORS } from '../../lib/crypto';
-import { getConsolidatedSector, SECTOR_PRIORITY } from '../../lib/crypto/consolidation';
+import { getConsolidatedSectors, SECTOR_PRIORITY } from '../../lib/crypto/consolidation';
 
 interface SectorStatsProps {
   cryptos: CryptoPrice[];
@@ -16,29 +16,44 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
     router.push(`/sector/${encodeURIComponent(sectorName)}`);
   };
 
-  // 섹터별 통계 계산
+  // formatNumber 함수를 먼저 정의
+  const formatNumber = (num: number) => {
+    // NaN이나 유효하지 않은 값 처리
+    if (isNaN(num) || !isFinite(num)) return '0';
+    
+    if (num >= 1e12) return `${(num / 1e12).toFixed(1)}조`;
+    if (num >= 1e8) return `${(num / 1e8).toFixed(0)}억`;
+    if (num >= 1e4) return `${(num / 1e4).toFixed(0)}만`;
+    if (num >= 1e3) return `${(num / 1e3).toFixed(0)}천`;
+    return num.toFixed(0);
+  };
+
+  // 섹터별 통계 계산 (다중 카테고리 지원)
   const sectorStats = cryptos.reduce((acc, crypto) => {
     const originalSector = crypto.sector || '기타';
-    const sector = getConsolidatedSector(originalSector);
+    const sectors = getConsolidatedSectors(originalSector);
     
-    if (!acc[sector]) {
-      acc[sector] = {
-        count: 0,
-        totalMarketCap: 0,
-        avgChange: 0,
-        positiveCount: 0,
-      };
-    }
-    
-    acc[sector].count += 1;
-    acc[sector].totalMarketCap += crypto.current_price * crypto.volume;
-    acc[sector].avgChange += crypto.change_rate;
-    if (crypto.is_positive) {
-      acc[sector].positiveCount += 1;
-    }
+    // 각 코인이 여러 섹터에 동시에 속할 수 있음 (예: AI/DeFi)
+    sectors.forEach(sector => {
+      if (!acc[sector]) {
+        acc[sector] = {
+          count: 0,
+          totalVolume: 0,
+          avgChange: 0,
+          positiveCount: 0,
+        };
+      }
+      
+      acc[sector].count += 1;
+      acc[sector].totalVolume += Number(crypto.volume) || 0;
+      acc[sector].avgChange += crypto.change_rate;
+      if (crypto.is_positive) {
+        acc[sector].positiveCount += 1;
+      }
+    });
     
     return acc;
-  }, {} as { [sector: string]: { count: number; totalMarketCap: number; avgChange: number; positiveCount: number } });
+  }, {} as { [sector: string]: { count: number; totalVolume: number; avgChange: number; positiveCount: number } });
 
   // 평균 변동률 계산
   Object.keys(sectorStats).forEach(sector => {
@@ -54,14 +69,6 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
       return sectorStats[b].count - sectorStats[a].count;
     })
     .slice(0, 12);
-
-  const formatNumber = (num: number) => {
-    if (num >= 1e12) return `${(num / 1e12).toFixed(1)}조`;
-    if (num >= 1e8) return `${(num / 1e8).toFixed(0)}억`;
-    if (num >= 1e4) return `${(num / 1e4).toFixed(0)}만`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(0)}천`;
-    return num.toFixed(0);
-  };
 
   const totalPositive = cryptos.filter(c => c.is_positive).length;
   const totalNegative = cryptos.filter(c => !c.is_positive).length;
@@ -167,7 +174,7 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-medium text-gray-600 dark:text-gray-400">거래량</span>
                       <span className="text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-300">
-                        {formatNumber(stats.totalMarketCap)}원
+                        {formatNumber(stats.totalVolume)}원
                       </span>
                     </div>
                   </div>

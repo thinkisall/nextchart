@@ -9,7 +9,10 @@ export function useIsClient() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    // 더블 체크로 안전성 확보
+    if (typeof window !== 'undefined') {
+      setIsClient(true);
+    }
   }, []);
 
   return isClient;
@@ -17,6 +20,7 @@ export function useIsClient() {
 
 /**
  * 클라이언트에서만 렌더링되는 래퍼 컴포넌트
+ * hydration 오류를 방지하기 위해 사용
  */
 interface ClientOnlyProps {
   children: React.ReactNode;
@@ -24,11 +28,17 @@ interface ClientOnlyProps {
 }
 
 export function ClientOnly({ children, fallback = null }: ClientOnlyProps) {
-  const isClient = useIsClient();
+  const [hasMounted, setHasMounted] = useState(false);
 
-  if (!isClient) {
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // 마운트되지 않았을 때는 fallback 렌더링
+  if (!hasMounted) {
     return <>{fallback}</>;
   }
 
+  // 마운트된 후에만 children 렌더링
   return <>{children}</>;
 }
