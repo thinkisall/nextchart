@@ -1,7 +1,7 @@
 // 카테고리별 분류
 export const CRYPTO_CATEGORIES = {
   ZK_INFRA: ["LA", "PROVE"],
-  MAJOR: ["BTC", "ETH", "XRP", "LTC", "BCH", "BNB", "ETC"], // 시총/역사성 고려해 BNB, ETC 포함 [21][22]
+  MAJOR: ["BTC", "ETH", "XRP", "LTC", "BCH", "BNB", "ETC"],
   DEFI: [
     "UNI",
     "AAVE",
@@ -27,7 +27,12 @@ export const CRYPTO_CATEGORIES = {
     "VELO",
     "VELODROME",
     "LISTA",
-  ], // AMM/애그리게이터/렌딩/수익토큰화 추가 [22][21]
+    "F", // 신퓨처스
+    "SPK", // 스파크
+    "HUMA", // 휴마
+    "CTC", // 크레딧코인
+    "SXT", // SXT
+  ],
   LAYER1: [
     "SOL",
     "ADA",
@@ -59,7 +64,8 @@ export const CRYPTO_CATEGORIES = {
     "CRO",
     "ORBS",
     "AERGO",
-  ], // L1 명시 코인 보강 [22][21]
+    "INJ",
+  ],
   LAYER2: [
     "ARB",
     "OP",
@@ -77,7 +83,8 @@ export const CRYPTO_CATEGORIES = {
     "TAIKO",
     "MANTA",
     "TOKAMAK",
-  ], // L2/ZK 롤업 계열 추가, POL=prev. MATIC 맵 유지 [8][4]
+    "BB", // 바운스빗
+  ],
   GAMING: [
     "AXS",
     "SLP",
@@ -94,7 +101,12 @@ export const CRYPTO_CATEGORIES = {
     "BIGTIME",
     "AGLD",
     "XAI",
-  ], // GameFi/메타버스/퍼블리싱 [22][21]
+    "EPT",
+    "TDROP",
+    "MOC", // 모스코인
+    "NXPC", // 넥스페이스
+  ],
+  M2E: ["GRND"], // 슈퍼워크
   MEME: [
     "DOGE",
     "SHIB",
@@ -118,7 +130,7 @@ export const CRYPTO_CATEGORIES = {
     "SPX",
     "TURBO",
     "FARTCOIN",
-  ], // 밈/커뮤니티 토큰 확장 [23][22]
+  ],
   KOREAN: [
     "ICX",
     "KLAY",
@@ -134,7 +146,7 @@ export const CRYPTO_CATEGORIES = {
     "MBL",
     "BFC",
     "TOKAMAK",
-  ], // 한국 프로젝트 보강 [22][21]
+  ],
   AI: [
     "WLD",
     "FET",
@@ -148,7 +160,9 @@ export const CRYPTO_CATEGORIES = {
     "AI16Z",
     "AIOZ",
     "LA",
-  ], // AI/에이전트·데이터: VIRTUAL, AI16Z 포함 [6][7]
+    "STAT", // 스탯
+    "AWE", // AWE
+  ],
   INFRASTRUCTURE: [
     "LINK",
     "GRT",
@@ -164,7 +178,10 @@ export const CRYPTO_CATEGORIES = {
     "AKT",
     "FLUX",
     "LA",
-  ], // 인덱싱/미디어/노드/컴퓨팅 [24][22]
+    "OBT",
+    "RAD",
+  ],
+  DEPIN: ["VANA"], // 바나
   STAKING: [
     "LDO",
     "RPL",
@@ -177,8 +194,9 @@ export const CRYPTO_CATEGORIES = {
     "RETH",
     "SWISE",
     "BABY",
-  ], // LST/LRT 계열 확대 [22][21]
-  ORACLE: ["LINK", "BAND", "API3", "PYTH", "UMA"], // 유지 [22][21]
+    "SWELL",
+  ],
+  ORACLE: ["LINK", "BAND", "API3", "PYTH", "UMA"],
   STABLECOIN: [
     "USDT",
     "USDC",
@@ -189,11 +207,28 @@ export const CRYPTO_CATEGORIES = {
     "TUSD",
     "USD1",
     "FXS",
-  ], // 스테이블/연동 [22][21]
-  PRIVACY: ["ZEC", "XMR", "DASH", "T", "ARPA", "OXT", "SCRT"], // 프라이버시 보강 [22][21]
-  PAYMENT: ["XRP", "XLM", "ACH", "AMP", "REQ", "PUNDIX", "SXP", "MTL", "XCN"], // 결제/인보이스/담보 [22][21]
-  STORAGE: ["FIL", "AR", "STORJ", "SC", "BTT"], // 유지 [22][21]
-  ALTCOIN: [], // 기본 카테고리 (매칭되지 않은 코인들) [22][21]
+  ],
+  PRIVACY: ["ZEC", "XMR", "DASH", "T", "ARPA", "OXT", "SCRT", "EVZ"],
+  PAYMENT: [
+    "XRP",
+    "XLM",
+    "ACH",
+    "AMP",
+    "REQ",
+    "PUNDIX",
+    "SXP",
+    "MTL",
+    "XCN",
+    "XPR",
+  ],
+  STORAGE: ["FIL", "AR", "STORJ", "SC", "BTT"],
+  DAO: ["GTC", "KERNEL"], // 깃코인, 커널 다오
+  SOCIAL: ["ACS"], // 액세스프로토콜
+  SECURITY: ["CTK"], // 컨텍
+  ALTCOIN: [
+    "ES", // 이클립스
+    "HYPER", // 하이퍼
+  ], // 정보 부족 또는 기타
 };
 
 // 카테고리별 우선순위 (높을수록 우선)

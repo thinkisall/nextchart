@@ -53,7 +53,7 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
       if (priorityA !== priorityB) return priorityB - priorityA;
       return sectorStats[b].count - sectorStats[a].count;
     })
-    .slice(0, 8); // 모바일에선 8개로 줄임
+    .slice(0, 12); // 주요 12개 섹터 표시
 
   const formatNumber = (num: number) => {
     if (num >= 1e12) return `${(num / 1e12).toFixed(1)}T`;
