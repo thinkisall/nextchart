@@ -2,7 +2,7 @@ interface PriceChangeProps {
   value: number;
   percentage: number;
   isPositive: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
 export function PriceChange({ value, percentage, isPositive, size = 'md' }: PriceChangeProps) {
@@ -22,6 +22,12 @@ export function PriceChange({ value, percentage, isPositive, size = 'md' }: Pric
   const symbol = isPositive ? '+' : '';
   
   const sizeClasses = {
+    xs: {
+      container: 'px-1.5 py-0.5',
+      percentage: 'text-xs font-semibold',
+      value: 'text-xs hidden sm:block',
+      icon: 'text-xs'
+    },
     sm: {
       container: 'px-2 py-1',
       percentage: 'text-xs font-bold',
@@ -29,16 +35,16 @@ export function PriceChange({ value, percentage, isPositive, size = 'md' }: Pric
       icon: 'text-xs'
     },
     md: {
-      container: 'px-3 py-1.5',
-      percentage: 'text-sm font-bold',
+      container: 'px-2 sm:px-3 py-1 sm:py-1.5',
+      percentage: 'text-xs sm:text-sm font-bold',
       value: 'text-xs',
-      icon: 'text-sm'
+      icon: 'text-xs sm:text-sm'
     },
     lg: {
-      container: 'px-4 py-2',
-      percentage: 'text-base font-bold',
-      value: 'text-sm',
-      icon: 'text-base'
+      container: 'px-3 sm:px-4 py-1.5 sm:py-2',
+      percentage: 'text-sm sm:text-base font-bold',
+      value: 'text-xs sm:text-sm',
+      icon: 'text-sm sm:text-base'
     }
   };
 

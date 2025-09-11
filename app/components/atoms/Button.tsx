@@ -15,7 +15,7 @@ export function Button({
   children, 
   ...props 
 }: ButtonProps) {
-  const baseClasses = 'font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation';
   
   const variantClasses = {
     primary: 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white focus:ring-blue-500 shadow-lg hover:shadow-xl',
@@ -26,9 +26,9 @@ export function Button({
   };
   
   const sizeClasses = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg',
+    sm: 'px-3 py-2 text-sm min-h-[36px]',      // 모바일에서도 탭하기 쉬운 크기
+    md: 'px-4 py-2.5 text-base min-h-[44px]',  // 표준 터치 타겟 크기
+    lg: 'px-6 py-3 text-lg min-h-[48px]',      // 큰 터치 타겟
   };
 
   const widthClass = fullWidth ? 'w-full' : '';

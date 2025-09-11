@@ -107,47 +107,47 @@ export function CryptoMarket() {
   }, [displayData, filteredData.length]);
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-6">
-      {/* Market Status Panel - Professional Design */}
-      <ClientOnly fallback={<div className="h-20 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
+    <div className="w-full max-w-7xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
+      {/* Market Status Panel - 모바일 최적화 */}
+      <ClientOnly fallback={<div className="h-16 sm:h-20 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl">
-          <div className="p-6">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-              {/* Connection Status */}
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-3">
+          <div className="p-3 sm:p-4 lg:p-6">
+            <div className="flex flex-col space-y-3 sm:space-y-4 lg:space-y-0 lg:flex-row lg:items-center lg:justify-between">
+              {/* Connection Status - 모바일 최적화 */}
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className="flex items-center space-x-2 sm:space-x-3">
                   <div className="relative">
-                    <div className={`w-4 h-4 rounded-full ${sseConnected ? 'bg-emerald-500' : 'bg-red-500'}`}>
+                    <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${sseConnected ? 'bg-emerald-500' : 'bg-red-500'}`}>
                       {sseConnected && (
-                        <div className="absolute inset-0 w-4 h-4 bg-emerald-500 rounded-full animate-ping opacity-40"></div>
+                        <div className="absolute inset-0 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 rounded-full animate-ping opacity-40"></div>
                       )}
                     </div>
                   </div>
                   <div>
-                    <div className="font-semibold text-gray-900 dark:text-gray-100">
+                    <div className="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-100">
                       {sseConnected ? '실시간 시세 연결됨' : '연결 중...'}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                       실시간 스트림 • 1초 간격 업데이트
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Market Stats */}
-              <div className="flex items-center space-x-6">
+              {/* Market Stats - 모바일에서 2열, 태블릿+에서 3열 */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:flex lg:items-center lg:space-x-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{finalDisplayData.length}</div>
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">{finalDisplayData.length}</div>
                   <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">총 자산</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                     {displayData.filter(c => c.is_positive).length}
                   </div>
                   <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">상승</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+                <div className="text-center col-span-2 sm:col-span-1">
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600 dark:text-red-400">
                     {displayData.filter(c => !c.is_positive).length}
                   </div>
                   <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">하락</div>
@@ -156,8 +156,8 @@ export function CryptoMarket() {
 
               {/* Error Display */}
               {sseError && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-4 py-2">
-                  <span className="text-sm text-red-600 dark:text-red-400 font-medium">{sseError}</span>
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-3 sm:px-4 py-2 mt-2 lg:mt-0">
+                  <span className="text-xs sm:text-sm text-red-600 dark:text-red-400 font-medium">{sseError}</span>
                 </div>
               )}
             </div>
@@ -165,8 +165,8 @@ export function CryptoMarket() {
         </div>
       </ClientOnly>
 
-      {/* Performance Monitor - Minimized Professional Style */}
-      <ClientOnly fallback={<div className="h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
+      {/* Performance Monitor - 모바일 최적화 */}
+      <ClientOnly fallback={<div className="h-12 sm:h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
         <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-lg">
           <PerformanceMonitor
             updateMode="sse"
@@ -176,22 +176,22 @@ export function CryptoMarket() {
         </div>
       </ClientOnly>
 
-      {/* Sector Analytics */}
-      <ClientOnly fallback={<div className="h-40 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
+      {/* Sector Analytics - 모바일 최적화 */}
+      <ClientOnly fallback={<div className="h-32 sm:h-40 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl">
           <SectorStats cryptos={displayData} />
         </div>
       </ClientOnly>
 
-      {/* Price Alerts */}
-      <ClientOnly fallback={<div className="h-24 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
+      {/* Price Alerts - 모바일 최적화 */}
+      <ClientOnly fallback={<div className="h-20 sm:h-24 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
         <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-lg">
           <PriceAlertPanel cryptos={displayData} />
         </div>
       </ClientOnly>
 
-      {/* Advanced Filtering */}
-      <ClientOnly fallback={<div className="h-20 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
+      {/* Advanced Filtering - 모바일 최적화 */}
+      <ClientOnly fallback={<div className="h-16 sm:h-20 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl">
           <CryptoFilter
             cryptos={displayData}
@@ -201,11 +201,11 @@ export function CryptoMarket() {
         </div>
       </ClientOnly>
 
-      {/* Control Panel - Professional Layout */}
-      <ClientOnly fallback={<div className="h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
+      {/* Control Panel - 모바일 최적화 */}
+      <ClientOnly fallback={<div className="h-14 sm:h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
         <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-lg">
-          <div className="p-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+          <div className="p-3 sm:p-4">
+            <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex-1">
                 <RefreshControl
                   isLoading={isLoading}
@@ -215,12 +215,12 @@ export function CryptoMarket() {
                   onToggleAutoRefresh={() => {}}
                 />
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                 <CSVExportButton 
                   cryptos={finalDisplayData}
                   filename="crypto-market-data"
                 />
-                <ClientOnly fallback={<div className="w-32 h-10 bg-gray-100/60 dark:bg-gray-700/60 rounded-lg animate-pulse"></div>}>
+                <ClientOnly fallback={<div className="w-full sm:w-32 h-11 bg-gray-100/60 dark:bg-gray-700/60 rounded-lg animate-pulse"></div>}>
                   <AdvancedCSVExport cryptos={finalDisplayData} />
                 </ClientOnly>
               </div>
@@ -229,12 +229,12 @@ export function CryptoMarket() {
         </div>
       </ClientOnly>
 
-      {/* Main Trading Table */}
+      {/* Main Trading Table - 모바일 최적화 */}
       <ClientOnly fallback={
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl h-96 flex items-center justify-center">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl h-80 sm:h-96 flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-2 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-            <div className="text-lg font-medium text-gray-600 dark:text-gray-300">시세 데이터 로딩 중...</div>
+            <div className="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-2 border-blue-600 border-t-transparent mx-auto mb-2 sm:mb-4"></div>
+            <div className="text-sm sm:text-lg font-medium text-gray-600 dark:text-gray-300">시세 데이터 로딩 중...</div>
           </div>
         </div>
       }>
@@ -250,12 +250,12 @@ export function CryptoMarket() {
         </div>
       </ClientOnly>
 
-      {/* Professional Footer */}
-      <ClientOnly fallback={<div className="h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
+      {/* Professional Footer - 모바일 최적화 */}
+      <ClientOnly fallback={<div className="h-14 sm:h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
         <div className="bg-gradient-to-r from-white/40 to-white/60 dark:from-gray-800/40 dark:to-gray-800/60 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30">
-          <div className="p-6 text-center">
-            <div className="text-sm text-gray-600 dark:text-gray-300 space-y-2">
-              <div className="flex flex-wrap justify-center items-center gap-4">
+          <div className="p-4 sm:p-6 text-center">
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 space-y-2">
+              <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
                 <span className="flex items-center space-x-1">
                   <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                   <span>데이터 소스: 빗썸 거래소</span>

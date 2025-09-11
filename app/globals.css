@@ -392,4 +392,273 @@ body {
     background: none;
     color: black;
   }
+}/* 접근성 개선 - 모바일 */
+@media (max-width: 767px) {
+  /* 최소 터치 타겟 크기 44px 보장 */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* 모바일에서 읽기 쉬운 폰트 크기 */
+  .mobile-readable {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+  }
+  
+  /* 모바일 포커스 개선 */
+  .mobile-focus:focus {
+    outline: 3px solid rgba(59, 130, 246, 0.6);
+    outline-offset: 2px;
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+}
+
+/* 가로 모드 최적화 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .landscape-compact {
+    padding: 0.5rem !important;
+  }
+  
+  .landscape-hide {
+    display: none !important;
+  }
+  
+  /* 가로 모드에서 헤더 높이 줄이기 */
+  .landscape-header {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+}
+
+/* 모바일 애니메이션 최적화 */
+@media (max-width: 767px) {
+  .mobile-animate {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* 배터리 절약을 위한 애니메이션 감소 */
+  .mobile-minimal-animation {
+    animation: none !important;
+    transition: opacity 0.2s ease !important;
+  }
+}
+
+/* 모바일 스크롤 스냅 */
+.mobile-scroll-snap {
+  scroll-snap-type: x mandatory;
+}
+
+.mobile-scroll-snap > * {
+  scroll-snap-align: start;
+}
+
+/* 모바일 최적화된 그림자 */
+@media (max-width: 767px) {
+  .mobile-shadow {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .mobile-shadow-lg {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+/* 모바일 타이포그래피 최적화 */
+@media (max-width: 767px) {
+  .mobile-title {
+    font-size: 1.5rem !important;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+  
+  .mobile-subtitle {
+    font-size: 1.125rem !important;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  
+  .mobile-body {
+    font-size: 0.875rem !important;
+    line-height: 1.5;
+  }
+  
+  .mobile-caption {
+    font-size: 0.75rem !important;
+    line-height: 1.25;
+  }
+}
+
+/* 모바일 인터랙션 피드백 */
+@media (max-width: 767px) {
+  .mobile-tap-feedback:active {
+    transform: scale(0.98);
+    background-color: rgba(0, 0, 0, 0.05);
+    transition: all 0.1s ease;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .mobile-tap-feedback:active {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+/* 모바일 레이아웃 유틸리티 */
+@media (max-width: 767px) {
+  .mobile-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  
+  .mobile-inline {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+  
+  .mobile-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .mobile-between {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+}
+
+/* 모바일 테이블 대체 */
+@media (max-width: 767px) {
+  .mobile-table-card {
+    display: block !important;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .mobile-table-card {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(71, 85, 105, 0.3);
+    }
+  }
+}
+
+/* 모바일 폼 최적화 */
+@media (max-width: 767px) {
+  .mobile-form-field {
+    width: 100% !important;
+    min-height: 44px !important;
+    padding: 0.75rem !important;
+    font-size: 16px !important; /* iOS 확대 방지 */
+    border-radius: 0.5rem !important;
+  }
+  
+  .mobile-form-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+}
+
+/* 모바일 네비게이션 최적화 */
+@media (max-width: 767px) {
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.75rem;
+    z-index: 50;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .mobile-nav {
+      background: rgba(15, 23, 42, 0.95);
+      border-top: 1px solid rgba(71, 85, 105, 0.3);
+    }
+  }
+}
+
+/* 모바일 오버레이 최적화 */
+@media (max-width: 767px) {
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 40;
+  }
+  
+  .mobile-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 1rem 1rem 0 0;
+    padding: 1.5rem;
+    z-index: 50;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .mobile-modal.show {
+    transform: translateY(0);
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .mobile-modal {
+      background: rgb(15, 23, 42);
+    }
+  }
+}
+
+/* 성능 최적화 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+/* 모바일 디버깅 (개발 시에만 사용) */
+@media (max-width: 767px) {
+  .mobile-debug {
+    outline: 2px solid red !important;
+  }
+  
+  .mobile-debug::before {
+    content: 'MOBILE';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: red;
+    color: white;
+    padding: 2px 4px;
+    font-size: 10px;
+    z-index: 9999;
+  }
 }

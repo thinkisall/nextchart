@@ -91,6 +91,9 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
+        {/* Google Search Console 인증 */}
+        <meta name="google-site-verification" content="-FZw_8bxUpyUpVyhH0AKVeIM6UemTMyJ3JL6NTtVuuM" />
+        
         {/* Google AdSense */}
         <Script
           async
