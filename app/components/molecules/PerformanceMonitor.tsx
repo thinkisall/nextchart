@@ -56,56 +56,87 @@ export function PerformanceMonitor({ updateMode, dataLength, isConnected }: Perf
   };
 
   const getStatusColor = () => {
-    if (!isConnected && updateMode !== 'manual' && updateMode !== 'auto') return 'text-red-600';
-    return 'text-green-600';
+    if (!isConnected && updateMode !== 'manual' && updateMode !== 'auto') return 'text-red-500 dark:text-red-400';
+    return 'text-green-500 dark:text-green-400';
+  };
+
+  const getStatusIcon = () => {
+    if (!isConnected && updateMode !== 'manual' && updateMode !== 'auto') return '🔴';
+    return '🟢';
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-4 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-between"
+        className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
       >
-        <span>📊 성능 모니터링</span>
-        <div className="flex items-center space-x-2">
-          <span className={`text-xs ${getStatusColor()}`}>
-            {isConnected || updateMode === 'manual' || updateMode === 'auto' ? '● 연결됨' : '● 연결 안됨'}
-          </span>
-          <span className={`transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
-            ▼
-          </span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <span className="text-lg">📊</span>
+            <div>
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">성능 모니터링</span>
+              <div className="flex items-center space-x-2 mt-1">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {getStatusIcon()} {isConnected || updateMode === 'manual' || updateMode === 'auto' ? '연결됨' : '연결 안됨'}
+                </span>
+                <span className="text-xs text-gray-400 dark:text-gray-500">•</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  📈 {stats.updateCount}회 업데이트
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="hidden sm:flex items-center space-x-4 text-xs">
+              <div className="text-center">
+                <div className="font-bold text-blue-600 dark:text-blue-400">{dataLength}</div>
+                <div className="text-gray-500 dark:text-gray-400">코인</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-green-600 dark:text-green-400">{getUpdateFrequency()}</div>
+                <div className="text-gray-500 dark:text-gray-400">주기</div>
+              </div>
+            </div>
+            <span className={`transform transition-transform duration-200 text-gray-400 ${isExpanded ? 'rotate-180' : ''}`}>
+              ▼
+            </span>
+          </div>
         </div>
       </button>
 
       {isExpanded && (
-        <div className="p-4 border-t border-gray-200 bg-gray-50">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{stats.updateCount}</div>
-              <div className="text-gray-600">업데이트 횟수</div>
+        <div className="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 p-4 animate-fadeIn">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="text-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.updateCount}</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">📊 업데이트 횟수</div>
             </div>
             
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{dataLength}</div>
-              <div className="text-gray-600">암호화폐 수</div>
+            <div className="text-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">{dataLength}</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">🪙 암호화폐 수</div>
             </div>
             
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{getUpdateFrequency()}</div>
-              <div className="text-gray-600">업데이트 주기</div>
+            <div className="text-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{getUpdateFrequency()}</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">⏱️ 업데이트 주기</div>
             </div>
             
-            <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600">
+            <div className="text-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="text-xl font-bold text-orange-600 dark:text-orange-400">
                 {formatUptime(stats.connectionUptime)}
               </div>
-              <div className="text-gray-600">연결 시간</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">⏰ 연결 시간</div>
             </div>
           </div>
 
           {stats.lastUpdateTime && (
-            <div className="mt-4 pt-4 border-t border-gray-200 text-xs text-gray-500 text-center">
-              마지막 업데이트: {stats.lastUpdateTime.toLocaleTimeString('ko-KR')}
+            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex justify-center items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">
+                <span>🕐</span>
+                <span>마지막 업데이트: {stats.lastUpdateTime.toLocaleTimeString('ko-KR')}</span>
+              </div>
             </div>
           )}
         </div>

@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { CryptoPrice } from '../../lib/types';
-import { useCryptoPrices } from '../../hooks/useCryptoPrices';
-import { useBithumbWebSocket } from '../../hooks/useBithumbWebSocket';
-import { useServerSentEvents } from '../../hooks/useServerSentEvents';
-import { usePriceAlerts } from '../../hooks/usePriceAlerts';
-import { useFavorites } from '../../hooks/useFavorites';
-import { CryptoTable } from '../../components/organisms/CryptoTable';
-import { RefreshControl } from '../../components/molecules/RefreshControl';
-import { PriceAlertPanel } from '../../components/organisms/PriceAlertPanel';
-import { PerformanceMonitor } from '../../components/molecules/PerformanceMonitor';
-import { CryptoFilter } from '../../components/molecules/CryptoFilter';
-import { CSVExportButton } from '../../components/atoms/CSVExportButton';
-import { AdvancedCSVExport } from '../../components/molecules/AdvancedCSVExport';
-import { SectorStats } from '../../components/organisms/SectorStats';
-import { ClientOnly } from '../../hooks/useIsClient';
+import { useState, useEffect, useCallback } from "react";
+import { CryptoPrice } from "../../lib/types";
+import { useCryptoPrices } from "../../hooks/useCryptoPrices";
+import { useBithumbWebSocket } from "../../hooks/useBithumbWebSocket";
+import { useServerSentEvents } from "../../hooks/useServerSentEvents";
+import { usePriceAlerts } from "../../hooks/usePriceAlerts";
+import { useFavorites } from "../../hooks/useFavorites";
+import { CryptoTable } from "../../components/organisms/CryptoTable";
+import { RefreshControl } from "../../components/molecules/RefreshControl";
+import { PriceAlertPanel } from "../../components/organisms/PriceAlertPanel";
+import { PerformanceMonitor } from "../../components/molecules/PerformanceMonitor";
+import { CryptoFilter } from "../../components/molecules/CryptoFilter";
+import { CSVExportButton } from "../../components/atoms/CSVExportButton";
+import { AdvancedCSVExport } from "../../components/molecules/AdvancedCSVExport";
+import { SectorStats } from "../../components/organisms/SectorStats";
+import { ClientOnly } from "../../hooks/useIsClient";
 
 export function CryptoMarket() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -30,20 +30,20 @@ export function CryptoMarket() {
 
   // 즐겨찾기 훅
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
-  
+
   // REST API 훅
   const { prices, loading, error, refetch } = useCryptoPrices();
-  
+
   // WebSocket 훅 (주요 코인들만)
-  const majorCoins = ['BTC_KRW', 'ETH_KRW', 'XRP_KRW', 'ADA_KRW', 'SOL_KRW'];
-  const { 
-    data: wsData, 
-    isConnected, 
+  const majorCoins = ["BTC_KRW", "ETH_KRW", "XRP_KRW", "ADA_KRW", "SOL_KRW"];
+  const {
+    data: wsData,
+    isConnected,
     error: wsError,
-    reconnect 
-  } = useBithumbWebSocket({ 
+    reconnect,
+  } = useBithumbWebSocket({
     symbols: majorCoins,
-    tickTypes: ['24H'] 
+    tickTypes: ["24H"],
   });
 
   // Server-Sent Events 훅
@@ -53,7 +53,7 @@ export function CryptoMarket() {
     error: sseError,
     lastUpdated: sseLastUpdated,
     reconnect: sseReconnect,
-    disconnect: sseDisconnect
+    disconnect: sseDisconnect,
   } = useServerSentEvents();
 
   // 업비트 WebSocket 훅 (실제 작동)
@@ -68,7 +68,7 @@ export function CryptoMarket() {
   };
 
   const handleCryptoClick = (crypto: CryptoPrice) => {
-    console.log('Selected crypto:', crypto);
+    console.log("Selected crypto:", crypto);
     // 여기에 상세 페이지 이동 또는 모달 표시 로직 추가
   };
 
@@ -79,15 +79,15 @@ export function CryptoMarket() {
   // 컴포넌트 마운트 시 SSE 연결 확인만 수행
   useEffect(() => {
     if (isClient && !sseConnected && sseData.length === 0) {
-      console.log('메인 페이지: SSE 연결 상태 확인');
+      console.log("메인 페이지: SSE 연결 상태 확인");
       // 연결이 안 되어 있으면 재연결 시도
       const timer = setTimeout(() => {
         if (!sseConnected) {
-          console.log('메인 페이지: SSE 재연결 시도');
+          console.log("메인 페이지: SSE 재연결 시도");
           sseReconnect();
         }
       }, 1000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [isClient, sseConnected, sseData.length, sseReconnect]);
@@ -99,20 +99,27 @@ export function CryptoMarket() {
 
   // 디버깅을 위한 로그
   useEffect(() => {
-    console.log('=== 메인 페이지 데이터 상태 ===');
-    console.log('sseData.length:', sseData.length);
-    console.log('prices.length:', prices.length);
-    console.log('displayData.length:', displayData.length);
-    console.log('finalDisplayData.length:', finalDisplayData.length);
-    console.log('sseConnected:', sseConnected);
-    console.log('filteredData.length:', filteredData.length);
-  }, [sseData.length, prices.length, displayData.length, finalDisplayData.length, sseConnected, filteredData.length]);
+    console.log("=== 메인 페이지 데이터 상태 ===");
+    console.log("sseData.length:", sseData.length);
+    console.log("prices.length:", prices.length);
+    console.log("displayData.length:", displayData.length);
+    console.log("finalDisplayData.length:", finalDisplayData.length);
+    console.log("sseConnected:", sseConnected);
+    console.log("filteredData.length:", filteredData.length);
+  }, [
+    sseData.length,
+    prices.length,
+    displayData.length,
+    finalDisplayData.length,
+    sseConnected,
+    filteredData.length,
+  ]);
 
   // 개발 모드에서 섹터 매핑 상태 디버그
   useEffect(() => {
-    if (displayData.length > 0 && process.env.NODE_ENV === 'development') {
-      import('../../lib/crypto/debug').then(({ logMappingStatus }) => {
-        const symbols = displayData.map(crypto => crypto.symbol);
+    if (displayData.length > 0 && process.env.NODE_ENV === "development") {
+      import("../../lib/crypto/debug").then(({ logMappingStatus }) => {
+        const symbols = displayData.map((crypto) => crypto.symbol);
         logMappingStatus(symbols);
       });
     }
@@ -133,41 +140,56 @@ export function CryptoMarket() {
   }, [displayData, filteredData.length]);
 
   return (
-    <div className="max-w-7xl mx-auto">
-      {/* 헤더 */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          빗썸 암호화폐 시세
+    <div className="w-full max-w-7xl mx-auto space-y-4 sm:space-y-6">
+      {/* 헤더 - 모바일 최적화 */}
+      <div className="text-center sm:text-left">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          🚀 실시간 섹터 탐지
         </h1>
-        <p className="text-gray-600">
-          실시간 암호화폐 가격 정보를 확인하세요
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+          빗썸 API 기반 실시간 가격 정보
         </p>
       </div>
 
-      {/* 실시간 업데이트 상태 표시만 */}
-      <ClientOnly fallback={<div className="mb-4 h-16 bg-gray-100 rounded animate-pulse"></div>}>
-        <div className="mb-4 p-4 bg-white rounded-lg border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-2">
-                <div className={`w-3 h-3 rounded-full ${sseConnected ? 'bg-green-500 animate-pulse' : 'bg-red-400'}`} />
-                <span className="text-sm font-medium text-gray-700">
-                  🚀 실시간 스트림 (1초) {sseConnected ? '연결됨' : '연결 시도 중...'}
+      {/* 실시간 업데이트 상태 - 모바일 컴팩트 */}
+      <ClientOnly
+        fallback={
+          <div className="h-16 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+        }
+      >
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="p-3 sm:p-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <div
+                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${
+                    sseConnected ? "bg-green-500 animate-pulse" : "bg-red-400"
+                  }`}
+                />
+                <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200">
+                  {sseConnected ? "✅ 실시간 연결됨" : "⏳ 연결 시도 중..."}
+                </span>
+                <span className="hidden sm:inline text-xs text-gray-500">
+                  (1초 간격)
                 </span>
               </div>
+
+              {sseError && (
+                <span className="text-xs bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-2 py-1 rounded-full">
+                  {sseError}
+                </span>
+              )}
             </div>
-            
-            {sseError && (
-              <span className="text-xs text-red-600 bg-red-50 px-3 py-1 rounded">
-                {sseError}
-              </span>
-            )}
           </div>
         </div>
       </ClientOnly>
 
-      {/* 성능 모니터링 */}
-      <ClientOnly fallback={<div className="mb-4 h-20 bg-gray-100 rounded animate-pulse"></div>}>
+      {/* 성능 모니터링 - 모바일에서 간소화 */}
+      <ClientOnly
+        fallback={
+          <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+        }
+      >
         <PerformanceMonitor
           updateMode="sse"
           dataLength={finalDisplayData.length}
@@ -176,17 +198,29 @@ export function CryptoMarket() {
       </ClientOnly>
 
       {/* 섹터별 통계 */}
-      <ClientOnly fallback={<div className="mb-4 h-32 bg-gray-100 rounded animate-pulse"></div>}>
+      <ClientOnly
+        fallback={
+          <div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+        }
+      >
         <SectorStats cryptos={displayData} />
       </ClientOnly>
 
       {/* 가격 알림 패널 */}
-      <ClientOnly fallback={<div className="mb-4 h-24 bg-gray-100 rounded animate-pulse"></div>}>
+      <ClientOnly
+        fallback={
+          <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+        }
+      >
         <PriceAlertPanel cryptos={displayData} />
       </ClientOnly>
 
       {/* 필터 및 검색 */}
-      <ClientOnly fallback={<div className="mb-4 h-16 bg-gray-100 rounded animate-pulse"></div>}>
+      <ClientOnly
+        fallback={
+          <div className="h-16 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+        }
+      >
         <CryptoFilter
           cryptos={displayData}
           onFilteredDataChange={handleFilteredDataChange}
@@ -194,24 +228,32 @@ export function CryptoMarket() {
         />
       </ClientOnly>
 
-      {/* 컨트롤 패널 및 액션 버튼들 */}
-      <ClientOnly fallback={<div className="mb-6 h-16 bg-gray-100 rounded animate-pulse"></div>}>
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+      {/* 컨트롤 패널 - 모바일 스택 레이아웃 */}
+      <ClientOnly
+        fallback={
+          <div className="h-16 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+        }
+      >
+        <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex-1">
             <RefreshControl
               isLoading={isLoading}
               lastUpdated={sseLastUpdated || lastUpdated}
               onRefresh={handleRefresh}
               autoRefresh={false}
-              onToggleAutoRefresh={() => {}} // 더미 함수
+              onToggleAutoRefresh={() => {}}
             />
           </div>
-          <div className="flex gap-2">
-            <CSVExportButton 
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+            <CSVExportButton
               cryptos={finalDisplayData}
               filename="bithumb-crypto-prices"
             />
-            <ClientOnly fallback={<div className="w-32 h-10 bg-gray-100 rounded animate-pulse"></div>}>
+            <ClientOnly
+              fallback={
+                <div className="w-full sm:w-32 h-10 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>
+              }
+            >
               <AdvancedCSVExport cryptos={finalDisplayData} />
             </ClientOnly>
           </div>
@@ -219,8 +261,14 @@ export function CryptoMarket() {
       </ClientOnly>
 
       {/* 시세 테이블 */}
-      <ClientOnly fallback={<div className="bg-white rounded-lg shadow-sm border border-gray-200 h-96 flex items-center justify-center"><div className="text-gray-500">로딩 중...</div></div>}>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <ClientOnly
+        fallback={
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-96 flex items-center justify-center">
+            <div className="text-gray-500 dark:text-gray-400">로딩 중...</div>
+          </div>
+        }
+      >
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
           <CryptoTable
             cryptos={finalDisplayData}
             loading={isLoading}
@@ -232,16 +280,19 @@ export function CryptoMarket() {
         </div>
       </ClientOnly>
 
-      {/* 하단 정보 */}
-      <ClientOnly fallback={<div className="mt-6 h-12 bg-gray-100 rounded animate-pulse"></div>}>
-        <div className="mt-6 text-center text-sm text-gray-500">
+      {/* 하단 정보 - 모바일 최적화 */}
+      <ClientOnly
+        fallback={
+          <div className="h-12 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>
+        }
+      >
+        <div className="text-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 space-y-1 py-4">
           <p>
-            데이터 제공: 빗썸 | 
-            업데이트 방식: 실시간 스트림 (1초) |
-            표시 개수: {finalDisplayData.length}개 / 전체 {displayData.length}개
+            📊 데이터: 빗썸 | ⚡ 업데이트: 실시간 (1초) | 📈 표시:{" "}
+            {finalDisplayData.length}개 / 전체 {displayData.length}개
           </p>
-          <p className="mt-1 text-xs">
-            💡 기본 정렬: 상승률 높은 순 | 실시간 업데이트: SSE 스트림 모드 (1초 간격)
+          <p className="text-xs">
+            💡 기본 정렬: 상승률 높은 순 | 🔄 실시간 스트림 모드
           </p>
         </div>
       </ClientOnly>

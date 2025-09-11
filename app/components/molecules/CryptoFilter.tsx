@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { CryptoPrice } from '../../lib/types';
 import { useDebounce } from '../../hooks/useDebounce';
 import { CRYPTO_SECTORS } from '../../lib/crypto';
+import { Button } from '../atoms/Button';
 
 interface CryptoFilterProps {
   cryptos: CryptoPrice[];
@@ -17,6 +18,7 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [priceRange, setPriceRange] = useState<'all' | 'under1000' | 'under10000' | 'under100000' | 'over100000'>('all');
   const [selectedSector, setSelectedSector] = useState<string>('all');
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const applyFilters = useCallback(() => {
     let filtered = [...cryptos];
@@ -65,7 +67,7 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
           bValue = b.current_price;
           break;
         case 'change':
-          aValue = a.change_rate; // 상승률 순으로 정렬 (절대값 제거)
+          aValue = a.change_rate;
           bValue = b.change_rate;
           break;
         case 'name':
@@ -83,122 +85,133 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
     onFilteredDataChange(filtered);
   }, [cryptos, debouncedSearchTerm, showFavoritesOnly, priceRange, sortBy, sortOrder, selectedSector, favorites, onFilteredDataChange]);
 
-  // 필터 변경 시 useEffect로 적용
   useEffect(() => {
     applyFilters();
   }, [applyFilters]);
 
-  const handleSearchChange = (value: string) => {
-    setSearchTerm(value);
-  };
-
-  const handleSortChange = (newSortBy: typeof sortBy) => {
-    if (sortBy === newSortBy) {
-      setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(newSortBy);
-      setSortOrder('desc');
-    }
-  };
-
-  const handleFilterChange = () => {
-    // useEffect가 자동으로 처리하므로 별도 작업 불필요
+  const resetFilters = () => {
+    setSearchTerm('');
+    setSortBy('change');
+    setSortOrder('desc');
+    setShowFavoritesOnly(false);
+    setPriceRange('all');
+    setSelectedSector('all');
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
-      <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
-        {/* 검색 */}
-        <div className="md:col-span-2">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+      {/* 항상 보이는 기본 필터 */}
+      <div className="p-4 space-y-4">
+        {/* 검색바 */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
           <input
             type="text"
             placeholder="코인명 또는 심볼 검색..."
             value={searchTerm}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
-        {/* 섹터 필터 */}
-        <select
-          value={selectedSector}
-          onChange={(e) => {
-            setSelectedSector(e.target.value);
-            handleFilterChange();
-          }}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="all">전체 섹터</option>
-          {Array.from(new Set(Object.values(CRYPTO_SECTORS))).sort().map((sector, index) => (
-            <option key={`filter-sector-${index}`} value={sector}>{sector}</option>
-          ))}
-        </select>
-
-        {/* 정렬 */}
-        <select
-          value={`${sortBy}-${sortOrder}`}
-          onChange={(e) => {
-            const [newSortBy, newSortOrder] = e.target.value.split('-') as [typeof sortBy, typeof sortOrder];
-            setSortBy(newSortBy);
-            setSortOrder(newSortOrder);
-            handleFilterChange();
-          }}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="change-desc">변동률 높은순</option>
-          <option value="change-asc">변동률 낮은순</option>
-          <option value="volume-desc">거래량 높은순</option>
-          <option value="volume-asc">거래량 낮은순</option>
-          <option value="price-desc">가격 높은순</option>
-          <option value="price-asc">가격 낮은순</option>
-          <option value="name-asc">이름순</option>
-        </select>
-
-        {/* 가격 범위 */}
-        <select
-          value={priceRange}
-          onChange={(e) => {
-            setPriceRange(e.target.value as typeof priceRange);
-            handleFilterChange();
-          }}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="all">전체 가격</option>
-          <option value="under1000">1,000원 미만</option>
-          <option value="under10000">10,000원 미만</option>
-          <option value="under100000">100,000원 미만</option>
-          <option value="over100000">100,000원 이상</option>
-        </select>
-
-        {/* 즐겨찾기 필터 */}
-        <label className="flex items-center space-x-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={showFavoritesOnly}
-            onChange={(e) => {
-              setShowFavoritesOnly(e.target.checked);
-              handleFilterChange();
-            }}
-            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-          />
-          <span className="text-sm text-gray-700">즐겨찾기만</span>
-        </label>
-
-        {/* 초기화 버튼 */}
-        <button
-          onClick={() => {
-            setSearchTerm('');
-            setSortBy('change');
-            setSortOrder('desc');
-            setShowFavoritesOnly(false);
-            setPriceRange('all');
-            setSelectedSector('all');
-          }}
-          className="px-3 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-        >
-          필터 초기화
-        </button>
+        {/* 모바일: 간단한 컨트롤 */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex-1">
+            <select
+              value={`${sortBy}-${sortOrder}`}
+              onChange={(e) => {
+                const [newSortBy, newSortOrder] = e.target.value.split('-') as [typeof sortBy, typeof sortOrder];
+                setSortBy(newSortBy);
+                setSortOrder(newSortOrder);
+              }}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            >
+              <option value="change-desc">📈 상승률 높은순</option>
+              <option value="change-asc">📉 상승률 낮은순</option>
+              <option value="volume-desc">📊 거래량 높은순</option>
+              <option value="volume-asc">📊 거래량 낮은순</option>
+              <option value="price-desc">💰 가격 높은순</option>
+              <option value="price-asc">💰 가격 낮은순</option>
+              <option value="name-asc">🔤 이름순</option>
+            </select>
+          </div>
+          
+          {/* 즐겨찾기 토글 */}
+          <button
+            onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              showFavoritesOnly 
+                ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 border border-yellow-300 dark:border-yellow-700' 
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600'
+            }`}
+          >
+            ⭐ {showFavoritesOnly ? '즐겨찾기' : '전체'}
+          </button>
+          
+          {/* 고급 필터 토글 */}
+          <button
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-lg text-sm font-medium border border-blue-300 dark:border-blue-700 transition-colors"
+          >
+            🔧 {showAdvanced ? '간단히' : '고급'}
+          </button>
+        </div>
       </div>
+
+      {/* 고급 필터 (접을 수 있음) */}
+      {showAdvanced && (
+        <div className="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900/50">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* 섹터 필터 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">섹터</label>
+              <select
+                value={selectedSector}
+                onChange={(e) => setSelectedSector(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              >
+                <option value="all">🌐 전체 섹터</option>
+                {Array.from(new Set(Object.values(CRYPTO_SECTORS))).sort().map((sector, index) => (
+                  <option key={`filter-sector-${index}`} value={sector}>{sector}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* 가격 범위 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">가격 범위</label>
+              <select
+                value={priceRange}
+                onChange={(e) => setPriceRange(e.target.value as typeof priceRange)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              >
+                <option value="all">💰 전체 가격</option>
+                <option value="under1000">💱 1,000원 미만</option>
+                <option value="under10000">💴 10,000원 미만</option>
+                <option value="under100000">💵 100,000원 미만</option>
+                <option value="over100000">💎 100,000원 이상</option>
+              </select>
+            </div>
+
+            {/* 초기화 버튼 */}
+            <div className="flex items-end">
+              <Button
+                onClick={resetFilters}
+                variant="ghost"
+                size="sm"
+                fullWidth
+                className="h-10"
+              >
+                🔄 초기화
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
