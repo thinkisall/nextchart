@@ -39,6 +39,7 @@ function AdSenseComponent({
 
     // AdSense 스크립트가 로드될 때까지 대기
     const checkAdSense = () => {
+      // @ts-ignore
       if (typeof window !== 'undefined' && window.adsbygoogle) {
         try {
           // @ts-ignore
