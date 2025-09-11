@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { CryptoPrice } from '../../lib/types';
 import { SECTOR_COLORS } from '../../lib/crypto';
 import { getConsolidatedSectors, SECTOR_PRIORITY } from '../../lib/crypto/consolidation';
+import { SidebarAd } from '../AdSenseV2';
 
 interface SectorStatsProps {
   cryptos: CryptoPrice[];
@@ -206,6 +207,11 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
               </button>
             );
           })}
+        </div>
+        
+        {/* Sidebar Advertisement */}
+        <div className="hidden lg:block">
+          <SidebarAd />
         </div>
       </div>
     </div>

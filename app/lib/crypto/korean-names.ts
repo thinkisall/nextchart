@@ -154,7 +154,7 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   JASMY: "재스미코인",
   REQ: "리퀘스트",
   WOO: "우 네트워크",
-  ARKM: "아크햄",
+  ARKM: "아캄",
   RSS3: "RSS3",
   FXS: "프랙스 셰어",
   PONKE: "폰케",

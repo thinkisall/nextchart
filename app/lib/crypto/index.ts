@@ -12,4 +12,4 @@ export { CRYPTO_KOREAN_NAMES } from './korean-names';
 export { CRYPTO_SECTORS } from './sectors';
 export { SECTOR_COLORS } from './colors';
 export { CRYPTO_CATEGORIES } from './categories';
-export { getConsolidatedSector, SECTOR_PRIORITY } from './consolidation';
+export { getConsolidatedSector, getConsolidatedSectors, SECTOR_PRIORITY } from './consolidation';

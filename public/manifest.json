@@ -1,0 +1,103 @@
+{
+  "name": "다모아봄 - 실시간 암호화폐 차트",
+  "short_name": "다모아봄",
+  "description": "실시간 암호화폐 가격, 차트, 섹터 분석을 제공하는 암호화폐 투자 도구",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1f2937",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ko",
+  "dir": "ltr",
+  "categories": ["finance", "business", "productivity"],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "데스크톱 화면"
+    },
+    {
+      "src": "/screenshots/mobile.png", 
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "모바일 화면"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96", 
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI 섹터",
+      "short_name": "AI",
+      "description": "AI 관련 암호화폐 확인",
+      "url": "/sector/AI",
+      "icons": [{"src": "/icons/shortcut-ai.png", "sizes": "96x96"}]
+    },
+    {
+      "name": "DeFi 섹터", 
+      "short_name": "DeFi",
+      "description": "DeFi 관련 암호화폐 확인",
+      "url": "/sector/DeFi",
+      "icons": [{"src": "/icons/shortcut-defi.png", "sizes": "96x96"}]
+    },
+    {
+      "name": "GameFi 섹터",
+      "short_name": "GameFi", 
+      "description": "GameFi 관련 암호화폐 확인",
+      "url": "/sector/GameFi",
+      "icons": [{"src": "/icons/shortcut-gamefi.png", "sizes": "96x96"}]
+    }
+  ]
+}

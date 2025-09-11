@@ -1,0 +1,26 @@
+# ads.txt file for damoabom.com
+# This file is used to declare authorized digital sellers for programmatic advertising
+# More info: https://iabtechlab.com/ads-txt/
+
+# Google AdSense
+google.com, pub-3000971739024587, DIRECT, f08c47fec0942fa0
+
+# Google Ad Manager (if needed later)
+# google.com, pub-3000971739024587, DIRECT, f08c47fec0942fa0
+
+# Additional authorized sellers can be added here
+# Format: <Field #1>, <Field #2>, <Field #3>, <Field #4>
+# Field #1: Domain name of the advertising system
+# Field #2: Publisher's Account ID within the advertising system  
+# Field #3: Type of Account/Relationship (DIRECT or RESELLER)
+# Field #4: Certification Authority ID (optional)
+
+# Example additional networks (uncomment and modify as needed):
+# pubmatic.com, 156520, RESELLER, 5d62403b186f2ace
+# rubiconproject.com, 20416, RESELLER, 0bfd66d529a55807
+# openx.com, 540871654, RESELLER, 6ac7d0a29f50b500
+# sovrn.com, 263049, RESELLER, fafdf38b16bf6b2b
+# appnexus.com, 7353, RESELLER, f5ab79cb980f11d1
+
+# Note: Only include entries for advertising systems you have 
+# direct relationships with or authorized reseller relationships

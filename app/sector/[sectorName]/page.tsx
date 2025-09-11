@@ -12,7 +12,7 @@ import { AdvancedCSVExport } from '../../components/molecules/AdvancedCSVExport'
 import { Breadcrumb } from '../../components/atoms/Breadcrumb';
 import { useFavorites } from '../../hooks/useFavorites';
 import { PerformanceMonitor } from '../../components/molecules/PerformanceMonitor';
-import { getConsolidatedSector } from '../../lib/crypto/consolidation';
+import { getConsolidatedSectors } from '../../lib/crypto/consolidation';
 import { CRYPTO_SECTORS } from '../../lib/crypto';
 
 export default function SectorPage() {
@@ -59,18 +59,20 @@ export default function SectorPage() {
       const sectorCounts: { [key: string]: number } = {};
       sseData.forEach(crypto => {
         const originalSector = crypto.sector || '기타';
-        const consolidatedSector = getConsolidatedSector(originalSector);
-        sectorCounts[consolidatedSector] = (sectorCounts[consolidatedSector] || 0) + 1;
+        const consolidatedSectors = getConsolidatedSectors(originalSector);
+        consolidatedSectors.forEach(sector => {
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+        });
       });
       
       console.log('사용 가능한 섹터들:', Object.keys(sectorCounts));
       console.log('섹터별 코인 수:', sectorCounts);
       
-      // 통합된 섹터 기준으로 필터링
+      // 통합된 섹터 기준으로 필터링 (다중 카테고리 지원)
       const filtered = sseData.filter(crypto => {
         const originalSector = crypto.sector || '기타';
-        const consolidatedSector = getConsolidatedSector(originalSector);
-        return consolidatedSector === sectorName;
+        const consolidatedSectors = getConsolidatedSectors(originalSector);
+        return consolidatedSectors.includes(sectorName);
       });
       
       console.log('필터링된 코인 수:', filtered.length);

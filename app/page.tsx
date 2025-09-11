@@ -1,6 +1,7 @@
 import { CryptoMarket } from "./features/crypto/CryptoMarket";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
+import { HeaderAd, FooterAd } from "./components/AdSenseV2";
 
 export default function Home() {
   return (
@@ -25,6 +26,9 @@ export default function Home() {
 
         {/* Main content area */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 -mt-4 relative z-10">
+          {/* Header Advertisement */}
+          <HeaderAd />
+          
           <ClientOnly
             fallback={
               <div className="flex items-center justify-center py-20">
@@ -41,6 +45,9 @@ export default function Home() {
           >
             <CryptoMarket />
           </ClientOnly>
+          
+          {/* Footer Advertisement */}
+          <FooterAd />
         </div>
       </div>
     </ErrorBoundary>

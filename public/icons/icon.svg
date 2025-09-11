@@ -1,0 +1,19 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- 배경 -->
+  <rect width="512" height="512" fill="#1f2937" rx="80"/>
+  
+  <!-- 차트 바 -->
+  <rect x="80" y="320" width="40" height="120" fill="#10b981" rx="4"/>
+  <rect x="140" y="280" width="40" height="160" fill="#3b82f6" rx="4"/>
+  <rect x="200" y="200" width="40" height="240" fill="#f59e0b" rx="4"/>
+  <rect x="260" y="160" width="40" height="280" fill="#ef4444" rx="4"/>
+  <rect x="320" y="120" width="40" height="320" fill="#8b5cf6" rx="4"/>
+  <rect x="380" y="240" width="40" height="200" fill="#06b6d4" rx="4"/>
+  
+  <!-- 상승 화살표 -->
+  <path d="M400 100 L440 140 L420 140 L420 180 L400 180 L400 140 L380 140 Z" fill="#10b981"/>
+  
+  <!-- 텍스트 -->
+  <text x="256" y="80" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="white">₩</text>
+</svg>

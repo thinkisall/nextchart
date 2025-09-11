@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# PWA 관련 파일들
+Allow: /manifest.json
+Allow: /sw.js
+Allow: /icons/
+Allow: /screenshots/
+
+# API 엔드포인트는 크롤링 제외
+Disallow: /api/
+
+# 사이트맵 위치
+Sitemap: https://www.damoabom.com/sitemap.xml
