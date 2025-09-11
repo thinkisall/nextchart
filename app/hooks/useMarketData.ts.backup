@@ -1,0 +1,77 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { MarketData } from '../lib/types';
+
+interface MarketResponse {
+  data: MarketData[];
+  status: string;
+  message?: string;
+}
+
+export function useMarketData() {
+  const [marketData, setMarketData] = useState<MarketData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // 한글 이름 매핑 캐시
+  const [koreanNameMap, setKoreanNameMap] = useState<{ [symbol: string]: string }>({});
+
+  const fetchMarketData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch('/api/market');
+      const data: MarketResponse = await response.json();
+      
+      if (data.status === 'error') {
+        throw new Error(data.message || 'Failed to fetch market data');
+      }
+
+      setMarketData(data.data || []);
+      
+      // 한글 이름 매핑 테이블 생성
+      const nameMap: { [symbol: string]: string } = {};
+      (data.data || []).forEach(item => {
+        // 마켓 코드에서 심볼 추출 (예: BTC_KRW -> BTC)
+        const symbol = item.market.replace('_KRW', '');
+        nameMap[symbol] = item.korean_name;
+      });
+      setKoreanNameMap(nameMap);
+      
+      console.log('Market data fetched:', data.data?.length, 'items');
+      console.log('Korean name mapping created:', Object.keys(nameMap).length, 'items');
+      
+    } catch (error) {
+      console.error('Error fetching market data:', error);
+      setError(error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMarketData();
+  }, []);
+
+  // 심볼로 한글 이름 조회
+  const getKoreanName = (symbol: string): string => {
+    return koreanNameMap[symbol] || symbol;
+  };
+
+  // 전체 마켓 데이터 조회
+  const getMarketInfo = (symbol: string): MarketData | undefined => {
+    return marketData.find(item => item.market === `${symbol}_KRW`);
+  };
+
+  return {
+    marketData,
+    koreanNameMap,
+    loading,
+    error,
+    refetch: fetchMarketData,
+    getKoreanName,
+    getMarketInfo
+  };
+}
