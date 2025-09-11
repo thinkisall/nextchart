@@ -181,6 +181,7 @@ export const CRYPTO_SECTORS: { [key: string]: string } = {
   PYTH: "오라클",
   UMA: "오라클",
   REP: "오라클",
+  RED: "오라클", // <- 여기에 추가
 
   // 스테이블코인
   USDT: "스테이블코인",

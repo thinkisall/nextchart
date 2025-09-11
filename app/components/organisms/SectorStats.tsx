@@ -75,13 +75,13 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
           <div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center space-x-2">
               <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-              <span>Sector Analysis</span>
+              <span>섹터 분석</span>
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Market sentiment by sector classification</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">섹터별 시장 심리 분석</p>
           </div>
           <div className="text-right">
             <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{Object.keys(sectorStats).length}</div>
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Active Sectors</div>
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">활성 섹터</div>
           </div>
         </div>
       </div>
@@ -91,19 +91,19 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/10 rounded-xl border border-blue-200/50 dark:border-blue-800/30">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{cryptos.length}</div>
-            <div className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Total Assets</div>
+            <div className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide">총 자산</div>
           </div>
           <div className="text-center p-4 bg-gradient-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-900/20 dark:to-emerald-800/10 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30">
             <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{totalPositive}</div>
-            <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">Gainers</div>
+            <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">상승</div>
           </div>
           <div className="text-center p-4 bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-800/10 rounded-xl border border-red-200/50 dark:border-red-800/30">
             <div className="text-2xl font-bold text-red-600 dark:text-red-400">{totalNegative}</div>
-            <div className="text-xs font-semibold text-red-700 dark:text-red-300 uppercase tracking-wide">Losers</div>
+            <div className="text-xs font-semibold text-red-700 dark:text-red-300 uppercase tracking-wide">하락</div>
           </div>
           <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-900/20 dark:to-purple-800/10 rounded-xl border border-purple-200/50 dark:border-purple-800/30">
             <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{positivePercentage}%</div>
-            <div className="text-xs font-semibold text-purple-700 dark:text-purple-300 uppercase tracking-wide">Bullish</div>
+            <div className="text-xs font-semibold text-purple-700 dark:text-purple-300 uppercase tracking-wide">강세</div>
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
                   {/* Performance Metrics */}
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Avg Change</span>
+                      <span className="text-xs font-medium text-gray-600 dark:text-gray-400">평균 변동률</span>
                       <div className={`flex items-center space-x-1 ${isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
                         <span className="text-sm font-bold">
                           {isPositive ? '+' : ''}{stats.avgChange.toFixed(2)}%
@@ -157,14 +157,14 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
                     </div>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Sentiment</span>
+                      <span className="text-xs font-medium text-gray-600 dark:text-gray-400">시장 심리</span>
                       <span className={`text-sm font-bold ${positiveRate >= 50 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
-                        {positiveRate.toFixed(0)}% Bullish
+                        {positiveRate.toFixed(0)}% 강세
                       </span>
                     </div>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Volume</span>
+                      <span className="text-xs font-medium text-gray-600 dark:text-gray-400">거래량</span>
                       <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
                         ₩{formatNumber(stats.totalMarketCap)}
                       </span>
@@ -185,8 +185,8 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
                   
                   {/* Sentiment bar */}
                   <div className="mt-2 flex justify-between text-xs">
-                    <span className="text-gray-500 dark:text-gray-400">Bears</span>
-                    <span className="text-gray-500 dark:text-gray-400">Bulls</span>
+                    <span className="text-gray-500 dark:text-gray-400">약세</span>
+                    <span className="text-gray-500 dark:text-gray-400">강세</span>
                   </div>
                   <div className="mt-1 bg-gradient-to-r from-red-200 to-emerald-200 dark:from-red-800/50 dark:to-emerald-800/50 rounded-full h-1.5 overflow-hidden">
                     <div 

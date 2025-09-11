@@ -107,7 +107,7 @@ export function CryptoRow({
           {/* Bottom info */}
           <div className="flex items-center justify-between pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
             <div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Volume</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">거래량</div>
               <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
                 {formatVolume(crypto.volume)}
               </div>

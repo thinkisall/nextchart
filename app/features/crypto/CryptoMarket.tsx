@@ -148,10 +148,10 @@ export function CryptoMarket() {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900 dark:text-gray-100">
-                      {sseConnected ? 'Live Market Data' : 'Connecting...'}
+                      {sseConnected ? '실시간 시세 연결됨' : '연결 중...'}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                      Real-time stream • 1-second intervals
+                      실시간 스트림 • 1초 간격 업데이트
                     </div>
                   </div>
                 </div>
@@ -161,19 +161,19 @@ export function CryptoMarket() {
               <div className="flex items-center space-x-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{finalDisplayData.length}</div>
-                  <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Assets</div>
+                  <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">총 자산</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                     {displayData.filter(c => c.is_positive).length}
                   </div>
-                  <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Rising</div>
+                  <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">상승</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-red-600 dark:text-red-400">
                     {displayData.filter(c => !c.is_positive).length}
                   </div>
-                  <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Falling</div>
+                  <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">하락</div>
                 </div>
               </div>
 
@@ -257,7 +257,7 @@ export function CryptoMarket() {
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl h-96 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-2 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-            <div className="text-lg font-medium text-gray-600 dark:text-gray-300">Loading Market Data...</div>
+            <div className="text-lg font-medium text-gray-600 dark:text-gray-300">시세 데이터 로딩 중...</div>
           </div>
         </div>
       }>
@@ -281,19 +281,19 @@ export function CryptoMarket() {
               <div className="flex flex-wrap justify-center items-center gap-4">
                 <span className="flex items-center space-x-1">
                   <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                  <span>Data Source: Bithumb Exchange</span>
+                  <span>데이터 소스: 빗썸 거래소</span>
                 </span>
                 <span className="flex items-center space-x-1">
                   <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                  <span>Update: Real-time Stream</span>
+                  <span>업데이트: 실시간 스트림</span>
                 </span>
                 <span className="flex items-center space-x-1">
                   <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                  <span>Displaying: {finalDisplayData.length} / {displayData.length} assets</span>
+                  <span>표시 중: {finalDisplayData.length} / {displayData.length} 자산</span>
                 </span>
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">
-                Professional cryptocurrency market analysis platform • Sorted by 24h change
+                전문 암호화폐 시장 분석 플랫폼 • 24시간 변동률 기준 정렬
               </div>
             </div>
           </div>

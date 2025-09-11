@@ -196,7 +196,7 @@ export const CRYPTO_CATEGORIES = {
     "BABY",
     "SWELL",
   ],
-  ORACLE: ["LINK", "BAND", "API3", "PYTH", "UMA"],
+  ORACLE: ["LINK", "BAND", "API3", "PYTH", "UMA", "RED"],
   STABLECOIN: [
     "USDT",
     "USDC",
