@@ -1,7 +1,7 @@
 import { CryptoMarket } from "./features/crypto/CryptoMarket";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
-import { HeaderAd, FooterAd } from "./components/AdSense";
+import { HeaderAd, FooterAd } from "./components/AdSenseV2";
 
 export default function Home() {
   return (
@@ -28,9 +28,7 @@ export default function Home() {
         {/* 모바일 최적화된 메인 콘텐츠 영역 */}
         <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 -mt-2 sm:-mt-4 relative z-10">
           {/* Header Advertisement */}
-          <div className="flex justify-center mb-6">
-            <HeaderAd />
-          </div>
+          <HeaderAd />
 
           <ClientOnly
             fallback={
