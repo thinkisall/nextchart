@@ -129,15 +129,15 @@ export function SidebarAd() {
     <div className="flex justify-center">
       <AdSense
         adSlot="2688496950"
-        adFormat="auto"
+        adFormat="rectangle"
         className="my-4 max-w-full"
         adKey="sidebar"
         style={{
           display: "block",
-          width: "100%",
-          maxWidth: "390px", // 너비 한정
-          height: "390px", // 명시적 높이
-          maxHeight: "390px", // 최대 높이
+          width: "300px", // 정사각형에 가까운 너비
+          height: "250px", // 정사각형에 가까운 높이 (실제로는 미디엄 레인지 광고)
+          maxWidth: "300px",
+          maxHeight: "250px",
           margin: "0 auto",
         }}
       />
@@ -172,5 +172,24 @@ export function ResponsiveAd({ adSlot }: { adSlot: string }) {
       className="my-4"
       adKey={`responsive-${adSlot}`}
     />
+  );
+}
+
+// 정사각형 광고 (300x250 표준 미디엄 레기네이트)
+export function SquareAd() {
+  return (
+    <div className="flex justify-center">
+      <AdSense
+        adSlot="2688496950"
+        adFormat="rectangle"
+        className="my-4"
+        adKey="square"
+        style={{
+          display: "inline-block",
+          width: "300px",
+          height: "250px",
+        }}
+      />
+    </div>
   );
 }
