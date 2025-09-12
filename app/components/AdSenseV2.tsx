@@ -135,8 +135,7 @@ export function SidebarAd() {
         style={{
           display: "block",
           width: "100%",
-          maxWidth: "300px",
-          height: "250px",
+          height: "100%",
         }}
       />
     </div>
@@ -152,8 +151,9 @@ export function FooterAd() {
       adKey="footer"
       style={{
         display: "block",
-        height: "90px",
+        width: "100%", // 추가: 컨테이너 너비를 부모 폭만큼 채움
         maxWidth: "728px",
+        height: "90px",
         margin: "0 auto",
       }}
     />
