@@ -135,7 +135,9 @@ export function SidebarAd() {
         style={{
           display: "block",
           width: "100%",
-          height: "100%",
+          maxWidth: "390px", // 너비 한정
+          height: "390px", // 명시적 높이
+          margin: "0 auto",
         }}
       />
     </div>
