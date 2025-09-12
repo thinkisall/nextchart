@@ -1,4 +1,11 @@
 /**
+ * Tailwind CSS 클래스 이름 합치기 유틸리티
+ */
+export function cn(...inputs: (string | undefined | null | false)[]): string {
+  return inputs.filter(Boolean).join(' ');
+}
+
+/**
  * 가격 포맷팅 유틸리티 함수들
  */
 

@@ -17,7 +17,7 @@ export function useUpbitWebSocket(config: UpbitWebSocketConfig) {
 
   const connect = () => {
     try {
-      // ?�비??WebSocket (???�정??
+      // ?�비??WebSocket (???�정??
       const ws = new WebSocket('wss://api.upbit.com/websocket/v1');
       wsRef.current = ws;
 
@@ -25,7 +25,7 @@ export function useUpbitWebSocket(config: UpbitWebSocketConfig) {
         setError(null);
         setReconnectAttempts(0);
 
-        // ?�비??구독 메시지 (빗썸 ?�볼???�비???�식?�로 변??
+        // ?�비??구독 메시지 (빗썸 ?�볼???�비???�식?�로 변??
         const upbitSymbols = config.symbols.map(symbol => 
           symbol.replace('_KRW', '-KRW').replace('KRW-', 'KRW-')
         );
@@ -49,7 +49,8 @@ export function useUpbitWebSocket(config: UpbitWebSocketConfig) {
               const message = JSON.parse(text);
               
               if (message.type === 'ticker') {
-                // ?�비???�이?��? 빗썸 ?�식?�로 변??                const symbol = message.code.replace('KRW-', '');
+                // 업비트 데이터를 빗썸 형식으로 변환
+                const symbol = message.code.replace('KRW-', '');
                 const currentPrice = message.trade_price;
                 const changeAmount = message.change_price;
                 const changeRate = message.change_rate * 100;
@@ -104,13 +105,13 @@ export function useUpbitWebSocket(config: UpbitWebSocketConfig) {
 
       ws.onerror = (error) => {
         console.error('Upbit WebSocket error:', error);
-        setError('WebSocket ?�결 ?�패');
+        setError('WebSocket ?�결 ?�패');
         setIsConnected(false);
       };
 
     } catch (error) {
       console.error('Error creating WebSocket connection:', error);
-      setError('WebSocket ?�결 ?�성 ?�패');
+      setError('WebSocket ?�결 ?�성 ?�패');
     }
   };
 

@@ -8,7 +8,6 @@ import { CSVExportButton } from "../../components/atoms/CSVExportButton";
 import { AdvancedCSVExport } from "../../components/molecules/AdvancedCSVExport";
 import { Breadcrumb } from "../../components/atoms/Breadcrumb";
 import { useFavorites } from "../../hooks/useFavorites";
-import { PerformanceMonitor } from "../../components/molecules/PerformanceMonitor";
 import { CRYPTO_SECTORS } from "../../lib/crypto";
 import { HeaderAd, FooterAd, SquareAd } from "../../components/AdSenseV2";
 
@@ -54,20 +53,6 @@ export default function SectorPage() {
             </div>
           </div>
         </div>
-
-        <ClientOnly
-          fallback={
-            <div className="mb-3 sm:mb-4 h-16 bg-white/60 dark:bg-gray-800/60 rounded-lg animate-pulse"></div>
-          }
-        >
-          <div className="mb-3 sm:mb-4">
-            <PerformanceMonitor
-              updateMode="sse"
-              dataLength={filteredCryptos.length}
-              isConnected={sseConnected}
-            />
-          </div>
-        </ClientOnly>
 
         <div className="mb-4 sm:mb-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl">
           <div className="p-3 sm:p-4 lg:p-6">

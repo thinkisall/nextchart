@@ -1,77 +1,79 @@
-// ?�터 ?�이지 ?�용 ??- ???�정?�인 ?�이??로딩
+// 섹터 페이지 전용 훅 - 더 안정적인 데이터 로딩
 'use client';
 
 import { useState, useEffect } from 'react';
 import { CryptoPrice } from '../lib/types';
 import { useCryptoPrices } from './useCryptoPrices';
 import { useServerSentEvents } from './useServerSentEvents';
-import { getConsolidatedSectors } from '../lib/crypto/consolidation';
+import { getConsolidatedSector } from '../lib/crypto/consolidation';
 
 export function useSectorData(sectorName: string) {
   const [filteredCryptos, setFilteredCryptos] = useState<CryptoPrice[]>([]);
   const [isClient, setIsClient] = useState(false);
   
-  // ?�라?�언??체크
+  // REST API 훅
+  const { prices, loading: isLoading, error, refetch } = useCryptoPrices();
+  
+  // SSE 훅
+  const { 
+    data: sseData, 
+    isConnected: sseConnected, 
+    reconnect: sseReconnect 
+  } = useServerSentEvents();
+  
+  // 클라이언트 사이드에서만 실행
   useEffect(() => {
     setIsClient(true);
   }, []);
   
-  // ?�중 ?�이???�스
-  const { prices, loading: restLoading, error: restError, refetch } = useCryptoPrices();
-  const { 
-    data: sseData, 
-    isConnected: sseConnected, 
-    error: sseError, 
-    reconnect: sseReconnect 
-  } = useServerSentEvents();
-  
-  // ?�이???�스 ?�선?�위: SSE > REST API
+  // 우선순위: SSE > REST API
   const displayData = sseData.length > 0 ? sseData : prices;
-  const isLoading = sseData.length === 0 && restLoading;
-  const error = sseError || restError;
   
-  // ?�터�??�터�?  useEffect(() => {
+  // 섹터별 필터링
+  useEffect(() => {
     if (displayData.length > 0) {
       const filtered = displayData.filter(crypto => {
-        const originalSector = crypto.sector || '기�?';
-        const consolidatedSectors = getConsolidatedSectors(originalSector);
-        return consolidatedSectors.includes(sectorName);
+        const consolidatedSector = getConsolidatedSector(crypto.sector || '기타');
+        return consolidatedSector === sectorName || crypto.sector === sectorName;
       });
-      
-      setFilteredCryptos(filtered);} else {
+      setFilteredCryptos(filtered);
+    } else {
       setFilteredCryptos([]);
     }
   }, [displayData, sectorName]);
   
-  // SSE ?�결 ?�동 관�?  useEffect(() => {
+  // SSE 연결 자동 관리
+  useEffect(() => {
     if (isClient && !sseConnected && sseData.length === 0) {
-      const timer = setTimeout(() => {sseReconnect();
+      const timer = setTimeout(() => {
+        sseReconnect();
       }, 1000);
-      
       return () => clearTimeout(timer);
     }
   }, [isClient, sseConnected, sseData.length, sseReconnect, sectorName]);
   
-  const refresh = () => {sseReconnect();
+  const refresh = () => {
+    sseReconnect();
     refetch();
   };
   
   return {
-    // ?�터링된 ?�이??    filteredCryptos,
+    // 필터링된 데이터
+    filteredCryptos,
     
-    // ?�태
+    // 상태
     isLoading,
     error,
     sseConnected,
     
-    // ?�체 ?�이???�보
+    // 전체 데이터 정보
     totalDataCount: displayData.length,
     dataSource: sseData.length > 0 ? 'SSE' : 'REST',
     
-    // ?�션
+    // 액션
     refresh,
     
-    // ?�버�??�보
+    // 디버그 정보
     debug: {
       sseDataLength: sseData.length,
       restDataLength: prices.length,

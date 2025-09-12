@@ -5,14 +5,12 @@ import { CryptoPrice } from '../../lib/types';
 import { useCryptoPrices } from '../../hooks/useCryptoPrices';
 import { useBithumbWebSocket } from '../../hooks/useBithumbWebSocket';
 import { useServerSentEvents } from '../../hooks/useServerSentEvents';
-import { usePriceAlerts } from '../../hooks/usePriceAlerts';
 import { useFavorites } from '../../hooks/useFavorites';
 import { CryptoTable } from '../../components/organisms/CryptoTable';
-import { PriceAlertPanel } from '../../components/organisms/PriceAlertPanel';
-import { PerformanceMonitor } from '../../components/molecules/PerformanceMonitor';
 import { CryptoFilter } from '../../components/molecules/CryptoFilter';
 import { SectorStats } from '../../components/organisms/SectorStats';
 import { ClientOnly } from '../../hooks/useIsClient';
+import { SquareAd } from '../../components/AdSenseV2';
 
 export function CryptoMarket() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -53,9 +51,6 @@ export function CryptoMarket() {
     disconnect: sseDisconnect
   } = useServerSentEvents();
 
-  // 가격 알림 훅
-  const { checkPriceAlerts } = usePriceAlerts();
-
   const handleRefresh = () => {
     refetch();
     if (isClient) {
@@ -88,13 +83,6 @@ export function CryptoMarket() {
   const displayData = sseData.length > 0 ? sseData : prices;
   const finalDisplayData = filteredData.length > 0 ? filteredData : displayData;
   const isLoading = false; // SSE는 로딩 상태가 없음
-
-  // 가격 알림 체크
-  useEffect(() => {
-    if (displayData.length > 0) {
-      checkPriceAlerts(displayData);
-    }
-  }, [displayData, checkPriceAlerts]);
 
   // 초기 필터 데이터 설정
   useEffect(() => {
@@ -162,17 +150,6 @@ export function CryptoMarket() {
         </div>
       </ClientOnly>
 
-      {/* Performance Monitor - 모바일 최적화 */}
-      <ClientOnly fallback={<div className="h-12 sm:h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
-        <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-lg">
-          <PerformanceMonitor
-            updateMode="sse"
-            dataLength={finalDisplayData.length}
-            isConnected={sseConnected}
-          />
-        </div>
-      </ClientOnly>
-
       {/* Sector Analytics - 모바일 최적화 */}
       <ClientOnly fallback={<div className="h-32 sm:h-40 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl">
@@ -180,10 +157,10 @@ export function CryptoMarket() {
         </div>
       </ClientOnly>
 
-      {/* Price Alerts - 모바일 최적화 */}
-      <ClientOnly fallback={<div className="h-20 sm:h-24 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
-        <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-lg">
-          <PriceAlertPanel cryptos={displayData} />
+      {/* Square Ad - 섹터 분석 아래 */}
+      <ClientOnly fallback={<div className="h-80 w-80 mx-auto bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
+        <div className="flex justify-center">
+          <SquareAd />
         </div>
       </ClientOnly>
 
@@ -200,7 +177,9 @@ export function CryptoMarket() {
 
       {/* Control Panel - 모바일 최적화 */}
       <ClientOnly fallback={<div className="h-14 sm:h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
-        {/* CSV 다운로드 컨트롤 제거됨 */}
+        <div className="hidden">
+          {/* CSV 다운로드 컨트롤이 제거됨 - 추후 다른 컨트롤 추가 가능 */}
+        </div>
       </ClientOnly>
 
       {/* Main Trading Table - 모바일 최적화 */}

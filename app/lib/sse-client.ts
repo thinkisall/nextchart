@@ -45,7 +45,8 @@ export class SSEConnectionManager {
         console.error('SSE connection error:', error);
         this.onStatusChange(false, 'Connection error');
         
-        // ?�도?�으�??�힌 것이 ?�니�??�연�??�도 ?�수가 ?�아?�다�?        if (!this.isIntentionallyClosed && this.reconnectAttempts < this.maxReconnectAttempts) {
+        // 의도적으로 닫힌 것이 아니고 재연결 시도 횟수가 남아있다면
+        if (!this.isIntentionallyClosed && this.reconnectAttempts < this.maxReconnectAttempts) {
           this.scheduleReconnect();
         }
       };

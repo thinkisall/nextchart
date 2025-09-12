@@ -18,6 +18,7 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [priceRange, setPriceRange] = useState<'all' | 'under1000' | 'under10000' | 'under100000' | 'over100000'>('all');
   const [selectedSector, setSelectedSector] = useState<string>('all');
+  const [selectedExchange, setSelectedExchange] = useState<'all' | 'bithumb' | 'binance' | 'binance-alpha' | 'upbit'>('all');
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const applyFilters = useCallback(() => {
@@ -39,6 +40,25 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
     // 섹터 필터
     if (selectedSector !== 'all') {
       filtered = filtered.filter(crypto => crypto.sector === selectedSector);
+    }
+
+    // 거래소 필터
+    switch (selectedExchange) {
+      case 'bithumb':
+        // 빗썸 전용 (다른 거래소에 없는 코인들)
+        filtered = filtered.filter(crypto => 
+          !crypto.isOnBinance && !crypto.isBinanceAlpha && !crypto.isOnUpbit
+        );
+        break;
+      case 'binance':
+        filtered = filtered.filter(crypto => crypto.isOnBinance === true);
+        break;
+      case 'binance-alpha':
+        filtered = filtered.filter(crypto => crypto.isBinanceAlpha === true);
+        break;
+      case 'upbit':
+        filtered = filtered.filter(crypto => crypto.isOnUpbit === true);
+        break;
     }
 
     // 가격 범위 필터
@@ -83,11 +103,24 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
     });
 
     onFilteredDataChange(filtered);
-  }, [cryptos, debouncedSearchTerm, showFavoritesOnly, priceRange, sortBy, sortOrder, selectedSector, favorites, onFilteredDataChange]);
+  }, [cryptos, debouncedSearchTerm, showFavoritesOnly, priceRange, sortBy, sortOrder, selectedSector, selectedExchange, favorites, onFilteredDataChange]);
 
   useEffect(() => {
     applyFilters();
   }, [applyFilters]);
+
+  // 거래소별 통계 계산
+  const getExchangeStats = () => {
+    return {
+      total: cryptos.length,
+      bithumb: cryptos.filter(c => !c.isOnBinance && !c.isBinanceAlpha && !c.isOnUpbit).length,
+      binance: cryptos.filter(c => c.isOnBinance).length,
+      binanceAlpha: cryptos.filter(c => c.isBinanceAlpha).length,
+      upbit: cryptos.filter(c => c.isOnUpbit).length,
+    };
+  };
+
+  const stats = getExchangeStats();
 
   const resetFilters = () => {
     setSearchTerm('');
@@ -95,6 +128,8 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
     setSortOrder('desc');
     setShowFavoritesOnly(false);
     setPriceRange('all');
+    setSelectedSector('all');
+    setSelectedExchange('all');
     setSelectedSector('all');
   };
 
@@ -139,6 +174,21 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
               <option value="name-asc">🔤 이름순</option>
             </select>
           </div>
+
+          {/* 거래소 필터 */}
+          <div className="flex-1">
+            <select
+              value={selectedExchange}
+              onChange={(e) => setSelectedExchange(e.target.value as typeof selectedExchange)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            >
+              <option value="all">🌐 모든 거래소</option>
+              <option value="bithumb">🏛️ 빗썸 전용</option>
+              <option value="binance">🟡 바이낸스</option>
+              <option value="binance-alpha">⭐ 바이낸스 알파</option>
+              <option value="upbit">🔵 업비트</option>
+            </select>
+          </div>
           
           {/* 즐겨찾기 토글 */}
           <button
@@ -159,6 +209,27 @@ export function CryptoFilter({ cryptos, onFilteredDataChange, favorites }: Crypt
           >
             🔧 {showAdvanced ? '간단히' : '고급'}
           </button>
+        </div>
+
+        {/* 거래소별 통계 */}
+        <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
+          <div className="flex flex-wrap gap-2 text-xs">
+            <div className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-600 dark:text-gray-300">
+              🌐 전체: {stats.total}개
+            </div>
+            <div className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-md text-blue-700 dark:text-blue-300">
+              🏛️ 빗썸: {stats.bithumb}개
+            </div>
+            <div className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 rounded-md text-yellow-700 dark:text-yellow-300">
+              🟡 바이낸스: {stats.binance}개
+            </div>
+            <div className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 rounded-md text-purple-700 dark:text-purple-300">
+              ⭐ 알파: {stats.binanceAlpha}개
+            </div>
+            <div className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 rounded-md text-indigo-700 dark:text-indigo-300">
+              🔵 업비트: {stats.upbit}개
+            </div>
+          </div>
         </div>
       </div>
 

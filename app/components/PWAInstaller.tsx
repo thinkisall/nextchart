@@ -4,91 +4,93 @@ import { useEffect } from 'react';
 
 export function PWAInstaller() {
   useEffect(() => {
-    // Service Worker ?�록
-    if ('serviceWorker' in navigator) {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/sw.js')
-        .then((registration) => {})
-        .catch((registrationError) => {});
+        .then((registration) => {
+          // Service worker 등록 성공
+        })
+        .catch((registrationError) => {
+          // Service worker 등록 실패
+        });
     }
 
-    // PWA ?�치 ?�롬?�트 처리
+    // PWA 설치 프롬프트 처리
     let deferredPrompt: any;
     
     window.addEventListener('beforeinstallprompt', (e) => {
-      // 기본 브라?��? ?�롬?�트 방�?
+      // 기본 브라우저 프롬프트 방지
       e.preventDefault();
-      // ?�중???�용?�기 ?�해 ?�벤???�??      deferredPrompt = e;
+      deferredPrompt = e;
       
-      // ?�용???�의 ?�치 버튼 ?�시 (?�택?�항)
-      showInstallButton();
-    });
-
-    function showInstallButton() {
-      // ?�치 버튼???�시?�는 로직
+      // 커스텀 설치 버튼 생성
       const installButton = document.createElement('button');
-      installButton.textContent = '???�치?�기';
-      installButton.className = 'fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
-      installButton.onclick = () => {
+      installButton.textContent = 'PWA 설치';
+      installButton.className = 'fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      
+      installButton.onclick = async () => {
         if (deferredPrompt) {
           deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult: any) => {
-            if (choiceResult.outcome === 'accepted') {} else {}
-            deferredPrompt = null;
-            installButton.remove();
-          });
+          const choiceResult = await deferredPrompt.userChoice;
+          
+          if (choiceResult.outcome === 'accepted') {
+            // 사용자가 PWA 설치를 승인했습니다
+          } else {
+            // 사용자가 PWA 설치를 거부했습니다
+          }
+          
+          deferredPrompt = null;
+          installButton.remove();
         }
       };
       
-      // ?��? ?�치??경우 버튼 ?�시?��? ?�음
+      // 아직 설치되지 않은 경우 버튼 표시
       if (!window.matchMedia('(display-mode: standalone)').matches) {
         document.body.appendChild(installButton);
-        
-        // 5�????�동?�로 ?��?
-        setTimeout(() => {
-          if (document.body.contains(installButton)) {
-            installButton.remove();
-          }
-        }, 10000);
       }
-    }
-
-    // PWA가 ?�치?�었????    window.addEventListener('appinstalled', () => {// ?�치 ?�료 ??처리 로직
     });
 
-    // ?�라???�프?�인 ?�태 처리
+    // PWA가 설치된 후 처리
+    window.addEventListener('appinstalled', () => {
+      // PWA가 설치되었습니다!
+    });
+
+    // 온라인/오프라인 상태 감지
     function updateOnlineStatus() {
-      if (navigator.onLine) {// ?�라???�태 UI ?�데?�트
-      } else {// ?�프?�인 ?�태 UI ?�데?�트
+      if (navigator.onLine) {
+        // 온라인 상태
+      } else {
+        // 오프라인 상태
         showOfflineMessage();
       }
     }
 
     function showOfflineMessage() {
       const offlineMsg = document.createElement('div');
-      offlineMsg.textContent = '?�프?�인 ?�태?�니?? ?��? 기능???�한?????�습?�다.';
+      offlineMsg.textContent = '오프라인 상태입니다. 일부 기능이 제한될 수 있습니다.';
       offlineMsg.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
       document.body.appendChild(offlineMsg);
       
       setTimeout(() => {
-        if (document.body.contains(offlineMsg)) {
-          offlineMsg.remove();
+        if (offlineMsg.parentNode) {
+          offlineMsg.parentNode.removeChild(offlineMsg);
         }
       }, 5000);
     }
 
+    // 이벤트 리스너 등록
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
-
-    // 초기 ?�태 ?�인
+    
+    // 초기 상태 확인
     updateOnlineStatus();
 
-    // ?�리 ?�수
+    // 정리 함수
     return () => {
       window.removeEventListener('online', updateOnlineStatus);
       window.removeEventListener('offline', updateOnlineStatus);
     };
   }, []);
 
-  return null; // UI???�더링하지 ?�음
+  return null; // UI는 렌더링하지 않음
 }
