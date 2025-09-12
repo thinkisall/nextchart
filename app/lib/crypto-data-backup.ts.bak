@@ -143,7 +143,7 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   'CTSI': '카르테시',
   'LPT': '라이브피어',
   'CELR': '셀러 네트워크',
-  'SLF': '셀프키',
+  'SLF': '셀프 체인',
   'BFC': '바이프로스트',
   'ALICE': '마이네이버앨리스',
   'OGN': '오리진 프로토콜',

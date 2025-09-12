@@ -88,7 +88,7 @@ export function SidebarAd() {
     <div key="sidebar-ad">
       <AdSense
         adSlot="3057847482"
-        adFormat="vertical"
+        adFormat="auto"
         className="my-4"
         style={{
           display: "block",

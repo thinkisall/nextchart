@@ -11,7 +11,7 @@ import { Breadcrumb } from "../../components/atoms/Breadcrumb";
 import { useFavorites } from "../../hooks/useFavorites";
 import { PerformanceMonitor } from "../../components/molecules/PerformanceMonitor";
 import { CRYPTO_SECTORS } from "../../lib/crypto";
-import { HeaderAd, FooterAd, SidebarAd } from "../../components/AdSenseV2";
+import { HeaderAd, FooterAd, SidebarAd } from "../../components/AdSense";
 
 export default function SectorPage() {
   const params = useParams();
@@ -37,6 +37,8 @@ export default function SectorPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
+        <HeaderAd />
+
         <div className="mb-4 sm:mb-6">
           <div className="space-y-3 sm:space-y-0 sm:flex sm:items-start sm:justify-between">
             <div className="flex-1">
@@ -144,6 +146,12 @@ export default function SectorPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="mb-4 sm:mb-6 flex justify-center">
+          <div className="w-full max-w-lg">
+            <SidebarAd />
           </div>
         </div>
 
