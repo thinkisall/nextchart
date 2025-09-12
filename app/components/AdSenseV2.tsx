@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 
 interface AdSenseProps {
   adSlot: string;
@@ -12,13 +12,13 @@ interface AdSenseProps {
   adKey?: string; // 고유 식별자
 }
 
-function AdSenseComponent({ 
-  adSlot, 
-  adFormat = 'auto', 
+function AdSenseComponent({
+  adSlot,
+  adFormat = "auto",
   fullWidthResponsive = true,
-  style = { display: 'block' },
-  className = '',
-  adKey = 'default'
+  style = { display: "block" },
+  className = "",
+  adKey = "default",
 }: AdSenseProps) {
   const adRef = useRef<HTMLModElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,12 +27,12 @@ function AdSenseComponent({
   useEffect(() => {
     // 이미 로드되었거나 에러가 발생한 경우 스킵
     if (isLoaded || hasError) return;
-    
+
     // 광고 요소가 존재하지 않으면 대기
     if (!adRef.current) return;
 
     // 이미 광고가 로드된 요소인지 확인
-    if (adRef.current.getAttribute('data-adsbygoogle-status')) {
+    if (adRef.current.getAttribute("data-adsbygoogle-status")) {
       setIsLoaded(true);
       return;
     }
@@ -40,7 +40,7 @@ function AdSenseComponent({
     // AdSense 스크립트가 로드될 때까지 대기
     const checkAdSense = () => {
       // @ts-ignore
-      if (typeof window !== 'undefined' && window.adsbygoogle) {
+      if (typeof window !== "undefined" && window.adsbygoogle) {
         try {
           // @ts-ignore
           (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -64,9 +64,12 @@ function AdSenseComponent({
   }, [adKey, isLoaded, hasError]);
 
   // 개발 모드에서 광고 대신 표시할 플레이스홀더
-  if (process.env.NODE_ENV === 'development' && !isLoaded && !hasError) {
+  if (process.env.NODE_ENV === "development" && !isLoaded && !hasError) {
     return (
-      <div className={`${className} border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm`} style={style}>
+      <div
+        className={`${className} border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm`}
+        style={style}
+      >
         광고 영역 ({adKey})
       </div>
     );
@@ -92,12 +95,15 @@ function AdSenseComponent({
 export const AdSense = dynamic(() => Promise.resolve(AdSenseComponent), {
   ssr: false,
   loading: () => (
-    <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded" style={{ height: '90px', minHeight: '90px' }}>
+    <div
+      className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded"
+      style={{ height: "90px", minHeight: "90px" }}
+    >
       <div className="flex items-center justify-center h-full text-gray-400 text-sm">
         광고 로딩 중...
       </div>
     </div>
-  )
+  ),
 });
 
 // 사전 정의된 광고 슬롯들
@@ -108,11 +114,11 @@ export function HeaderAd() {
       adFormat="horizontal"
       className="mb-4"
       adKey="header"
-      style={{ 
-        display: 'block',
-        height: '90px',
-        maxWidth: '728px',
-        margin: '0 auto'
+      style={{
+        display: "block",
+        height: "90px",
+        maxWidth: "728px",
+        margin: "0 auto",
       }}
     />
   );
@@ -122,15 +128,15 @@ export function SidebarAd() {
   return (
     <div className="flex justify-center">
       <AdSense
-        adSlot="9663590188"
+        adSlot="2688496950"
         adFormat="auto"
         className="my-4 max-w-full"
         adKey="sidebar"
-        style={{ 
-          display: 'block',
-          width: '100%',
-          maxWidth: '300px',
-          height: '250px'
+        style={{
+          display: "block",
+          width: "100%",
+          maxWidth: "300px",
+          height: "250px",
         }}
       />
     </div>
@@ -144,11 +150,11 @@ export function FooterAd() {
       adFormat="horizontal"
       className="mt-8 mb-4"
       adKey="footer"
-      style={{ 
-        display: 'block',
-        height: '90px',
-        maxWidth: '728px',
-        margin: '0 auto'
+      style={{
+        display: "block",
+        height: "90px",
+        maxWidth: "728px",
+        margin: "0 auto",
       }}
     />
   );
