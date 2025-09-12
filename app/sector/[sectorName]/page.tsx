@@ -37,8 +37,6 @@ export default function SectorPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
-        <HeaderAd />
-
         <div className="mb-4 sm:mb-6">
           <div className="space-y-3 sm:space-y-0 sm:flex sm:items-start sm:justify-between">
             <div className="flex-1">
