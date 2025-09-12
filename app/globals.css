@@ -662,3 +662,120 @@ body {
     z-index: 9999;
   }
 }
+/* 가상 스크롤링을 위한 추가 스타일 */
+
+/* Scrollbar 커스텀 스타일 (Webkit 기반) */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+  background-color: rgb(209 213 219);
+  border-radius: 3px;
+}
+
+.scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
+  background-color: rgb(75 85 99);
+  border-radius: 3px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 스크롤 성능 최적화 */
+.virtual-scroll-container {
+  contain: layout style paint;
+  will-change: scroll-position;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 무한 스크롤 인디케이터 애니메이션 */
+.scroll-indicator {
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+/* 테이블 헤더 sticky 최적화 */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* 부드러운 스크롤 */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* 로딩 상태 스켈레톤 */
+.skeleton-loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-wave 1.5s infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .skeleton-loading {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200% 100%;
+  }
+}
+
+@keyframes skeleton-wave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 가상화된 리스트 아이템 전환 효과 - 최적화된 버전 */
+.virtual-item-enter {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: item-enter 0.2s ease-out forwards;
+}
+
+@keyframes item-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 성능 최적화를 위한 GPU 가속 */
+.virtual-item-enter {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 스크롤 바운스 효과 방지 (iOS) */
+.prevent-bounce {
+  overscroll-behavior: contain;
+}
+
+/* 터치 스크롤 최적화 */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
