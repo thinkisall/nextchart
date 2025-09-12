@@ -50,7 +50,18 @@ export function useServerSentEvents() {
             return;
           }
           
-          const response: BithumbTickerResponse = JSON.parse(event.data);
+          const parsed = JSON.parse(event.data);
+          
+          // 새로운 형식: getAllTickers에서 직접 반환된 CryptoPrice 배열 처리
+          if (Array.isArray(parsed)) {
+            console.log('SSE: Received processed crypto data with Binance info:', parsed.length, 'coins');
+            setData(parsed);
+            setLastUpdated(new Date());
+            return;
+          }
+          
+          // 구 형식 처리 (BithumbTickerResponse) - 하위 호환성을 위해 유지
+          const response: BithumbTickerResponse = parsed;
           
           if (response.error) {
             setError(response.error);

@@ -3,3 +3,4 @@ export { Button } from './Button';
 export { LoadingSpinner } from './LoadingSpinner';
 export { PriceChange } from './PriceChange';
 export { CSVExportButton } from './CSVExportButton';
+export { BinanceBadge } from './BinanceBadge';

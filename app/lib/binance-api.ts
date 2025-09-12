@@ -1,0 +1,125 @@
+'use client';
+
+import { BinanceExchangeInfo, BinanceSymbolInfo } from './types';
+
+// Next.js API 프록시 사용 (CORS 문제 해결)
+const BINANCE_API_PROXY = '/api/binance';
+
+/**
+ * 바이낸스 Exchange Info API 호출 (프록시 사용)
+ * 모든 거래 가능한 심볼 정보를 가져옵니다
+ */
+export async function getBinanceExchangeInfo(): Promise<BinanceExchangeInfo> {
+  try {
+    console.log('Fetching Binance data via proxy...');
+    const response = await fetch(BINANCE_API_PROXY, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(`Received ${data.symbols?.length || 0} symbols from Binance`);
+    return data;
+  } catch (error) {
+    console.error('Error fetching Binance exchange info:', error);
+    throw error;
+  }
+}
+
+/**
+ * 거래 가능한 바이낸스 심볼들만 필터링
+ */
+export async function getTradingBinanceSymbols(): Promise<BinanceSymbolInfo[]> {
+  try {
+    const exchangeInfo = await getBinanceExchangeInfo();
+    
+    return exchangeInfo.symbols.filter(symbol => 
+      symbol.status === 'TRADING' && 
+      symbol.isSpotTradingAllowed &&
+      // USDT 페어만 필터링 (빗썸이 KRW 기준이므로 USDT를 기준으로 매핑)
+      symbol.quoteAsset === 'USDT'
+    );
+  } catch (error) {
+    console.error('Error filtering trading Binance symbols:', error);
+    return [];
+  }
+}
+
+/**
+ * 바이낸스 베이스 자산 목록 추출
+ * 예: BTCUSDT -> BTC
+ */
+export async function getBinanceBaseAssets(): Promise<Set<string>> {
+  try {
+    const tradingSymbols = await getTradingBinanceSymbols();
+    const baseAssets = new Set<string>();
+    
+    tradingSymbols.forEach(symbol => {
+      baseAssets.add(symbol.baseAsset);
+    });
+    
+    return baseAssets;
+  } catch (error) {
+    console.error('Error getting Binance base assets:', error);
+    return new Set();
+  }
+}
+
+/**
+ * 빗썸 심볼을 바이낸스 심볼로 매핑
+ * BTC_KRW -> BTCUSDT
+ */
+export function mapBithumbToBinanceSymbol(bithumbSymbol: string): string {
+  const baseAsset = bithumbSymbol.replace('_KRW', '');
+  return `${baseAsset}USDT`;
+}
+
+/**
+ * 바이낸스 심볼을 빗썸 심볼로 매핑
+ * BTCUSDT -> BTC_KRW
+ */
+export function mapBinanceToBithumbSymbol(binanceSymbol: string): string {
+  const baseAsset = binanceSymbol.replace('USDT', '');
+  return `${baseAsset}_KRW`;
+}
+
+/**
+ * 빗썸과 바이낸스에서 공통으로 거래되는 코인들 찾기
+ */
+export async function findCommonCoins(bithumbSymbols: string[]): Promise<Map<string, string>> {
+  try {
+    console.log('Finding common coins...');
+    console.log('Bithumb symbols to check:', bithumbSymbols.slice(0, 10), '...(total:', bithumbSymbols.length, ')');
+    
+    const binanceBaseAssets = await getBinanceBaseAssets();
+    console.log('Binance base assets found:', binanceBaseAssets.size);
+    console.log('Sample Binance assets:', Array.from(binanceBaseAssets).slice(0, 20));
+    
+    const commonCoins = new Map<string, string>(); // bithumb_symbol -> binance_symbol
+    
+    bithumbSymbols.forEach(bithumbSymbol => {
+      const baseAsset = bithumbSymbol.replace('_KRW', '');
+      
+      if (binanceBaseAssets.has(baseAsset)) {
+        const binanceSymbol = mapBithumbToBinanceSymbol(bithumbSymbol);
+        commonCoins.set(bithumbSymbol, binanceSymbol);
+        console.log(`✓ Common coin found: ${bithumbSymbol} → ${binanceSymbol}`);
+      } else {
+        console.log(`✗ Not on Binance: ${bithumbSymbol} (${baseAsset})`);
+      }
+    });
+    
+    console.log(`🎯 Final result: Found ${commonCoins.size} common coins between Bithumb and Binance`);
+    console.log('Common coins map:', Array.from(commonCoins.entries()));
+    return commonCoins;
+  } catch (error) {
+    console.error('❌ Error finding common coins:', error);
+    return new Map();
+  }
+}

@@ -42,9 +42,43 @@ export interface CryptoPrice {
   volume: number;
   is_positive: boolean;
   sector?: string;
+  // 바이낸스 관련 정보
+  isOnBinance?: boolean;
+  binanceSymbol?: string;
 }
 
 export interface WebSocketMessage {
   type: 'ticker' | 'orderbook' | 'transaction';
   content: any;
+}
+
+// 바이낸스 API 타입 정의
+export interface BinanceSymbolInfo {
+  symbol: string;
+  status: string;
+  baseAsset: string;
+  quoteAsset: string;
+  baseAssetPrecision: number;
+  quoteAssetPrecision: number;
+  orderTypes: string[];
+  icebergAllowed: boolean;
+  ocoAllowed: boolean;
+  quoteOrderQtyMarketAllowed: boolean;
+  allowTrailingStop: boolean;
+  cancelReplaceAllowed: boolean;
+  isSpotTradingAllowed: boolean;
+  isMarginTradingAllowed: boolean;
+  filters: any[];
+  permissions: string[];
+  permissionSets: string[][];
+  defaultSelfTradePreventionMode: string;
+  allowedSelfTradePreventionModes: string[];
+}
+
+export interface BinanceExchangeInfo {
+  timezone: string;
+  serverTime: number;
+  rateLimits: any[];
+  exchangeFilters: any[];
+  symbols: BinanceSymbolInfo[];
 }

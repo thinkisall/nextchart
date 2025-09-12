@@ -1,5 +1,6 @@
 import { CryptoPrice } from '../../lib/types';
 import { PriceChange } from '../atoms/PriceChange';
+import { BinanceBadge } from '../atoms/BinanceBadge';
 import { SECTOR_COLORS } from '../../lib/crypto';
 
 interface CryptoRowProps {
@@ -67,8 +68,17 @@ export function CryptoRow({
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <div className="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">
-                {crypto.korean_name}
+              <div className="flex items-center space-x-2">
+                <div className="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">
+                  {crypto.korean_name}
+                </div>
+                {/* 디버깅: 항상 데이터 상태 표시 */}
+                <span className="text-xs bg-red-100 px-1 rounded">
+                  {crypto.isOnBinance ? 'TRUE' : 'FALSE'}
+                </span>
+                {crypto.isOnBinance && (
+                  <BinanceBadge size="sm" />
+                )}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400 font-mono">
                 {crypto.symbol}
@@ -135,8 +145,17 @@ export function CryptoRow({
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <div className="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">
-                {crypto.korean_name}
+              <div className="flex items-center space-x-2">
+                <div className="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">
+                  {crypto.korean_name}
+                </div>
+                {/* 디버깅: 항상 데이터 상태 표시 */}
+                <span className="text-xs bg-red-100 px-1 rounded">
+                  {crypto.isOnBinance ? 'TRUE' : 'FALSE'}
+                </span>
+                {crypto.isOnBinance && (
+                  <BinanceBadge size="sm" />
+                )}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400 font-mono">
                 {crypto.symbol}
@@ -208,6 +227,13 @@ export function CryptoRow({
                 <div className="font-bold text-gray-900 dark:text-gray-100 text-sm xl:text-base">
                   {crypto.korean_name}
                 </div>
+                {/* 디버깅: 항상 데이터 상태 표시 */}
+                <span className="text-xs bg-red-100 px-1 rounded">
+                  {crypto.isOnBinance ? 'TRUE' : 'FALSE'}
+                </span>
+                {crypto.isOnBinance && (
+                  <BinanceBadge size="md" />
+                )}
                 {crypto.sector && (
                   <span className={`px-2 xl:px-2.5 py-1 text-xs font-bold rounded-lg ${SECTOR_COLORS[crypto.sector] || 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
                     {crypto.sector}

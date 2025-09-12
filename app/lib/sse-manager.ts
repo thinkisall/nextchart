@@ -1,3 +1,5 @@
+import { getAllTickers } from './bithumb-api';
+
 // SSE 연결 관리자
 class SSEConnectionManager {
   private connections = new Set<ReadableStreamDefaultController>();
@@ -83,27 +85,16 @@ const startGlobalFetching = () => {
     
     try {
       console.log('Fetching data from Bithumb API...');
-      const response = await fetch('https://api.bithumb.com/public/ticker/ALL_KRW', {
-        method: 'GET',
-        headers: {
-          'User-Agent': 'NextJS-SSE-Client/1.0',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+      // 바이낸스 정보가 포함된 getAllTickers 함수 사용
+      const cryptoData = await getAllTickers();
       
-      const data = await response.json();
+      lastFetchTime = now;
       
-      if (data.status === '0000') {
-        const sseData = `data: ${JSON.stringify(data)}\n\n`;
-        sseManager.broadcast(sseData);
-        lastFetchTime = now;
-        console.log(`SSE data broadcasted to ${sseManager.getConnectionCount()} connections`);
-      } else {
-        throw new Error(`Bithumb API error: ${data.message || 'Unknown error'}`);
-      }
+      // SSE 형식으로 데이터 브로드캐스트
+      const sseData = `data: ${JSON.stringify(cryptoData)}\n\n`;
+      sseManager.broadcast(sseData);
+      console.log(`SSE data broadcasted to ${sseManager.getConnectionCount()} connections`);
+      
     } catch (error) {
       console.error('Global SSE fetch error:', error);
       const errorData = `data: ${JSON.stringify({ 
