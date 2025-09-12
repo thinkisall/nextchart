@@ -77,6 +77,7 @@ export function HeaderAd() {
           height: "90px",
           maxWidth: "728px",
           margin: "0 auto",
+          maxHeight: "390px",
         }}
       />
     </div>

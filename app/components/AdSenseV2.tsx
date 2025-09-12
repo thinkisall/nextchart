@@ -137,6 +137,7 @@ export function SidebarAd() {
           width: "100%",
           maxWidth: "390px", // 너비 한정
           height: "390px", // 명시적 높이
+          maxHeight: "390px", // 최대 높이
           margin: "0 auto",
         }}
       />

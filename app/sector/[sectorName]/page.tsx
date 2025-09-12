@@ -153,20 +153,6 @@ export default function SectorPage() {
           </div>
         </div>
 
-        <div className="mb-3 sm:mb-4 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
-          <CSVExportButton
-            cryptos={filteredCryptos}
-            filename={`${sectorName}-sector-crypto-prices`}
-          />
-          <ClientOnly
-            fallback={
-              <div className="w-full sm:w-32 h-11 bg-white/60 dark:bg-gray-800/60 rounded-lg animate-pulse"></div>
-            }
-          >
-            <AdvancedCSVExport cryptos={filteredCryptos} />
-          </ClientOnly>
-        </div>
-
         <ClientOnly
           fallback={
             <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl h-80 sm:h-96 flex items-center justify-center">
