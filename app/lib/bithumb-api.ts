@@ -108,7 +108,6 @@ export async function getMarketCodes(): Promise<MarketData[]> {
         };
       });
   } catch (error) {
-    console.error('Error fetching market codes:', error);
     return [];
   }
 }
@@ -118,7 +117,6 @@ export async function getMarketCodes(): Promise<MarketData[]> {
  */
 export async function getAllTickers(): Promise<CryptoPrice[]> {
   try {
-    console.log('Fetching from:', BITHUMB_API_BASE);
     
     const response = await fetch(BITHUMB_API_BASE);
     
@@ -129,7 +127,6 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
       const textResponse = await response.text();
-      console.error('Expected JSON but received:', textResponse.substring(0, 200));
       throw new Error('Invalid response format: expected JSON');
     }
     
@@ -184,14 +181,9 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
       .filter(crypto => crypto !== null && crypto!.current_price > 0)
       .sort((a, b) => b!.change_rate - a!.change_rate);
     
-    console.log(`✅ Processed ${processedData.length} cryptocurrencies`);
-    console.log(`📊 Binance coins: ${processedData.filter(c => c?.isOnBinance).length}`);
-    console.log(`⭐ Alpha coins: ${processedData.filter(c => c?.isBinanceAlpha).length}`);
-    console.log(`🔵 Upbit coins: ${processedData.filter(c => c?.isOnUpbit).length}`);
     
     return processedData as CryptoPrice[];
   } catch (error) {
-    console.error('Error fetching all tickers:', error);
     return [];
   }
 }

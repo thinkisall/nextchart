@@ -12,7 +12,7 @@ export function useFavorites() {
       try {
         setFavorites(JSON.parse(saved));
       } catch (error) {
-        console.error('Error loading favorites:', error);
+        // Ignore localStorage errors in SSR
       }
     }
   }, []);

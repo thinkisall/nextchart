@@ -15,11 +15,11 @@ export function useBithumbWebSocket(config: WebSocketConfig) {
 
   // 비활성화된 함수들
   const reconnect = () => {
-    console.log('WebSocket reconnect disabled - using REST API only');
+    // WebSocket reconnect disabled - using REST API only
   };
 
   const disconnect = () => {
-    console.log('WebSocket disconnect disabled - using REST API only');
+    // WebSocket disconnect disabled - using REST API only
   };
 
   return {

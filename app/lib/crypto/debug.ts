@@ -1,13 +1,13 @@
-// 섹터 매핑 디버그 유틸리티
+// ?�터 매핑 ?�버�??�틸리티
 
 import { CRYPTO_SECTORS } from './sectors';
 
-// 매핑되지 않은 심볼들을 찾는 함수
+// 매핑?��? ?��? ?�볼?�을 찾는 ?�수
 export function findUnmappedSymbols(apiSymbols: string[]): string[] {
   return apiSymbols.filter(symbol => !CRYPTO_SECTORS[symbol]);
 }
 
-// 섹터별 통계
+// ?�터�??�계
 export function getSectorMappingStats(apiSymbols: string[]) {
   const mapped = apiSymbols.filter(symbol => CRYPTO_SECTORS[symbol]);
   const unmapped = findUnmappedSymbols(apiSymbols);
@@ -21,21 +21,12 @@ export function getSectorMappingStats(apiSymbols: string[]) {
   };
 }
 
-// 콘솔에 매핑 상태 출력
+// 콘솔??매핑 ?�태 출력
 export function logMappingStatus(apiSymbols: string[]) {
   const stats = getSectorMappingStats(apiSymbols);
   
-  console.group('🔍 섹터 매핑 상태');
-  console.log(`📊 전체 심볼: ${stats.total}개`);
-  console.log(`✅ 매핑됨: ${stats.mapped}개 (${stats.mappingRate}%)`);
-  console.log(`❌ 미매핑: ${stats.unmapped}개`);
-  
-  if (stats.unmappedSymbols.length > 0) {
-    console.log('\n🚨 매핑이 필요한 심볼들:');
-    stats.unmappedSymbols.forEach(symbol => {
-      console.log(`  - ${symbol}`);
-    });
-  }
+  // Debug information - removed console logs for production
+  return stats;
   
   console.groupEnd();
   

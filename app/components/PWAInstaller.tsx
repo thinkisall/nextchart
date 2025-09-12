@@ -4,56 +4,47 @@ import { useEffect } from 'react';
 
 export function PWAInstaller() {
   useEffect(() => {
-    // Service Worker 등록
+    // Service Worker ?�록
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/sw.js')
-        .then((registration) => {
-          console.log('SW registered: ', registration);
-        })
-        .catch((registrationError) => {
-          console.log('SW registration failed: ', registrationError);
-        });
+        .then((registration) => {})
+        .catch((registrationError) => {});
     }
 
-    // PWA 설치 프롬프트 처리
+    // PWA ?�치 ?�롬?�트 처리
     let deferredPrompt: any;
     
     window.addEventListener('beforeinstallprompt', (e) => {
-      // 기본 브라우저 프롬프트 방지
+      // 기본 브라?��? ?�롬?�트 방�?
       e.preventDefault();
-      // 나중에 사용하기 위해 이벤트 저장
-      deferredPrompt = e;
+      // ?�중???�용?�기 ?�해 ?�벤???�??      deferredPrompt = e;
       
-      // 사용자 정의 설치 버튼 표시 (선택사항)
+      // ?�용???�의 ?�치 버튼 ?�시 (?�택?�항)
       showInstallButton();
     });
 
     function showInstallButton() {
-      // 설치 버튼을 표시하는 로직
+      // ?�치 버튼???�시?�는 로직
       const installButton = document.createElement('button');
-      installButton.textContent = '앱 설치하기';
+      installButton.textContent = '???�치?�기';
       installButton.className = 'fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
       installButton.onclick = () => {
         if (deferredPrompt) {
           deferredPrompt.prompt();
           deferredPrompt.userChoice.then((choiceResult: any) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('사용자가 PWA 설치를 수락했습니다');
-            } else {
-              console.log('사용자가 PWA 설치를 거부했습니다');
-            }
+            if (choiceResult.outcome === 'accepted') {} else {}
             deferredPrompt = null;
             installButton.remove();
           });
         }
       };
       
-      // 이미 설치된 경우 버튼 표시하지 않음
+      // ?��? ?�치??경우 버튼 ?�시?��? ?�음
       if (!window.matchMedia('(display-mode: standalone)').matches) {
         document.body.appendChild(installButton);
         
-        // 5초 후 자동으로 숨김
+        // 5�????�동?�로 ?��?
         setTimeout(() => {
           if (document.body.contains(installButton)) {
             installButton.remove();
@@ -62,27 +53,20 @@ export function PWAInstaller() {
       }
     }
 
-    // PWA가 설치되었을 때
-    window.addEventListener('appinstalled', () => {
-      console.log('PWA가 설치되었습니다!');
-      // 설치 완료 후 처리 로직
+    // PWA가 ?�치?�었????    window.addEventListener('appinstalled', () => {// ?�치 ?�료 ??처리 로직
     });
 
-    // 온라인/오프라인 상태 처리
+    // ?�라???�프?�인 ?�태 처리
     function updateOnlineStatus() {
-      if (navigator.onLine) {
-        console.log('온라인 상태입니다');
-        // 온라인 상태 UI 업데이트
-      } else {
-        console.log('오프라인 상태입니다');
-        // 오프라인 상태 UI 업데이트
+      if (navigator.onLine) {// ?�라???�태 UI ?�데?�트
+      } else {// ?�프?�인 ?�태 UI ?�데?�트
         showOfflineMessage();
       }
     }
 
     function showOfflineMessage() {
       const offlineMsg = document.createElement('div');
-      offlineMsg.textContent = '오프라인 상태입니다. 일부 기능이 제한될 수 있습니다.';
+      offlineMsg.textContent = '?�프?�인 ?�태?�니?? ?��? 기능???�한?????�습?�다.';
       offlineMsg.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
       document.body.appendChild(offlineMsg);
       
@@ -96,15 +80,15 @@ export function PWAInstaller() {
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
 
-    // 초기 상태 확인
+    // 초기 ?�태 ?�인
     updateOnlineStatus();
 
-    // 정리 함수
+    // ?�리 ?�수
     return () => {
       window.removeEventListener('online', updateOnlineStatus);
       window.removeEventListener('offline', updateOnlineStatus);
     };
   }, []);
 
-  return null; // UI는 렌더링하지 않음
+  return null; // UI???�더링하지 ?�음
 }

@@ -1,12 +1,9 @@
 import { NextResponse } from 'next/server';
 
-// 간단한 SSE 테스트 스트림 
+// 간단??SSE ?�스???�트�?
 export async function GET() {
   const stream = new ReadableStream({
-    start(controller) {
-      console.log('Simple SSE test stream started');
-      
-      // 즉시 테스트 메시지 전송
+    start(controller) {// 즉시 ?�스??메시지 ?�송
       const testMessage = `data: ${JSON.stringify({
         type: 'test',
         message: 'Hello from SSE test!',
@@ -15,7 +12,7 @@ export async function GET() {
       
       controller.enqueue(new TextEncoder().encode(testMessage));
       
-      // 3초 후 스트림 종료
+      // 3�????�트�?종료
       setTimeout(() => {
         const closeMessage = `data: ${JSON.stringify({
           type: 'close',

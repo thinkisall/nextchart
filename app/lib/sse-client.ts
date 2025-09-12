@@ -1,4 +1,4 @@
-// SSE 연결 상태 관리 유틸리티
+// SSE ?�결 ?�태 관�??�틸리티
 export const SSE_STATES = {
   CONNECTING: 0,
   OPEN: 1,
@@ -20,7 +20,7 @@ export class SSEConnectionManager {
 
   connect() {
     if (this.eventSource && this.eventSource.readyState !== EventSource.CLOSED) {
-      return; // 이미 연결되어 있음
+      return; // ?��? ?�결?�어 ?�음
     }
 
     this.isIntentionallyClosed = false;
@@ -28,9 +28,7 @@ export class SSEConnectionManager {
     try {
       this.eventSource = new EventSource(this.url);
       
-      this.eventSource.onopen = () => {
-        console.log('SSE connected successfully');
-        this.reconnectAttempts = 0;
+      this.eventSource.onopen = () => {this.reconnectAttempts = 0;
         this.onStatusChange(true);
       };
 
@@ -47,8 +45,7 @@ export class SSEConnectionManager {
         console.error('SSE connection error:', error);
         this.onStatusChange(false, 'Connection error');
         
-        // 의도적으로 닫힌 것이 아니고 재연결 시도 횟수가 남아있다면
-        if (!this.isIntentionallyClosed && this.reconnectAttempts < this.maxReconnectAttempts) {
+        // ?�도?�으�??�힌 것이 ?�니�??�연�??�도 ?�수가 ?�아?�다�?        if (!this.isIntentionallyClosed && this.reconnectAttempts < this.maxReconnectAttempts) {
           this.scheduleReconnect();
         }
       };
@@ -61,9 +58,7 @@ export class SSEConnectionManager {
 
   private scheduleReconnect() {
     this.reconnectAttempts++;
-    const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1); // 지수 백오프
-    
-    console.log(`SSE reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+    const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1); // 지수백오프    
     
     setTimeout(() => {
       if (!this.isIntentionallyClosed) {

@@ -23,7 +23,7 @@ export function getCryptoInfo(symbol: string) {
     
     // 개발 모드에서 매핑되지 않은 심볼 로깅
     if (process.env.NODE_ENV === 'development') {
-      console.warn(`⚠️ 섹터 매핑 누락: ${symbol} -> 추론된 섹터: ${sector}`);
+      // Warning: Missing sector mapping for ${symbol} -> inferred sector: ${sector}
     }
   }
   

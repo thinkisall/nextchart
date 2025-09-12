@@ -2,6 +2,7 @@ import { CryptoMarket } from "./features/crypto/CryptoMarket";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
 import { HeaderAd, FooterAd } from "./components/AdSenseV2";
+import { BitcoinDominance } from "./components/molecules/BitcoinDominance";
 
 export default function Home() {
   return (
@@ -29,6 +30,17 @@ export default function Home() {
         <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 -mt-2 sm:-mt-4 relative z-10">
           {/* Header Advertisement */}
           <HeaderAd />
+
+          {/* Bitcoin Dominance - Global Market Stats */}
+          <ClientOnly
+            fallback={
+              <div className="mb-6 h-32 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse"></div>
+            }
+          >
+            <div className="mb-6">
+              <BitcoinDominance />
+            </div>
+          </ClientOnly>
 
           <ClientOnly
             fallback={

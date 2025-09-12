@@ -1,17 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// 바이낸스 API 프록시
-export async function GET() {
-  try {
-    console.log('Fetching Binance exchange info...');
-    
-    const response = await fetch('https://api.binance.com/api/v3/exchangeInfo', {
+// 바이?�스 API ?�록??export async function GET() {
+  try {const response = await fetch('https://api.binance.com/api/v3/exchangeInfo', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'NextJS-App'
       },
-      // 서버 사이드에서는 CORS 문제가 없음
+      // ?�버 ?�이?�에?�는 CORS 문제가 ?�음
     });
 
     if (!response.ok) {
@@ -19,10 +15,7 @@ export async function GET() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
-    console.log(`Successfully fetched ${data.symbols?.length || 0} symbols from Binance`);
-
-    // CORS 헤더 추가하여 브라우저에서 접근 가능하도록 설정
+    const data = await response.json();// CORS ?�더 추�??�여 브라?��??�서 ?�근 가?�하?�록 ?�정
     return NextResponse.json(data, {
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -51,7 +44,7 @@ export async function GET() {
   }
 }
 
-// CORS preflight 요청 처리
+// CORS preflight ?�청 처리
 export async function OPTIONS() {
   return NextResponse.json({}, {
     headers: {

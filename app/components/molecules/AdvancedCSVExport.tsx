@@ -119,7 +119,6 @@ export function AdvancedCSVExport({ cryptos }: AdvancedCSVExportProps) {
     URL.revokeObjectURL(url);
     
     setIsOpen(false);
-    console.log(`커스텀 CSV 다운로드: ${filename} (${dataToExport.length}개 코인)`);
   };
 
   if (!isOpen) {

@@ -74,10 +74,6 @@ export function CSVExportButton({
 
     // 메모리 정리
     URL.revokeObjectURL(url);
-
-    console.log(
-      `CSV 파일 다운로드: ${downloadFilename} (${cryptos.length}개 코인)`
-    );
   };
 
   return (

@@ -16,7 +16,6 @@ export function useCryptoPrices() {
       const data = await getAllTickers();
       setPrices(data);
     } catch (error) {
-      console.error('Error fetching crypto prices:', error);
       setError('Failed to fetch crypto prices');
     } finally {
       setLoading(false);
@@ -52,7 +51,6 @@ export function useCryptoPrice(symbol: string) {
       const data = await getTicker(symbol);
       setPrice(data);
     } catch (error) {
-      console.error(`Error fetching price for ${symbol}:`, error);
       setError(`Failed to fetch price for ${symbol}`);
     } finally {
       setLoading(false);
