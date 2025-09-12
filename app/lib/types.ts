@@ -45,6 +45,10 @@ export interface CryptoPrice {
   // 바이낸스 관련 정보
   isOnBinance?: boolean;
   binanceSymbol?: string;
+  isBinanceAlpha?: boolean;  // 바이낸스 알파 코인 여부
+  // 업비트 관련 정보
+  isOnUpbit?: boolean;
+  upbitSymbol?: string;
 }
 
 export interface WebSocketMessage {

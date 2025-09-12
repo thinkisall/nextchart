@@ -4,3 +4,5 @@ export { LoadingSpinner } from './LoadingSpinner';
 export { PriceChange } from './PriceChange';
 export { CSVExportButton } from './CSVExportButton';
 export { BinanceBadge } from './BinanceBadge';
+export { BinanceAlphaBadge, SimpleAlphaBadge, AlphaIcon } from './BinanceAlphaBadge';
+export { UpbitBadge } from './UpbitBadge';

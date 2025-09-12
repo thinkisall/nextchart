@@ -52,6 +52,15 @@ export const CRYPTO_SECTORS: { [key: string]: string } = {
   ARDR: "L1/부모-자식체인(BaaS)",
   ACE: "GameFi/L1(Endurance)",
   UOS: "GameFi/PC게임유통",
+  CKB: "L1/UTXO(비트코인L2솔루션)",
+  XTZ: "L1/자체수정거버넌스",
+  FLR: "L1/이더리움시계열데이터",
+  KAVA: "L1/DeFi블록체인(코스모스)",
+  LSK: "L1/자바스크립트SDK",
+  STRAX: "L1/엔터프라이즈블록체인",
+  QKC: "L1/샤딩블록체인",
+  ARK: "L1/브리지체인",
+  TT: "L1/뉴저리합의",
 
   // L2 & 확장성
   ARB: "L2/옵티미스틱롤업",
@@ -73,6 +82,9 @@ export const CRYPTO_SECTORS: { [key: string]: string } = {
   ZRC: "L2/ZK롤업",
   MANTA: "L2/모듈러(ZK&프라이버시)",
   MERL: "L2/비트코인레이어",
+  SKL: "L2/이더리움멀티체인네트워크",
+  CTSI: "L2/옵티미스틱롤업(오프체인연산)",
+  CYBER: "L2/소셜네트워크",
 
   // 2024년 신규 메인 코인들
   HYPE: "PerpDEX/L1(자체체인)",
@@ -159,6 +171,13 @@ export const CRYPTO_SECTORS: { [key: string]: string } = {
   AVL: "DeFi/비트코인",
   PUMP: "DEX/런치패드",
   RDNT: "DeFi/렌딩(멀티체인)",
+  SIX: "RWA/실물자산토큰화",
+  JST: "DeFi/트론기반렌딩",
+  SUN: "DeFi/트론AMM",
+  MAV: "DEX/자동화AMM",
+  FIDA: "DeFi/솔라나생태계",
+  AUCTION: "DeFi/경매플랫폼",
+  UXLINK: "DeFi/소셜",
 
   // 스테이킹/LST & LRT
   LDO: "LST/리퀴드스테이킹(Lido)",
@@ -229,6 +248,9 @@ export const CRYPTO_SECTORS: { [key: string]: string } = {
   HIGH: "메타버스·커머스",
   DVI: "기타",
   PYR: "기타",
+  CHZ: "스포츠팬토큰/NFT",
+  XTER: "Web3게임/AI",
+  NFT: "GameFi/NFT",
 
   // AI & 데이터
   WLD: "AI/생체인증ID(Worldcoin)",
@@ -253,6 +275,10 @@ export const CRYPTO_SECTORS: { [key: string]: string } = {
   JASMY: "IoT/데이터주권",
   BMT: "데이터/분석",
   C: "AI/데이터",
+  AGI: "AI/마켓플레이스(SingularityNET)",
+  KAITO: "AI/데이터",
+  DEEP: "AI/컴퓨팅",
+  IOTX: "IoT/블록체인",
 
   // 스토리지
   FIL: "스토리지",

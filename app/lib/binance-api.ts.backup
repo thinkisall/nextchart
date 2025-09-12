@@ -3,7 +3,29 @@
 import { BinanceExchangeInfo, BinanceSymbolInfo } from './types';
 
 // Next.js API 프록시 사용 (CORS 문제 해결)
-const BINANCE_API_PROXY = '/api/binance';
+const BINANCE_EXCHANGE_API_PROXY = '/api/binance';
+
+// 바이낸스 알파와 빗썸에서 겹치는 코인들
+export const BINANCE_ALPHA_COINS = new Set([
+  'AERO', 'ATH', 'AVAIL', 'AVL', 'B3', 'BIGTIME', 'BLUE', 'BMT', 'C', 'CARV', 
+  'COOKIE', 'DRIFT', 'EPT', 'ERA', 'F', 'FLOCK', 'G', 'GOAT', 'GRASS', 'H', 
+  'HAEDAL', 'HOME', 'HUMA', 'HYPER', 'LA', 'LINEA', 'MERL', 'MEW', 'MLK', 
+  'MOODENG', 'MORPHO', 'NEWT', 'NFT', 'NXPC', 'OBT', 'ONDO', 'OPEN', 'ORDER', 
+  'PARTI', 'PEAQ', 'PLUME', 'POKT', 'PROMPT', 'PROVE', 'PUFFER', 'PUMP', 
+  'PUMPBTC', 'RESOLV', 'SAFE', 'SAHARA', 'SD', 'SHELL', 'SIGN', 'SOON', 
+  'SOPH', 'SPK', 'SUNDOG', 'SXT', 'SYRUP', 'TAIKO', 'TOWNS', 'TREE', 
+  'VIRTUAL', 'XTER', 'ZETA', 'ZRC'
+]);
+
+/**
+ * 코인이 바이낸스 알파에 포함되는지 확인
+ */
+export function isBinanceAlphaCoin(symbol: string): boolean {
+  return BINANCE_ALPHA_COINS.has(symbol);
+}
+
+// Next.js API 프록시 사용 (CORS 문제 해결)
+const BINANCE_EXCHANGE_API_PROXY = '/api/binance';
 
 /**
  * 바이낸스 Exchange Info API 호출 (프록시 사용)
@@ -12,7 +34,7 @@ const BINANCE_API_PROXY = '/api/binance';
 export async function getBinanceExchangeInfo(): Promise<BinanceExchangeInfo> {
   try {
     console.log('Fetching Binance data via proxy...');
-    const response = await fetch(BINANCE_API_PROXY, {
+    const response = await fetch(BINANCE_EXCHANGE_API_PROXY, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

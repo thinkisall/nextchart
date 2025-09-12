@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
-import { CRYPTO_SECTORS } from '../lib/crypto'
 
 export async function GET() {
-  const baseUrl = 'https://www.damoabom.com'
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.damoabom.com'
   const currentDate = new Date().toISOString()
   const buildDate = new Date().toUTCString()
   
@@ -16,8 +15,20 @@ export async function GET() {
       .replace(/'/g, '&apos;')
   }
   
+  // 주요 섹터들 (빌드 시점에 고정된 값 사용)
+  const mainSectors = [
+    'L1/스마트컨트랙트',
+    'L2/옵티미스틱롤업',
+    'DEX/AMM',
+    'DeFi/렌딩',
+    'GameFi/메타버스',
+    'AI/데이터',
+    '스테이블코인',
+    '밈/커뮤니티'
+  ]
+  
   // 섹터 아이템들 생성
-  const sectorItems = Array.from(new Set(Object.values(CRYPTO_SECTORS)))
+  const sectorItems = mainSectors
     .map((sector) => {
       const encodedSector = encodeURIComponent(sector)
       const escapedSector = escapeXml(sector)
