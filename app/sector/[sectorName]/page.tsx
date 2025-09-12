@@ -4,7 +4,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useSectorData } from "../../hooks/useSectorData";
 import { ClientOnly } from "../../hooks/useIsClient";
 import { CryptoTable } from "../../components/organisms/CryptoTable";
-import { RefreshControl } from "../../components/molecules/RefreshControl";
 import { CSVExportButton } from "../../components/atoms/CSVExportButton";
 import { AdvancedCSVExport } from "../../components/molecules/AdvancedCSVExport";
 import { Breadcrumb } from "../../components/atoms/Breadcrumb";
@@ -52,16 +51,6 @@ export default function SectorPage() {
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 {sectorName} 섹터의 암호화폐 시세 현황
               </p>
-            </div>
-
-            <div className="flex justify-end sm:flex-shrink-0 sm:ml-4">
-              <div className="w-full sm:w-auto">
-                <RefreshControl
-                  onRefresh={refresh}
-                  isLoading={isLoading}
-                  lastUpdated={new Date()}
-                />
-              </div>
             </div>
           </div>
         </div>

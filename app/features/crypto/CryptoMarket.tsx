@@ -8,12 +8,9 @@ import { useServerSentEvents } from '../../hooks/useServerSentEvents';
 import { usePriceAlerts } from '../../hooks/usePriceAlerts';
 import { useFavorites } from '../../hooks/useFavorites';
 import { CryptoTable } from '../../components/organisms/CryptoTable';
-import { RefreshControl } from '../../components/molecules/RefreshControl';
 import { PriceAlertPanel } from '../../components/organisms/PriceAlertPanel';
 import { PerformanceMonitor } from '../../components/molecules/PerformanceMonitor';
 import { CryptoFilter } from '../../components/molecules/CryptoFilter';
-import { CSVExportButton } from '../../components/atoms/CSVExportButton';
-import { AdvancedCSVExport } from '../../components/molecules/AdvancedCSVExport';
 import { SectorStats } from '../../components/organisms/SectorStats';
 import { ClientOnly } from '../../hooks/useIsClient';
 
@@ -203,30 +200,7 @@ export function CryptoMarket() {
 
       {/* Control Panel - 모바일 최적화 */}
       <ClientOnly fallback={<div className="h-14 sm:h-16 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>}>
-        <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-lg">
-          <div className="p-3 sm:p-4">
-            <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex-1">
-                <RefreshControl
-                  isLoading={isLoading}
-                  lastUpdated={sseLastUpdated || lastUpdated}
-                  onRefresh={handleRefresh}
-                  autoRefresh={false}
-                  onToggleAutoRefresh={() => {}}
-                />
-              </div>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-                <CSVExportButton 
-                  cryptos={finalDisplayData}
-                  filename="crypto-market-data"
-                />
-                <ClientOnly fallback={<div className="w-full sm:w-32 h-11 bg-gray-100/60 dark:bg-gray-700/60 rounded-lg animate-pulse"></div>}>
-                  <AdvancedCSVExport cryptos={finalDisplayData} />
-                </ClientOnly>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* CSV 다운로드 컨트롤 제거됨 */}
       </ClientOnly>
 
       {/* Main Trading Table - 모바일 최적화 */}
