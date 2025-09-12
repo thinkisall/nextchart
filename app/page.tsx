@@ -27,9 +27,6 @@ export default function Home() {
 
         {/* 모바일 최적화된 메인 콘텐츠 영역 */}
         <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 -mt-2 sm:-mt-4 relative z-10">
-          {/* Header Advertisement */}
-          <HeaderAd />
-          
           <ClientOnly
             fallback={
               <div className="flex items-center justify-center py-12 sm:py-20">
@@ -46,7 +43,7 @@ export default function Home() {
           >
             <CryptoMarket />
           </ClientOnly>
-          
+
           {/* Footer Advertisement */}
           <FooterAd />
         </div>
