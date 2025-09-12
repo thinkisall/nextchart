@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 interface AdSenseProps {
   adSlot: string;
@@ -10,12 +10,12 @@ interface AdSenseProps {
   className?: string;
 }
 
-export function AdSense({ 
-  adSlot, 
-  adFormat = 'auto', 
+export function AdSense({
+  adSlot,
+  adFormat = "auto",
   fullWidthResponsive = true,
-  style = { display: 'block' },
-  className = ''
+  style = { display: "block" },
+  className = "",
 }: AdSenseProps) {
   const adRef = useRef<HTMLModElement>(null);
   const isLoaded = useRef(false);
@@ -23,12 +23,12 @@ export function AdSense({
   useEffect(() => {
     // 이미 로드된 경우 중복 방지
     if (isLoaded.current) return;
-    
+
     // 광고 요소가 존재하는지 확인
     if (!adRef.current) return;
 
     // 이미 광고가 로드된 요소인지 확인
-    if (adRef.current.getAttribute('data-adsbygoogle-status')) {
+    if (adRef.current.getAttribute("data-adsbygoogle-status")) {
       return;
     }
 
@@ -38,7 +38,7 @@ export function AdSense({
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       isLoaded.current = true;
     } catch (err) {
-      console.error('AdSense error:', err);
+      console.error("AdSense error:", err);
     }
   }, []);
 
@@ -72,11 +72,11 @@ export function HeaderAd() {
         adSlot="9663590188"
         adFormat="horizontal"
         className="mb-4"
-        style={{ 
-          display: 'block',
-          height: '90px',
-          maxWidth: '728px',
-          margin: '0 auto'
+        style={{
+          display: "block",
+          height: "90px",
+          maxWidth: "728px",
+          margin: "0 auto",
         }}
       />
     </div>
@@ -87,13 +87,13 @@ export function SidebarAd() {
   return (
     <div key="sidebar-ad">
       <AdSense
-        adSlot="9663590188"
+        adSlot="3057847482"
         adFormat="vertical"
         className="my-4"
-        style={{ 
-          display: 'block',
-          width: '300px',
-          height: '250px'
+        style={{
+          display: "block",
+          width: "300px",
+          height: "250px",
         }}
       />
     </div>
@@ -104,14 +104,14 @@ export function FooterAd() {
   return (
     <div key="footer-ad">
       <AdSense
-        adSlot="9663590188"
+        adSlot="9180402707"
         adFormat="horizontal"
         className="mt-8 mb-4"
-        style={{ 
-          display: 'block',
-          height: '90px',
-          maxWidth: '728px',
-          margin: '0 auto'
+        style={{
+          display: "block",
+          height: "90px",
+          maxWidth: "728px",
+          margin: "0 auto",
         }}
       />
     </div>
@@ -120,11 +120,5 @@ export function FooterAd() {
 
 // 반응형 광고 (모든 위치에 사용 가능)
 export function ResponsiveAd({ adSlot }: { adSlot: string }) {
-  return (
-    <AdSense
-      adSlot={adSlot}
-      adFormat="auto"
-      className="my-4"
-    />
-  );
+  return <AdSense adSlot={adSlot} adFormat="auto" className="my-4" />;
 }
