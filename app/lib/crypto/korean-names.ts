@@ -243,8 +243,11 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   EUL: "율러",
   SD: "SD",
   TOWNS: "타운즈",
-  CAMP: "캠프",
+  CAMP: "캠프 네트워크",
   WLFI: "월드 리버티 파이낸셜",
+  H: "휴머니티 프로토콜",
+  PUMPBTC: "펌프비티씨",
+  PUMP: "펌프닷펀",
 
   // 대량 추가 코인들
   OPEN: "오픈렛저",

@@ -148,6 +148,12 @@ export const SECTOR_COLORS: { [key: string]: string } = {
   "DAO/멀티시그·DeFi": "bg-lime-50 text-lime-700 dark:bg-lime-900/20 dark:text-lime-400",
   "DID/지갑": "bg-lime-50 text-lime-700 dark:bg-lime-900/20 dark:text-lime-400",
 
+  // 새로 추가된 섹터들
+  "L1/IP&AI": "bg-fuchsia-100 text-fuchsia-800 dark:bg-fuchsia-900/30 dark:text-fuchsia-300",
+  "L2/DID&생체인증": "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300",
+  "LST/비트코인": "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300",
+  "밈코인/런치패드": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
+
   // 기타 (기본값)
   "기타": "bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-400",
   "기타/테스트": "bg-gray-50 text-gray-500 dark:bg-gray-900/20 dark:text-gray-500",

@@ -22,10 +22,10 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
     // NaN이나 유효하지 않은 값 처리
     if (isNaN(num) || !isFinite(num)) return '0';
     
-    if (num >= 1e12) return `${(num / 1e12).toFixed(1)}조`;
-    if (num >= 1e8) return `${(num / 1e8).toFixed(0)}억`;
-    if (num >= 1e4) return `${(num / 1e4).toFixed(0)}만`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(0)}천`;
+    if (num >= 1e12) return `${(num / 1e12).toFixed(1)}T`;
+    if (num >= 1e9) return `${(num / 1e9).toFixed(1)}B`;
+    if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
+    if (num >= 1e3) return `${(num / 1e3).toFixed(1)}K`;
     return num.toFixed(0);
   };
 
@@ -175,7 +175,7 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-medium text-gray-600 dark:text-gray-400">거래량</span>
                       <span className="text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-300">
-                        {formatNumber(stats.totalVolume)}원
+                        {formatNumber(stats.totalVolume)}
                       </span>
                     </div>
                   </div>

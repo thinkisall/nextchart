@@ -30,14 +30,13 @@ export function CryptoRow({
 
   const formatVolume = (volume: number) => {
     if (volume >= 1e12) {
-      return `${(volume / 1e12).toFixed(1)}조`;
-    } else if (volume >= 1e8) {
-      const eok = (volume / 1e8).toFixed(0);
-      return `${eok}억`;
-    } else if (volume >= 1e4) {
-      return `${(volume / 1e4).toFixed(0)}만`;
+      return `${(volume / 1e12).toFixed(1)}T`;
+    } else if (volume >= 1e9) {
+      return `${(volume / 1e9).toFixed(1)}B`;
+    } else if (volume >= 1e6) {
+      return `${(volume / 1e6).toFixed(1)}M`;
     } else if (volume >= 1e3) {
-      return `${(volume / 1e3).toFixed(0)}천`;
+      return `${(volume / 1e3).toFixed(0)}K`;
     }
     return volume.toFixed(0);
   };
@@ -106,7 +105,7 @@ export function CryptoRow({
         {/* 하단 행: 거래량과 섹터 */}
         <div className="flex items-center justify-between text-xs">
           <div className="text-gray-500 dark:text-gray-400">
-            거래량: <span className="font-semibold text-gray-700 dark:text-gray-300">{formatVolume(crypto.volume)}원</span>
+            거래량: <span className="font-semibold text-gray-700 dark:text-gray-300">{formatVolume(crypto.volume)}</span>
           </div>
           {crypto.sector && (
             <span className={`px-2 py-1 text-xs font-medium rounded-lg ${SECTOR_COLORS[crypto.sector] || 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
@@ -240,7 +239,7 @@ export function CryptoRow({
       
       <td className="px-4 xl:px-6 py-4 xl:py-5 text-right">
         <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 tabular-nums">
-          {formatVolume(crypto.volume)}원
+          {formatVolume(crypto.volume)}
         </div>
       </td>
       

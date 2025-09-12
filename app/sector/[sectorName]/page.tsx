@@ -14,6 +14,7 @@ import { useFavorites } from '../../hooks/useFavorites';
 import { PerformanceMonitor } from '../../components/molecules/PerformanceMonitor';
 import { getConsolidatedSectors } from '../../lib/crypto/consolidation';
 import { CRYPTO_SECTORS } from '../../lib/crypto';
+import { HeaderAd, FooterAd, SidebarAd } from '../../components/AdSenseV2';
 
 export default function SectorPage() {
   const params = useParams();
@@ -97,6 +98,9 @@ export default function SectorPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* 모바일 최적화된 컨테이너 */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
+        
+        {/* Header Advertisement */}
+        <HeaderAd />
         
         {/* 헤더 - 모바일 우선 디자인 */}
         <div className="mb-4 sm:mb-6">
@@ -217,6 +221,13 @@ export default function SectorPage() {
           </div>
         </div>
 
+        {/* Middle Advertisement - 섹터 통계 다음, 성능 모니터 전 */}
+        <div className="mb-4 sm:mb-6 flex justify-center">
+          <div className="w-full max-w-lg">
+            <SidebarAd />
+          </div>
+        </div>
+
         {/* 데이터 내보내기 - 모바일에서 세로 배치 */}
         <div className="mb-3 sm:mb-4 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
           <CSVExportButton 
@@ -298,6 +309,9 @@ export default function SectorPage() {
             </p>
           </div>
         </ClientOnly>
+
+        {/* Footer Advertisement */}
+        <FooterAd />
       </div>
     </div>
   );

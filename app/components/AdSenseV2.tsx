@@ -120,17 +120,20 @@ export function HeaderAd() {
 
 export function SidebarAd() {
   return (
-    <AdSense
-      adSlot="9663590188"
-      adFormat="vertical"
-      className="my-4"
-      adKey="sidebar"
-      style={{ 
-        display: 'block',
-        width: '300px',
-        height: '250px'
-      }}
-    />
+    <div className="flex justify-center">
+      <AdSense
+        adSlot="9663590188"
+        adFormat="auto"
+        className="my-4 max-w-full"
+        adKey="sidebar"
+        style={{ 
+          display: 'block',
+          width: '100%',
+          maxWidth: '300px',
+          height: '250px'
+        }}
+      />
+    </div>
   );
 }
 
