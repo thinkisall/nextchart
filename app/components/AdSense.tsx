@@ -95,6 +95,7 @@ export function SidebarAd() {
           display: "block",
           width: "300px",
           height: "250px",
+          maxHeight: "300px",
         }}
       />
     </div>
