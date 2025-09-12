@@ -217,7 +217,6 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   // 추가 신규 코인들
   GRASS: "그래스",
   ORCA: "오르카",
-  PUMP: "펌프",
   EPT: "벨런스",
   HAEDAL: "해달",
   PARTI: "파티",
@@ -225,7 +224,6 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   PROMPT: "프롬프트",
   SIGN: "사인",
   SAHARA: "사하라",
-  H: "H",
   HOME: "홈",
   OM: "OM",
   LA: "라그랑쥬",
@@ -535,7 +533,6 @@ export const FALLBACK_KOREAN_NAMES: { [key: string]: string } = {
   ACE: "퓨저니스트",
   WAL: "월러스",
   HAEDAL: "해달",
-  H: "H",
   SYRUP: "시럽",
   PROMPT: "프롬프트",
 

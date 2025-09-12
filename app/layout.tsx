@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   description: "빗썸 API를 활용한 실시간 암호화폐 시세 및 섹터 분석 서비스. 한국 투자자를 위한 전문 트레이딩 대시보드.",
   keywords: "암호화폐, 비트코인, 이더리움, 빗썸, 실시간 시세, 트레이딩, 대시보드, 다모아봄",
   authors: [{ name: "다모아봄" }],
+  metadataBase: new URL('https://www.damoabom.com'),
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -67,10 +68,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#1f2937" },
-  ],
 };
 
 export const viewport = {
