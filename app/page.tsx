@@ -16,11 +16,11 @@ export default function Home() {
               {/* 모바일에서 더 작은 제목 */}
               <h1 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-4 leading-tight">
                 <span className="bg-gradient-to-r from-blue-400 via-white to-blue-400 bg-clip-text text-transparent">
-                  실시간 암호화폐 섹터
+                  DAMOABOM
                 </span>
               </h1>
               <p className="text-sm sm:text-lg lg:text-xl text-blue-100 mb-1 sm:mb-2">
-                섹터별 분석 및 시세 제공
+                실시간 코인 섹터별 분석 및 시세 제공
               </p>
             </div>
           </div>
