@@ -127,17 +127,17 @@ export function CryptoRow({
 
   const rank = getRankDisplay(index);
 
-  // 모바일 카드 스타일 - 전문적이고 가독성 좋은 디자인
+  // 모바일 카드 스타일 - 간결하고 핵심 정보만
   if (variant === "mobile") {
     return (
       <div
         className={`
-          group relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer touch-manipulation active:scale-[0.98] 
+          group relative overflow-hidden rounded-xl border transition-all duration-300 cursor-pointer touch-manipulation active:scale-[0.98] 
           ${
             index < 3
-              ? "bg-gradient-to-br from-white to-yellow-50/30 dark:from-gray-800 dark:to-yellow-900/10 border-yellow-300/30 dark:border-yellow-600/20 shadow-lg shadow-yellow-500/10"
-              : "bg-white/95 dark:bg-gray-800/95 border-gray-200/40 dark:border-gray-700/40 shadow-lg shadow-gray-500/10"
-          } backdrop-blur-xl hover:shadow-xl
+              ? "bg-gradient-to-br from-white to-yellow-50/30 dark:from-gray-800 dark:to-yellow-900/10 border-yellow-300/30 dark:border-yellow-600/20"
+              : "bg-white/95 dark:bg-gray-800/95 border-gray-200/40 dark:border-gray-700/40"
+          } backdrop-blur-xl hover:shadow-lg
           ${
             priceFlash === "up"
               ? "bg-red-100/80 dark:bg-red-900/30 animate-pulse border-red-300 dark:border-red-600"
@@ -152,111 +152,65 @@ export function CryptoRow({
         onClick={onClick}
       >
         {/* 순위 배지 - 좌상단 */}
-        <div className="absolute top-4 left-4 z-10">
+        <div className="absolute top-3 left-3 z-10">
           <div
-            className={`${rank.bg} ${rank.color} px-2.5 py-1 rounded-xl flex items-center space-x-1.5 shadow-md border border-white/20`}
+            className={`${rank.bg} ${rank.color} px-2 py-0.5 rounded-lg flex items-center space-x-1`}
           >
-            <span className="text-sm">{rank.icon}</span>
-            <span className="text-xs font-bold tracking-wide">{rank.text}</span>
+            <span className="text-xs">{rank.icon}</span>
+            <span className="text-xs font-bold">{rank.text}</span>
           </div>
         </div>
 
         {/* 즐겨찾기 버튼 - 우상단 */}
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-3 right-3 z-10">
           <button
             onClick={(e) => {
               e.stopPropagation();
               onToggleFavorite?.();
             }}
-            className="w-9 h-9 rounded-xl bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm flex items-center justify-center text-lg hover:scale-110 focus:outline-none transition-all shadow-md border border-white/30 dark:border-gray-600/30"
+            className="w-7 h-7 rounded-lg bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm flex items-center justify-center text-sm hover:scale-110 focus:outline-none transition-all"
           >
             {isFavorite ? "⭐" : "☆"}
           </button>
         </div>
 
-        {/* 메인 컨텐츠 영역 - 패딩 조정 */}
-        <div className="pt-20 pb-6 px-5">
-          {/* 코인 정보 섹션 */}
-          <div className="flex items-start space-x-4 mb-5">
-            <div
-              className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg border-2 border-white/50 flex-shrink-0 ${
-                index < 3
-                  ? "bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400"
-                  : "bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600"
-              }`}
-            >
-              <span className="text-base font-bold text-white">
-                {getCoinIcon(crypto.symbol)}
-              </span>
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="mb-1">
-                <h3 className="font-bold text-gray-900 dark:text-gray-100 text-base leading-tight truncate">
-                  {crypto.korean_name}
-                </h3>
-              </div>
-
-              <div className="flex items-center space-x-2 mb-3 flex-wrap">
-                <span className="text-sm text-gray-500 dark:text-gray-400 font-mono tracking-wider">
-                  {crypto.symbol}
-                </span>
-                <div className="flex items-center space-x-1.5">
-                  {crypto.isBinanceAlpha && <AlphaIcon />}
-                  {crypto.isOnBinance && <BinanceBadge size="md" />}
-                  {crypto.isOnUpbit && <UpbitBadge size="md" />}
-                </div>
-              </div>
-
-              {crypto.sector && (
-                <span
-                  className={`inline-block px-2.5 py-1 text-xs font-semibold rounded-lg ${
-                    SECTOR_COLORS[crypto.sector] ||
-                    "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
-                  }`}
-                >
-                  {crypto.sector}
-                </span>
-              )}
+        {/* 메인 컨텐츠 - 간결한 레이아웃 */}
+        <div className="pt-12 pb-4 px-4">
+          {/* 코인 이름 - 크게 표시 */}
+          <div className="mb-3">
+            <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg leading-tight">
+              {crypto.korean_name}
+            </h3>
+            
+            {/* 거래소 배지들만 표시 */}
+            <div className="flex items-center space-x-1 mt-1">
+              {crypto.isBinanceAlpha && <AlphaIcon />}
+              {crypto.isOnBinance && <BinanceBadge size="sm" />}
+              {crypto.isOnUpbit && <UpbitBadge size="sm" />}
             </div>
           </div>
 
-          {/* 가격 정보 섹션 - 개선된 레이아웃 */}
-          <div className="bg-gray-50/80 dark:bg-gray-900/40 rounded-2xl p-4 mb-4 border border-gray-200/30 dark:border-gray-700/30">
-            <div className="flex items-end justify-between">
-              <div className="flex-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 tracking-wide">
-                  현재가
-                </p>
-                <p className="text-xl font-bold text-gray-900 dark:text-gray-100 leading-tight tracking-tight">
-                  {formatPrice(crypto.current_price)}
-                </p>
-              </div>
-              <div className="flex-shrink-0 ml-3">
-                <PriceChange
-                  value={crypto.change_amount}
-                  percentage={crypto.change_rate}
-                  isPositive={crypto.is_positive}
-                  size="lg"
-                />
-              </div>
+          {/* 가격과 변동률 */}
+          <div className="flex items-end justify-between">
+            <div className="flex-1">
+              <p className="text-lg font-bold text-gray-900 dark:text-gray-100 leading-tight">
+                ₩{crypto.current_price.toLocaleString()}
+              </p>
             </div>
-          </div>
-
-          {/* 거래량 정보 */}
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-              24시간 거래량
-            </span>
-            <span className="text-sm font-bold text-gray-700 dark:text-gray-300 font-mono">
-              {formatVolume(crypto.volume)}
-            </span>
+            <div className="flex-shrink-0">
+              <PriceChange
+                value={crypto.change_amount}
+                percentage={crypto.change_rate}
+                isPositive={crypto.is_positive}
+                size="md"
+              />
+            </div>
           </div>
         </div>
 
         {/* 하단 액센트 라인 */}
         <div
-          className={`h-1.5 ${
+          className={`h-1 ${
             crypto.is_positive
               ? "bg-gradient-to-r from-emerald-400 to-green-500"
               : "bg-gradient-to-r from-red-400 to-pink-500"
