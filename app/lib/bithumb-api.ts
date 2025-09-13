@@ -8,6 +8,7 @@ import { CRYPTO_KOREAN_NAMES, getCryptoInfo } from "./crypto";
 
 // 바이낸스 알파와 빗썸에서 겹치는 코인들
 const BINANCE_ALPHA_COINS = new Set([
+  "LINEA",
   "AERO",
   "ATH",
   "AVAIL",
