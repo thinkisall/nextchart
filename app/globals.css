@@ -779,3 +779,70 @@ body {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+
+/* 애니메이션 지연 클래스 */
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-150 {
+  animation-delay: 0.15s;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+/* 전문적인 터치 인터랙션 */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 부드러운 스크롤 */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* 모바일 전용 최적화 */
+@media (max-width: 768px) {
+  .mobile-optimized {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Virtual Scrolling 스타일 */
+.crypto-virtual-list {
+  /* 스크롤바 스타일링 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.5) transparent;
+}
+
+.crypto-virtual-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.crypto-virtual-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.crypto-virtual-list::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 3px;
+}
+
+.crypto-virtual-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+/* Virtual List 아이템 최적화 */
+.crypto-virtual-list [data-index] {
+  will-change: transform;
+  backface-visibility: hidden;
+}

@@ -34,6 +34,8 @@ export function useServerSentEvents() {
 
       eventSource.onmessage = (event) => {
         try {
+          // 디버깅: 데이터 수신 로그
+          console.log('🔄 SSE Data received at:', new Date().toLocaleTimeString());
           
           if (!event.data || event.data.trim() === '') {
             return;
@@ -48,8 +50,16 @@ export function useServerSentEvents() {
           
           // 새로운 형식: getAllTickers에서 직접 반환된 CryptoPrice 배열 처리
           if (Array.isArray(parsed)) {
-            setData(parsed);
-            setLastUpdated(new Date());
+            console.log('📊 Data array length:', parsed.length);
+            
+            // 빈 배열이 아닐 때만 업데이트
+            if (parsed.length > 0) {
+              setData(parsed);
+              setLastUpdated(new Date());
+              console.log('✅ Data updated with', parsed.length, 'items');
+            } else {
+              console.log('⚠️ Received empty array, keeping previous data');
+            }
             return;
           }
           

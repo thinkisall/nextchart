@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { CryptoPrice } from '../../lib/types';
 import { useCryptoPrices } from '../../hooks/useCryptoPrices';
 import { useBithumbWebSocket } from '../../hooks/useBithumbWebSocket';
 import { useServerSentEvents } from '../../hooks/useServerSentEvents';
 import { useFavorites } from '../../hooks/useFavorites';
+// import { usePerformanceMonitor, useUpdateTracker } from '../../hooks/usePerformanceMonitor';
 import { CryptoTable } from '../../components/organisms/CryptoTable';
 import { CryptoFilter } from '../../components/molecules/CryptoFilter';
 import { SectorStats } from '../../components/organisms/SectorStats';
@@ -13,6 +14,9 @@ import { ClientOnly } from '../../hooks/useIsClient';
 import { SquareAd } from '../../components/AdSenseV2';
 
 export function CryptoMarket() {
+  // 성능 모니터링 - 일시적으로 비활성화
+  // usePerformanceMonitor('CryptoMarket', []);
+  
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [filteredData, setFilteredData] = useState<CryptoPrice[]>([]);
   const [isClient, setIsClient] = useState(false);
@@ -51,20 +55,43 @@ export function CryptoMarket() {
     disconnect: sseDisconnect
   } = useServerSentEvents();
 
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     refetch();
     if (isClient) {
       setLastUpdated(new Date());
     }
-  };
+  }, [refetch, isClient]);
 
-  const handleCryptoClick = (crypto: CryptoPrice) => {
+  const handleCryptoClick = useCallback((crypto: CryptoPrice) => {
     // 클릭 이벤트 처리 로직을 여기에 추가할 수 있습니다
-  };
+  }, []);
 
   const handleFilteredDataChange = useCallback((filtered: CryptoPrice[]) => {
     setFilteredData(filtered);
   }, []);
+
+  // 메모이제이션된 데이터 계산
+  const displayData = useMemo(() => {
+    return sseData.length > 0 ? sseData : prices;
+  }, [sseData, prices]);
+
+  const finalDisplayData = useMemo(() => {
+    return filteredData.length > 0 ? filteredData : displayData;
+  }, [filteredData, displayData]);
+
+  // 메모이제이션된 통계 계산 - 단순화
+  const marketStats = useMemo(() => {
+    if (displayData.length === 0) {
+      return { totalAssets: 0, positiveCount: 0, negativeCount: 0 };
+    }
+    
+    const positiveCount = displayData.filter(c => c.is_positive).length;
+    return { 
+      totalAssets: finalDisplayData.length, 
+      positiveCount, 
+      negativeCount: displayData.length - positiveCount 
+    };
+  }, [displayData.length, finalDisplayData.length]);
 
   // 컴포넌트 마운트 시 SSE 연결 확인만 수행
   useEffect(() => {
@@ -79,9 +106,26 @@ export function CryptoMarket() {
     }
   }, [isClient, sseConnected, sseData.length, sseReconnect]);
 
-  // 데이터 소스는 SSE로 고정
-  const displayData = sseData.length > 0 ? sseData : prices;
-  const finalDisplayData = filteredData.length > 0 ? filteredData : displayData;
+  // Virtual Scrolling 사용 여부 결정 - 일시적으로 비활성화
+  const shouldUseVirtualScrolling = useMemo(() => {
+    return false; // 성능 테스트를 위해 비활성화
+    // return finalDisplayData.length >= 100 && typeof window !== 'undefined' && window.innerWidth >= 768;
+  }, []);
+
+  // SSE 데이터 변경 감지
+  useEffect(() => {
+    if (sseData.length > 0) {
+      console.log('🔄 CryptoMarket: SSE data updated at', new Date().toLocaleTimeString(), 'count:', sseData.length);
+    }
+  }, [sseData]);
+
+  // 최종 디스플레이 데이터 변경 감지
+  useEffect(() => {
+    if (finalDisplayData.length > 0) {
+      console.log('📱 CryptoMarket: Final display data updated at', new Date().toLocaleTimeString(), 'count:', finalDisplayData.length);
+    }
+  }, [finalDisplayData]);
+
   const isLoading = false; // SSE는 로딩 상태가 없음
 
   // 초기 필터 데이터 설정
@@ -113,7 +157,7 @@ export function CryptoMarket() {
                       {sseConnected ? '실시간 시세 연결됨' : '연결 중...'}
                     </div>
                     <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                      실시간 스트림 • 1초 간격 업데이트
+                      실시간 스트림 • 3초 간격 업데이트
                     </div>
                   </div>
                 </div>
@@ -122,18 +166,18 @@ export function CryptoMarket() {
               {/* Market Stats - 모바일에서 2열, 태블릿+에서 3열 */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:flex lg:items-center lg:space-x-6">
                 <div className="text-center">
-                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">{finalDisplayData.length}</div>
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">{marketStats.totalAssets}</div>
                   <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">총 자산</div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg sm:text-xl lg:text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                    {displayData.filter(c => c.is_positive).length}
+                    {marketStats.positiveCount}
                   </div>
                   <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">상승</div>
                 </div>
                 <div className="text-center col-span-2 sm:col-span-1">
                   <div className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600 dark:text-red-400">
-                    {displayData.filter(c => !c.is_positive).length}
+                    {marketStats.negativeCount}
                   </div>
                   <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">하락</div>
                 </div>
@@ -199,6 +243,7 @@ export function CryptoMarket() {
             onCryptoClick={handleCryptoClick}
             onToggleFavorite={toggleFavorite}
             isFavorite={isFavorite}
+            useVirtualScrolling={shouldUseVirtualScrolling}
           />
         </div>
       </ClientOnly>

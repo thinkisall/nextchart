@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // 빗썸 API 프록시 엔드포인트
 export async function GET() {
+  console.log('🔗 /api/crypto called at:', new Date().toLocaleTimeString());
+  
   try {
     const response = await fetch('https://api.bithumb.com/public/ticker/ALL_KRW', {
       method: 'GET',
@@ -10,11 +12,15 @@ export async function GET() {
       },
     });
 
+    console.log('📡 Bithumb API response status:', response.status);
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
+    
+    console.log('✅ Bithumb API data received, status:', data.status);
     
     return NextResponse.json(data, {
       headers: {
@@ -24,7 +30,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error('Error fetching from Bithumb API:', error);
+    console.error('❌ Error fetching from Bithumb API:', error);
     
     return NextResponse.json(
       { 

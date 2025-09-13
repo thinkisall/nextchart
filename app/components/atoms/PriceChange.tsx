@@ -23,7 +23,7 @@ export function PriceChange({ value, percentage, isPositive, size = 'md' }: Pric
   
   const sizeClasses = {
     xs: {
-      container: 'px-2 py-1.5',
+      container: 'px-2 py-1',
       percentage: 'text-xs font-bold',
       value: 'text-xs',
       icon: 'text-xs'
@@ -35,16 +35,16 @@ export function PriceChange({ value, percentage, isPositive, size = 'md' }: Pric
       icon: 'text-sm'
     },
     md: {
-      container: 'px-3 py-2',
-      percentage: 'text-sm font-bold',
-      value: 'text-xs',
-      icon: 'text-sm'
-    },
-    lg: {
-      container: 'px-4 py-2.5',
+      container: 'px-3 py-1.5',
       percentage: 'text-base font-bold',
       value: 'text-sm',
       icon: 'text-base'
+    },
+    lg: {
+      container: 'px-4 py-2',
+      percentage: 'text-lg font-bold',
+      value: 'text-base',
+      icon: 'text-lg'
     }
   };
 
@@ -52,25 +52,19 @@ export function PriceChange({ value, percentage, isPositive, size = 'md' }: Pric
 
   if (isPositive) {
     return (
-      <div className={`inline-flex flex-col items-end space-y-1 bg-gradient-to-br from-emerald-500 to-green-600 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 ${classes.container}`}>
+      <div className={`inline-flex items-center justify-center bg-gradient-to-br from-emerald-500 to-green-600 text-white rounded-xl shadow-lg border border-emerald-400/30 ${classes.container}`}>
         <div className={`flex items-center space-x-1.5 ${classes.percentage}`}>
-          <span className={`${classes.icon} animate-pulse`}>🚀</span>
-          <span>{symbol}{formatPercentage(percentage)}</span>
-        </div>
-        <div className={`text-emerald-100 ${classes.value} tabular-nums font-medium`}>
-          {symbol}{formatValue(value)}
+          <span className={`${classes.icon}`}>▲</span>
+          <span className="tracking-tight">{symbol}{formatPercentage(percentage)}</span>
         </div>
       </div>
     );
   } else {
     return (
-      <div className={`inline-flex flex-col items-end space-y-1 bg-gradient-to-br from-red-500 to-pink-600 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 ${classes.container}`}>
+      <div className={`inline-flex items-center justify-center bg-gradient-to-br from-red-500 to-pink-600 text-white rounded-xl shadow-lg border border-red-400/30 ${classes.container}`}>
         <div className={`flex items-center space-x-1.5 ${classes.percentage}`}>
-          <span className={`${classes.icon} animate-pulse`}>📉</span>
-          <span>{formatPercentage(percentage)}</span>
-        </div>
-        <div className={`text-red-100 ${classes.value} tabular-nums font-medium`}>
-          {formatValue(value)}
+          <span className={`${classes.icon}`}>▼</span>
+          <span className="tracking-tight">{formatPercentage(percentage)}</span>
         </div>
       </div>
     );

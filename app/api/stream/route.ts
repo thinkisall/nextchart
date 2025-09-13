@@ -2,10 +2,14 @@ import { NextResponse } from 'next/server';
 import { sseManager, startGlobalFetching, stopGlobalFetching } from '../../lib/sse-manager';
 
 export async function GET() {
+  console.log('🔗 SSE connection requested at:', new Date().toLocaleTimeString());
+  
   try {
     const stream = new ReadableStream({
       start(controller) {
         let isClosed = false;
+        
+        console.log('📡 SSE stream started');
         
         // 초기 연결 메시지 전송
         const welcomeMessage = `data: ${JSON.stringify({ 
@@ -18,8 +22,11 @@ export async function GET() {
         // 연결 관리자에 추가
         sseManager.addConnection(controller);
         
+        console.log('👥 Connection count:', sseManager.getConnectionCount());
+        
         // 글로벌 페칭 시작 (첫번째 연결 시)
         if (sseManager.getConnectionCount() === 1) {
+          console.log('🚀 Starting global fetching...');
           startGlobalFetching();
         }
 

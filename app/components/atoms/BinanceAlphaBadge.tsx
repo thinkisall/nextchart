@@ -24,7 +24,7 @@ export function SimpleAlphaBadge({ className = '' }: BinanceAlphaBadgeProps) {
 export function AlphaIcon({ className = '' }: BinanceAlphaBadgeProps) {
   return (
     <span 
-      className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold bg-gradient-to-r from-yellow-400 to-orange-500 text-white ${className}`}
+      className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-sm font-bold bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 ${className}`}
       title="바이낸스 알파 코인"
     >
       α
