@@ -606,8 +606,6 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
 
     const apiUrl = `${baseUrl}/api/crypto`;
 
-    console.log("🔗 getAllTickers fetching from:", apiUrl);
-
     // 타임아웃 설정 (5초)
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);

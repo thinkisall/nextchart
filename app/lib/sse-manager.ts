@@ -17,8 +17,6 @@ const UPBIT_COINS = new Set([
 // 직접 빗썸 API 호출 함수
 async function fetchBithumbData(): Promise<CryptoPrice[]> {
   try {
-    console.log('🚀 Direct fetch from Bithumb API at:', new Date().toLocaleTimeString());
-    
     const response = await fetch('https://api.bithumb.com/public/ticker/ALL_KRW', {
       method: 'GET',
       headers: {
@@ -59,11 +57,6 @@ async function fetchBithumbData(): Promise<CryptoPrice[]> {
         const isBinanceAlpha = BINANCE_ALPHA_COINS.has(symbol);
         const isOnUpbit = UPBIT_COINS.has(symbol);
 
-        // 디버깅: 바이낸스 알파 코인 로그
-        if (isBinanceAlpha) {
-          console.log(`🔶 Binance Alpha coin detected: ${symbol} (${cryptoInfo.koreanName})`);
-        }
-
         return {
           symbol,
           korean_name: cryptoInfo.koreanName,
@@ -86,7 +79,6 @@ async function fetchBithumbData(): Promise<CryptoPrice[]> {
       .filter((crypto) => crypto !== null && crypto!.current_price > 0)
       .sort((a, b) => b!.change_rate - a!.change_rate);
 
-    console.log('✅ Processed', processedData.length, 'crypto items');
     return processedData as CryptoPrice[];
   } catch (error) {
     console.error('❌ Direct Bithumb fetch error:', error);
@@ -180,8 +172,6 @@ const startGlobalFetching = () => {
       const cryptoData = await fetchBithumbData();
       
       lastFetchTime = now;
-      
-      console.log('📡 Broadcasting data, count:', cryptoData.length, 'connections:', sseManager.getConnectionCount());
       
       // SSE 형식으로 데이터 브로드캐스트
       const sseData = `data: ${JSON.stringify(cryptoData)}\n\n`;

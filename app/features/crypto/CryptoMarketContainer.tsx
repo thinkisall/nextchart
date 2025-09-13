@@ -51,7 +51,6 @@ export function CryptoMarketContainer() {
   // 이벤트 핸들러들
   const handleCryptoClick = useCallback((crypto: CryptoPrice) => {
     setSelectedCoin(crypto);
-    console.log('Crypto selected:', crypto.symbol);
   }, []);
 
   const handleCloseCoinInfo = useCallback(() => {
@@ -63,20 +62,20 @@ export function CryptoMarketContainer() {
     handleRefresh();
   }, [refetch, handleRefresh]);
 
-  // 디버깅용 로그 (개발 환경에서만)
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && primaryData.length > 0) {
-      console.log('🔄 CryptoMarket: Primary data updated at', 
-        new Date().toLocaleTimeString(), 'count:', primaryData.length);
-    }
-  }, [primaryData]);
+  // 디버깅용 로그 제거 - 프로덕션에서는 불필요
+  // useEffect(() => {
+  //   if (process.env.NODE_ENV === 'development' && primaryData.length > 0) {
+  //     console.log('🔄 CryptoMarket: Primary data updated at', 
+  //       new Date().toLocaleTimeString(), 'count:', primaryData.length);
+  //   }
+  // }, [primaryData]);
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && finalDisplayData.length > 0) {
-      console.log('📱 CryptoMarket: Final display data updated at', 
-        new Date().toLocaleTimeString(), 'count:', finalDisplayData.length);
-    }
-  }, [finalDisplayData]);
+  // useEffect(() => {
+  //   if (process.env.NODE_ENV === 'development' && finalDisplayData.length > 0) {
+  //     console.log('📱 CryptoMarket: Final display data updated at', 
+  //       new Date().toLocaleTimeString(), 'count:', finalDisplayData.length);
+  //   }
+  // }, [finalDisplayData]);
 
   // UI 컴포넌트에 props 전달
   return (

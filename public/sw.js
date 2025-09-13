@@ -13,7 +13,6 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('PWA 캐시 생성 완료');
         return cache.addAll(urlsToCache);
       })
       .then(() => {
@@ -31,7 +30,6 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName !== CACHE_NAME) {
-              console.log('이전 캐시 삭제:', cacheName);
               return caches.delete(cacheName);
             }
           })
@@ -118,9 +116,9 @@ self.addEventListener('sync', (event) => {
 async function syncCryptoData() {
   try {
     // 암호화폐 데이터 동기화 로직
-    console.log('백그라운드 데이터 동기화 수행');
+    // 동기화 로직 구현 예정
   } catch (error) {
-    console.error('백그라운드 동기화 실패:', error);
+    // 에러 처리
   }
 }
 

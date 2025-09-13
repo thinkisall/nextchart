@@ -15,17 +15,6 @@ interface SelectedCoinInfoProps {
 export function SelectedCoinInfo({ selectedCoin, onClose }: SelectedCoinInfoProps) {
   if (!selectedCoin) return null;
 
-  // 디버깅: 선택된 코인의 거래소 정보 로그
-  console.log('🔍 Selected coin:', {
-    symbol: selectedCoin.symbol,
-    korean_name: selectedCoin.korean_name,
-    isOnBinance: selectedCoin.isOnBinance,
-    isBinanceAlpha: selectedCoin.isBinanceAlpha,
-    isOnUpbit: selectedCoin.isOnUpbit,
-    binanceSymbol: selectedCoin.binanceSymbol,
-    upbitSymbol: selectedCoin.upbitSymbol
-  });
-
   // 거래소 URL 생성 (모바일 앱 딥링크 포함)
   const getExchangeUrls = (exchange: 'bithumb' | 'binance' | 'upbit') => {
     switch (exchange) {

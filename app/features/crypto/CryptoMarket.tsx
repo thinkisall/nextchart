@@ -118,19 +118,19 @@ export function CryptoMarket() {
     // return finalDisplayData.length >= 100 && typeof window !== 'undefined' && window.innerWidth >= 768;
   }, []);
 
-  // SSE 데이터 변경 감지
-  useEffect(() => {
-    if (sseData.length > 0) {
-      console.log('🔄 CryptoMarket: SSE data updated at', new Date().toLocaleTimeString(), 'count:', sseData.length);
-    }
-  }, [sseData]);
+  // SSE 데이터 변경 감지 - 로그 제거
+  // useEffect(() => {
+  //   if (sseData.length > 0) {
+  //     console.log('🔄 CryptoMarket: SSE data updated at', new Date().toLocaleTimeString(), 'count:', sseData.length);
+  //   }
+  // }, [sseData]);
 
-  // 최종 디스플레이 데이터 변경 감지
-  useEffect(() => {
-    if (finalDisplayData.length > 0) {
-      console.log('📱 CryptoMarket: Final display data updated at', new Date().toLocaleTimeString(), 'count:', finalDisplayData.length);
-    }
-  }, [finalDisplayData]);
+  // 최종 디스플레이 데이터 변경 감지 - 로그 제거
+  // useEffect(() => {
+  //   if (finalDisplayData.length > 0) {
+  //     console.log('📱 CryptoMarket: Final display data updated at', new Date().toLocaleTimeString(), 'count:', finalDisplayData.length);
+  //   }
+  // }, [finalDisplayData]);
 
   const isLoading = false; // SSE는 로딩 상태가 없음
 
