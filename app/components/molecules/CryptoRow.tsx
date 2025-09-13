@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { CryptoPrice } from '../../lib/types';
 import { PriceChange } from '../atoms/PriceChange';
 import { BinanceBadge } from '../atoms/BinanceBadge';
@@ -22,6 +23,32 @@ export function CryptoRow({
   variant = 'desktop',
   index = 0
 }: CryptoRowProps) {
+  // 가격 변동 애니메이션을 위한 상태
+  const [priceFlash, setPriceFlash] = useState<'up' | 'down' | null>(null);
+  const prevPriceRef = useRef<number>(crypto.current_price);
+  
+  // 가격 변동 감지 및 애니메이션 트리거
+  useEffect(() => {
+    const currentPrice = crypto.current_price;
+    const prevPrice = prevPriceRef.current;
+    
+    if (prevPrice !== currentPrice) {
+      if (currentPrice > prevPrice) {
+        setPriceFlash('up');
+      } else if (currentPrice < prevPrice) {
+        setPriceFlash('down');
+      }
+      
+      // 500ms 후 애니메이션 제거
+      const timer = setTimeout(() => {
+        setPriceFlash(null);
+      }, 500);
+      
+      prevPriceRef.current = currentPrice;
+      
+      return () => clearTimeout(timer);
+    }
+  }, [crypto.current_price]);
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ko-KR', {
       style: 'currency',
@@ -74,11 +101,15 @@ export function CryptoRow({
   if (variant === 'mobile') {
     return (
       <div 
-        className={`group relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer touch-manipulation active:scale-[0.98] ${
-          index < 3 
+        className={`
+          group relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer touch-manipulation active:scale-[0.98] 
+          ${index < 3 
             ? 'bg-gradient-to-br from-white to-yellow-50/30 dark:from-gray-800 dark:to-yellow-900/10 border-yellow-300/30 dark:border-yellow-600/20 shadow-lg shadow-yellow-500/10' 
             : 'bg-white/95 dark:bg-gray-800/95 border-gray-200/40 dark:border-gray-700/40 shadow-lg shadow-gray-500/10'
-        } backdrop-blur-xl hover:shadow-xl`}
+          } backdrop-blur-xl hover:shadow-xl
+          ${priceFlash === 'up' ? 'bg-red-100/80 dark:bg-red-900/30 animate-pulse border-red-300 dark:border-red-600' : ''}
+          ${priceFlash === 'down' ? 'bg-blue-100/80 dark:bg-blue-900/30 animate-pulse border-blue-300 dark:border-blue-600' : ''}
+        `}
         onClick={onClick}
       >
         {/* 순위 배지 - 좌상단 */}
@@ -181,15 +212,19 @@ export function CryptoRow({
     );
   }
 
-  // 태블릿 테이블 행 스타일 - 개선된 디자인
+  // 태블릿 테이블 행 스타일 - 개선된 디자인 + 가격 변동 애니메이션
   if (variant === 'tablet') {
     return (
       <tr 
-        className={`group transition-all duration-200 cursor-pointer ${
-          index < 3 
+        className={`
+          group transition-all duration-200 cursor-pointer 
+          ${index < 3 
             ? 'bg-gradient-to-r from-yellow-50/30 via-white to-white dark:from-yellow-900/10 dark:via-gray-800 dark:to-gray-800 hover:from-yellow-100/50 dark:hover:from-yellow-900/20' 
             : 'hover:bg-white/80 dark:hover:bg-gray-800/80'
-        }`}
+          }
+          ${priceFlash === 'up' ? 'bg-red-100/60 dark:bg-red-900/20' : ''}
+          ${priceFlash === 'down' ? 'bg-blue-100/60 dark:bg-blue-900/20' : ''}
+        `}
         onClick={onClick}
       >
         <td className="px-4 py-5">
@@ -258,14 +293,18 @@ export function CryptoRow({
     );
   }
 
-  // 데스크톱 테이블 행 스타일 - 개선된 디자인
+  // 데스크톱 테이블 행 스타일 - 개선된 디자인 + 가격 변동 애니메이션
   return (
     <tr 
-      className={`group transition-all duration-200 cursor-pointer border-b border-gray-100/50 dark:border-gray-700/30 ${
-        index < 3 
+      className={`
+        group transition-all duration-200 cursor-pointer border-b border-gray-100/50 dark:border-gray-700/30 
+        ${index < 3 
           ? 'bg-gradient-to-r from-yellow-50/40 via-white to-white dark:from-yellow-900/10 dark:via-gray-800 dark:to-gray-800 hover:from-yellow-100/60 dark:hover:from-yellow-900/20' 
           : 'hover:bg-white/80 dark:hover:bg-gray-800/80'
-      }`}
+        }
+        ${priceFlash === 'up' ? 'bg-red-100/60 dark:bg-red-900/20' : ''}
+        ${priceFlash === 'down' ? 'bg-blue-100/60 dark:bg-blue-900/20' : ''}
+      `}
       onClick={onClick}
     >
       <td className="px-6 py-6">
