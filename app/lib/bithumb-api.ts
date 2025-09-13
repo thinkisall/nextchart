@@ -599,7 +599,7 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
     // 서버 사이드에서는 절대 URL 필요
     const baseUrl = typeof window !== 'undefined' 
       ? '' // 클라이언트 사이드
-      : 'http://localhost:3007'; // 서버 사이드 - 현재 개발 서버 포트
+      : process.env.NEXTAUTH_URL || process.env.VERCEL_URL || 'http://localhost:3000'; // 서버 사이드
     
     const apiUrl = `${baseUrl}/api/crypto`;
     
