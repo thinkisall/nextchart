@@ -1,4 +1,4 @@
-import { CryptoMarket } from "./features/crypto/CryptoMarket";
+import { CryptoMarket } from "./features/crypto";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
 import { HeaderAd, FooterAd } from "./components/AdSenseV2";

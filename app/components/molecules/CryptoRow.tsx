@@ -1,58 +1,59 @@
-import { useEffect, useRef, useState } from 'react';
-import { CryptoPrice } from '../../lib/types';
-import { PriceChange } from '../atoms/PriceChange';
-import { BinanceBadge } from '../atoms/BinanceBadge';
-import { AlphaIcon } from '../atoms/BinanceAlphaBadge';
-import { UpbitBadge } from '../atoms/UpbitBadge';
-import { SECTOR_COLORS } from '../../lib/crypto';
+"use client";
+import { useEffect, useRef, useState } from "react";
+import { CryptoPrice } from "../../lib/types";
+import { PriceChange } from "../atoms/PriceChange";
+import { BinanceBadge } from "../atoms/BinanceBadge";
+import { AlphaIcon } from "../atoms/BinanceAlphaBadge";
+import { UpbitBadge } from "../atoms/UpbitBadge";
+import { SECTOR_COLORS } from "../../lib/crypto";
 
 interface CryptoRowProps {
   crypto: CryptoPrice;
   onClick?: () => void;
   onToggleFavorite?: () => void;
   isFavorite?: boolean;
-  variant?: 'desktop' | 'tablet' | 'mobile';
+  variant?: "desktop" | "tablet" | "mobile";
   index?: number;
 }
 
-export function CryptoRow({ 
-  crypto, 
-  onClick, 
-  onToggleFavorite, 
+export function CryptoRow({
+  crypto,
+  onClick,
+  onToggleFavorite,
   isFavorite = false,
-  variant = 'desktop',
-  index = 0
+  variant = "desktop",
+  index = 0,
 }: CryptoRowProps) {
   // 가격 변동 애니메이션을 위한 상태
-  const [priceFlash, setPriceFlash] = useState<'up' | 'down' | null>(null);
+  const [priceFlash, setPriceFlash] = useState<"up" | "down" | null>(null);
   const prevPriceRef = useRef<number>(crypto.current_price);
-  
+
   // 가격 변동 감지 및 애니메이션 트리거
   useEffect(() => {
     const currentPrice = crypto.current_price;
     const prevPrice = prevPriceRef.current;
-    
+
     if (prevPrice !== currentPrice) {
       if (currentPrice > prevPrice) {
-        setPriceFlash('up');
+        setPriceFlash("up");
       } else if (currentPrice < prevPrice) {
-        setPriceFlash('down');
+        setPriceFlash("down");
       }
-      
+
       // 500ms 후 애니메이션 제거
       const timer = setTimeout(() => {
         setPriceFlash(null);
       }, 500);
-      
+
       prevPriceRef.current = currentPrice;
-      
+
       return () => clearTimeout(timer);
     }
   }, [crypto.current_price]);
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('ko-KR', {
-      style: 'currency',
-      currency: 'KRW',
+    return new Intl.NumberFormat("ko-KR", {
+      style: "currency",
+      currency: "KRW",
       minimumFractionDigits: 0,
       maximumFractionDigits: price < 1000 ? 2 : 0,
     }).format(price);
@@ -72,25 +73,54 @@ export function CryptoRow({
   };
 
   const getRankDisplay = (index: number) => {
-    if (index === 0) return { icon: '👑', text: '1위', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-gradient-to-br from-yellow-100 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30' };
-    if (index === 1) return { icon: '🥈', text: '2위', color: 'text-gray-600 dark:text-gray-400', bg: 'bg-gradient-to-br from-gray-100 to-slate-100 dark:from-gray-800/50 dark:to-slate-800/50' };
-    if (index === 2) return { icon: '🥉', text: '3위', color: 'text-orange-600 dark:text-orange-400', bg: 'bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30' };
-    if (index < 10) return { icon: '🔝', text: `${index + 1}위`, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20' };
-    return { icon: '#', text: `${index + 1}`, color: 'text-gray-500 dark:text-gray-400', bg: 'bg-gray-50 dark:bg-gray-800/30' };
+    if (index === 0)
+      return {
+        icon: "👑",
+        text: "1위",
+        color: "text-yellow-600 dark:text-yellow-400",
+        bg: "bg-gradient-to-br from-yellow-100 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30",
+      };
+    if (index === 1)
+      return {
+        icon: "🥈",
+        text: "2위",
+        color: "text-gray-600 dark:text-gray-400",
+        bg: "bg-gradient-to-br from-gray-100 to-slate-100 dark:from-gray-800/50 dark:to-slate-800/50",
+      };
+    if (index === 2)
+      return {
+        icon: "🥉",
+        text: "3위",
+        color: "text-orange-600 dark:text-orange-400",
+        bg: "bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30",
+      };
+    if (index < 10)
+      return {
+        icon: "🔝",
+        text: `${index + 1}위`,
+        color: "text-blue-600 dark:text-blue-400",
+        bg: "bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20",
+      };
+    return {
+      icon: "#",
+      text: `${index + 1}`,
+      color: "text-gray-500 dark:text-gray-400",
+      bg: "bg-gray-50 dark:bg-gray-800/30",
+    };
   };
 
   const getCoinIcon = (symbol: string) => {
     const iconMap: { [key: string]: string } = {
-      'BTC': '₿',
-      'ETH': 'Ξ',
-      'XRP': 'ΧΡΡ',
-      'ADA': '₳',
-      'SOL': '◎',
-      'DOGE': '🐕',
-      'SHIB': '🐕',
-      'PEPE': '🐸',
-      'BONK': '🐕',
-      'FLOKI': '🐕'
+      BTC: "₿",
+      ETH: "Ξ",
+      XRP: "ΧΡΡ",
+      ADA: "₳",
+      SOL: "◎",
+      DOGE: "🐕",
+      SHIB: "🐕",
+      PEPE: "🐸",
+      BONK: "🐕",
+      FLOKI: "🐕",
     };
     return iconMap[symbol] || symbol.slice(0, 2);
   };
@@ -98,23 +128,34 @@ export function CryptoRow({
   const rank = getRankDisplay(index);
 
   // 모바일 카드 스타일 - 전문적이고 가독성 좋은 디자인
-  if (variant === 'mobile') {
+  if (variant === "mobile") {
     return (
-      <div 
+      <div
         className={`
           group relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer touch-manipulation active:scale-[0.98] 
-          ${index < 3 
-            ? 'bg-gradient-to-br from-white to-yellow-50/30 dark:from-gray-800 dark:to-yellow-900/10 border-yellow-300/30 dark:border-yellow-600/20 shadow-lg shadow-yellow-500/10' 
-            : 'bg-white/95 dark:bg-gray-800/95 border-gray-200/40 dark:border-gray-700/40 shadow-lg shadow-gray-500/10'
+          ${
+            index < 3
+              ? "bg-gradient-to-br from-white to-yellow-50/30 dark:from-gray-800 dark:to-yellow-900/10 border-yellow-300/30 dark:border-yellow-600/20 shadow-lg shadow-yellow-500/10"
+              : "bg-white/95 dark:bg-gray-800/95 border-gray-200/40 dark:border-gray-700/40 shadow-lg shadow-gray-500/10"
           } backdrop-blur-xl hover:shadow-xl
-          ${priceFlash === 'up' ? 'bg-red-100/80 dark:bg-red-900/30 animate-pulse border-red-300 dark:border-red-600' : ''}
-          ${priceFlash === 'down' ? 'bg-blue-100/80 dark:bg-blue-900/30 animate-pulse border-blue-300 dark:border-blue-600' : ''}
+          ${
+            priceFlash === "up"
+              ? "bg-red-100/80 dark:bg-red-900/30 animate-pulse border-red-300 dark:border-red-600"
+              : ""
+          }
+          ${
+            priceFlash === "down"
+              ? "bg-blue-100/80 dark:bg-blue-900/30 animate-pulse border-blue-300 dark:border-blue-600"
+              : ""
+          }
         `}
         onClick={onClick}
       >
         {/* 순위 배지 - 좌상단 */}
         <div className="absolute top-4 left-4 z-10">
-          <div className={`${rank.bg} ${rank.color} px-2.5 py-1 rounded-xl flex items-center space-x-1.5 shadow-md border border-white/20`}>
+          <div
+            className={`${rank.bg} ${rank.color} px-2.5 py-1 rounded-xl flex items-center space-x-1.5 shadow-md border border-white/20`}
+          >
             <span className="text-sm">{rank.icon}</span>
             <span className="text-xs font-bold tracking-wide">{rank.text}</span>
           </div>
@@ -129,31 +170,33 @@ export function CryptoRow({
             }}
             className="w-9 h-9 rounded-xl bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm flex items-center justify-center text-lg hover:scale-110 focus:outline-none transition-all shadow-md border border-white/30 dark:border-gray-600/30"
           >
-            {isFavorite ? '⭐' : '☆'}
+            {isFavorite ? "⭐" : "☆"}
           </button>
         </div>
-        
+
         {/* 메인 컨텐츠 영역 - 패딩 조정 */}
         <div className="pt-20 pb-6 px-5">
           {/* 코인 정보 섹션 */}
           <div className="flex items-start space-x-4 mb-5">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg border-2 border-white/50 flex-shrink-0 ${
-              index < 3 
-                ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400' 
-                : 'bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600'
-            }`}>
+            <div
+              className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg border-2 border-white/50 flex-shrink-0 ${
+                index < 3
+                  ? "bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400"
+                  : "bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600"
+              }`}
+            >
               <span className="text-base font-bold text-white">
                 {getCoinIcon(crypto.symbol)}
               </span>
             </div>
-            
+
             <div className="flex-1 min-w-0">
               <div className="mb-1">
                 <h3 className="font-bold text-gray-900 dark:text-gray-100 text-base leading-tight truncate">
                   {crypto.korean_name}
                 </h3>
               </div>
-              
+
               <div className="flex items-center space-x-2 mb-3 flex-wrap">
                 <span className="text-sm text-gray-500 dark:text-gray-400 font-mono tracking-wider">
                   {crypto.symbol}
@@ -164,20 +207,27 @@ export function CryptoRow({
                   {crypto.isOnUpbit && <UpbitBadge size="md" />}
                 </div>
               </div>
-              
+
               {crypto.sector && (
-                <span className={`inline-block px-2.5 py-1 text-xs font-semibold rounded-lg ${SECTOR_COLORS[crypto.sector] || 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
+                <span
+                  className={`inline-block px-2.5 py-1 text-xs font-semibold rounded-lg ${
+                    SECTOR_COLORS[crypto.sector] ||
+                    "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                  }`}
+                >
                   {crypto.sector}
                 </span>
               )}
             </div>
           </div>
-          
+
           {/* 가격 정보 섹션 - 개선된 레이아웃 */}
           <div className="bg-gray-50/80 dark:bg-gray-900/40 rounded-2xl p-4 mb-4 border border-gray-200/30 dark:border-gray-700/30">
             <div className="flex items-end justify-between">
               <div className="flex-1">
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 tracking-wide">현재가</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 tracking-wide">
+                  현재가
+                </p>
                 <p className="text-xl font-bold text-gray-900 dark:text-gray-100 leading-tight tracking-tight">
                   {formatPrice(crypto.current_price)}
                 </p>
@@ -192,56 +242,67 @@ export function CryptoRow({
               </div>
             </div>
           </div>
-          
+
           {/* 거래량 정보 */}
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">24시간 거래량</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+              24시간 거래량
+            </span>
             <span className="text-sm font-bold text-gray-700 dark:text-gray-300 font-mono">
               {formatVolume(crypto.volume)}
             </span>
           </div>
         </div>
-        
+
         {/* 하단 액센트 라인 */}
-        <div className={`h-1.5 ${
-          crypto.is_positive 
-            ? 'bg-gradient-to-r from-emerald-400 to-green-500' 
-            : 'bg-gradient-to-r from-red-400 to-pink-500'
-        }`} />
+        <div
+          className={`h-1.5 ${
+            crypto.is_positive
+              ? "bg-gradient-to-r from-emerald-400 to-green-500"
+              : "bg-gradient-to-r from-red-400 to-pink-500"
+          }`}
+        />
       </div>
     );
   }
 
   // 태블릿 테이블 행 스타일 - 개선된 디자인 + 가격 변동 애니메이션
-  if (variant === 'tablet') {
+  if (variant === "tablet") {
     return (
-      <tr 
+      <tr
         className={`
           group transition-all duration-200 cursor-pointer 
-          ${index < 3 
-            ? 'bg-gradient-to-r from-yellow-50/30 via-white to-white dark:from-yellow-900/10 dark:via-gray-800 dark:to-gray-800 hover:from-yellow-100/50 dark:hover:from-yellow-900/20' 
-            : 'hover:bg-white/80 dark:hover:bg-gray-800/80'
+          ${
+            index < 3
+              ? "bg-gradient-to-r from-yellow-50/30 via-white to-white dark:from-yellow-900/10 dark:via-gray-800 dark:to-gray-800 hover:from-yellow-100/50 dark:hover:from-yellow-900/20"
+              : "hover:bg-white/80 dark:hover:bg-gray-800/80"
           }
-          ${priceFlash === 'up' ? 'bg-red-100/60 dark:bg-red-900/20' : ''}
-          ${priceFlash === 'down' ? 'bg-blue-100/60 dark:bg-blue-900/20' : ''}
+          ${priceFlash === "up" ? "bg-red-100/60 dark:bg-red-900/20" : ""}
+          ${priceFlash === "down" ? "bg-blue-100/60 dark:bg-blue-900/20" : ""}
         `}
         onClick={onClick}
       >
         <td className="px-4 py-5">
           <div className="flex items-center space-x-4">
             {/* 순위 */}
-            <div className={`${rank.bg} ${rank.color} px-2 py-1 rounded-lg flex items-center space-x-1 min-w-[60px] justify-center`}>
+            <div
+              className={`${rank.bg} ${rank.color} px-2 py-1 rounded-lg flex items-center space-x-1 min-w-[60px] justify-center`}
+            >
               <span className="text-sm">{rank.icon}</span>
-              <span className="text-xs font-bold">{index < 10 ? rank.text : index + 1}</span>
+              <span className="text-xs font-bold">
+                {index < 10 ? rank.text : index + 1}
+              </span>
             </div>
-            
+
             {/* 코인 정보 */}
             <div className="flex items-center space-x-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-md ${
-                index < 3 
-                  ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400' 
-                  : 'bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500'
-              }`}>
+              <div
+                className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-md ${
+                  index < 3
+                    ? "bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400"
+                    : "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500"
+                }`}
+              >
                 <span className="text-sm font-bold text-white">
                   {getCoinIcon(crypto.symbol)}
                 </span>
@@ -262,13 +323,13 @@ export function CryptoRow({
             </div>
           </div>
         </td>
-        
+
         <td className="px-4 py-5 text-right">
           <div className="text-sm font-bold text-gray-900 dark:text-gray-100 tabular-nums">
             {formatPrice(crypto.current_price)}
           </div>
         </td>
-        
+
         <td className="px-4 py-5 text-right">
           <PriceChange
             value={crypto.change_amount}
@@ -277,7 +338,7 @@ export function CryptoRow({
             size="sm"
           />
         </td>
-        
+
         <td className="px-4 py-5 text-center">
           <button
             onClick={(e) => {
@@ -286,7 +347,7 @@ export function CryptoRow({
             }}
             className="text-xl hover:scale-110 focus:outline-none transition-all p-2 touch-manipulation rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
           >
-            {isFavorite ? '⭐' : '☆'}
+            {isFavorite ? "⭐" : "☆"}
           </button>
         </td>
       </tr>
@@ -295,26 +356,31 @@ export function CryptoRow({
 
   // 데스크톱 테이블 행 스타일 - 개선된 디자인 + 가격 변동 애니메이션
   return (
-    <tr 
+    <tr
       className={`
         group transition-all duration-200 cursor-pointer border-b border-gray-100/50 dark:border-gray-700/30 
-        ${index < 3 
-          ? 'bg-gradient-to-r from-yellow-50/40 via-white to-white dark:from-yellow-900/10 dark:via-gray-800 dark:to-gray-800 hover:from-yellow-100/60 dark:hover:from-yellow-900/20' 
-          : 'hover:bg-white/80 dark:hover:bg-gray-800/80'
+        ${
+          index < 3
+            ? "bg-gradient-to-r from-yellow-50/40 via-white to-white dark:from-yellow-900/10 dark:via-gray-800 dark:to-gray-800 hover:from-yellow-100/60 dark:hover:from-yellow-900/20"
+            : "hover:bg-white/80 dark:hover:bg-gray-800/80"
         }
-        ${priceFlash === 'up' ? 'bg-red-100/60 dark:bg-red-900/20' : ''}
-        ${priceFlash === 'down' ? 'bg-blue-100/60 dark:bg-blue-900/20' : ''}
+        ${priceFlash === "up" ? "bg-red-100/60 dark:bg-red-900/20" : ""}
+        ${priceFlash === "down" ? "bg-blue-100/60 dark:bg-blue-900/20" : ""}
       `}
       onClick={onClick}
     >
       <td className="px-6 py-6">
         <div className="flex items-center space-x-6">
           {/* 순위 */}
-          <div className={`${rank.bg} ${rank.color} px-3 py-2 rounded-xl flex items-center space-x-2 min-w-[80px] justify-center shadow-sm`}>
+          <div
+            className={`${rank.bg} ${rank.color} px-3 py-2 rounded-xl flex items-center space-x-2 min-w-[80px] justify-center shadow-sm`}
+          >
             <span className="text-lg">{rank.icon}</span>
-            <span className="text-sm font-bold">{index < 10 ? rank.text : `${index + 1}위`}</span>
+            <span className="text-sm font-bold">
+              {index < 10 ? rank.text : `${index + 1}위`}
+            </span>
           </div>
-          
+
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -322,15 +388,17 @@ export function CryptoRow({
             }}
             className="text-2xl hover:scale-110 focus:outline-none transition-all opacity-60 group-hover:opacity-100 p-2 rounded-xl hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
           >
-            {isFavorite ? '⭐' : '☆'}
+            {isFavorite ? "⭐" : "☆"}
           </button>
-          
+
           <div className="flex items-center space-x-4">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
-              index < 3 
-                ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400' 
-                : 'bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500'
-            }`}>
+            <div
+              className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
+                index < 3
+                  ? "bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400"
+                  : "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500"
+              }`}
+            >
               <span className="text-lg font-bold text-white">
                 {getCoinIcon(crypto.symbol)}
               </span>
@@ -344,7 +412,12 @@ export function CryptoRow({
                 {crypto.isOnBinance && <BinanceBadge size="md" />}
                 {crypto.isOnUpbit && <UpbitBadge size="md" />}
                 {crypto.sector && (
-                  <span className={`px-3 py-1 text-xs font-bold rounded-lg ${SECTOR_COLORS[crypto.sector] || 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
+                  <span
+                    className={`px-3 py-1 text-xs font-bold rounded-lg ${
+                      SECTOR_COLORS[crypto.sector] ||
+                      "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                    }`}
+                  >
                     {crypto.sector}
                   </span>
                 )}
@@ -356,13 +429,13 @@ export function CryptoRow({
           </div>
         </div>
       </td>
-      
+
       <td className="px-6 py-6 text-right">
         <div className="text-xl font-bold text-gray-900 dark:text-gray-100 tabular-nums">
           {formatPrice(crypto.current_price)}
         </div>
       </td>
-      
+
       <td className="px-6 py-6 text-right">
         <PriceChange
           value={crypto.change_amount}
@@ -371,13 +444,13 @@ export function CryptoRow({
           size="lg"
         />
       </td>
-      
+
       <td className="px-6 py-6 text-right">
         <div className="text-lg font-semibold text-gray-700 dark:text-gray-300 tabular-nums">
           {formatVolume(crypto.volume)}
         </div>
       </td>
-      
+
       <td className="px-6 py-6 text-center">
         <button
           onClick={(e) => {
@@ -386,7 +459,7 @@ export function CryptoRow({
           }}
           className="text-2xl hover:scale-110 focus:outline-none transition-all p-3 rounded-xl hover:bg-yellow-50 dark:hover:bg-yellow-900/20 opacity-60 group-hover:opacity-100"
         >
-          {isFavorite ? '⭐' : '☆'}
+          {isFavorite ? "⭐" : "☆"}
         </button>
       </td>
     </tr>

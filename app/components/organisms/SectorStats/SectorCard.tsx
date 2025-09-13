@@ -110,11 +110,7 @@ function SectorCardComponent({ sector, stats, onSectorClick, formatNumber }: Sec
         {/* Enhanced Progress indicator */}
         <div className="mt-4 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded-full h-3 overflow-hidden shadow-inner">
           <div
-            className={`h-full transition-all duration-700 ease-out shadow-lg ${
-              isPositive
-                ? "bg-gradient-to-r from-emerald-400 via-green-500 to-emerald-600"
-                : "bg-gradient-to-r from-red-400 via-pink-500 to-red-600"
-            }`}
+            className="h-full transition-all duration-700 ease-out shadow-lg bg-gradient-to-r from-red-400 via-red-500 to-red-600"
             style={{
               width: `${Math.min(Math.abs(stats.avgChange) * 5, 100)}%`,
             }}

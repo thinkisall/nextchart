@@ -161,7 +161,7 @@ const sseManager = new SSEConnectionManager();
 // 전역 데이터 페칭 (모든 연결에서 공유)
 let globalFetchInterval: NodeJS.Timeout | null = null;
 let lastFetchTime = 0;
-const FETCH_COOLDOWN = 2900; // 3초 쿨다운으로 증가 (API 안정성 확보)
+const FETCH_COOLDOWN = 900; // 1초 쿨다운 (빠른 업데이트)
 
 const startGlobalFetching = () => {
   if (globalFetchInterval) return;
@@ -197,8 +197,8 @@ const startGlobalFetching = () => {
   // 즉시 첫 데이터 전송
   fetchAndBroadcast();
   
-  // 3초마다 데이터 업데이트 (더 안정적인 주기)
-  globalFetchInterval = setInterval(fetchAndBroadcast, 3000);
+  // 1초마다 데이터 업데이트 (실시간성 향상)
+  globalFetchInterval = setInterval(fetchAndBroadcast, 1000);
 };
 
 const stopGlobalFetching = () => {
