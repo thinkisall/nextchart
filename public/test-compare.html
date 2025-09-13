@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>바이낸스-빗썸 비교 테스트</title>
+</head>
+<body>
+    <h1>바이낸스와 빗썸 코인 비교</h1>
+    <div id="results"></div>
+
+    <script>
+        async function compareSymbols() {
+            try {
+                // 바이낸스 API에서 심볼 가져오기
+                const binanceResponse = await fetch('http://localhost:3000/api/binance/symbols');
+                const binanceData = await binanceResponse.json();
+                const binanceSymbols = new Set(binanceData.symbols.map(s => s.baseAsset));
+
+                // 빗썸 API에서 심볼 가져오기
+                const bithumbResponse = await fetch('https://api.bithumb.com/public/ticker/ALL_KRW');
+                const bithumbData = await bithumbResponse.json();
+                const bithumbSymbols = new Set(Object.keys(bithumbData.data).filter(k => k !== 'date'));
+
+                // 교집합 찾기
+                const commonSymbols = [...binanceSymbols].filter(symbol => bithumbSymbols.has(symbol));
+
+                // 결과 표시
+                document.getElementById('results').innerHTML = `
+                    <p><strong>바이낸스 심볼 수:</strong> ${binanceSymbols.size}</p>
+                    <p><strong>빗썸 심볼 수:</strong> ${bithumbSymbols.size}</p>
+                    <p><strong>공통 심볼 수:</strong> ${commonSymbols.length}</p>
+                    <h3>공통 심볼들 (처음 30개):</h3>
+                    <ul>
+                        ${commonSymbols.slice(0, 30).sort().map(symbol => `<li>${symbol}</li>`).join('')}
+                    </ul>
+                `;
+            } catch (error) {
+                document.getElementById('results').innerHTML = `<p>오류: ${error.message}</p>`;
+            }
+        }
+
+        compareSymbols();
+    </script>
+</body>
+</html>

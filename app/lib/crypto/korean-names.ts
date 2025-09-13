@@ -219,7 +219,7 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   ORCA: "오르카",
   EPT: "벨런스",
   HAEDAL: "해달",
-  PARTI: "파티",
+  PARTI: "파티클",
   SXT: "SXT",
   PROMPT: "프롬프트",
   SIGN: "사인",

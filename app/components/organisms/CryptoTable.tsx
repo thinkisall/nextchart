@@ -81,56 +81,57 @@ export function CryptoTable({ cryptos, loading, error, onCryptoClick, onToggleFa
   return (
     <div className="bg-transparent">
       {/* 모바일 최적화된 헤더 */}
-      <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800/80 dark:to-slate-700/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-600/30">
-        <div className="px-3 sm:px-6 py-3 sm:py-4">
-          <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+      <div className="bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-gray-800 dark:via-blue-800 dark:to-purple-800">
+        <div className="px-4 sm:px-6 py-4 sm:py-6">
+          <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-sm sm:text-lg font-bold text-slate-900 dark:text-slate-100">실시간 시세</h2>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">실시간 암호화폐 가격</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">🏆 실시간 순위</h2>
+              <p className="text-sm sm:text-base text-blue-100">24시간 변동률 기준 • 실시간 업데이트</p>
             </div>
-            <div className="flex items-center justify-between sm:justify-end space-x-3 sm:space-x-4 text-xs sm:text-sm">
-              <div className="flex items-center space-x-1 sm:space-x-2">
-                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                <span className="text-slate-600 dark:text-slate-400">실시간</span>
+            <div className="flex items-center justify-between sm:justify-end space-x-4 sm:space-x-6">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-sm text-green-100 font-medium">LIVE</span>
               </div>
-              <div className="text-slate-500 dark:text-slate-400 font-medium">
-                페이지 {currentPage} / {totalPages}
+              <div className="text-sm text-blue-200 font-medium bg-white/10 px-3 py-1 rounded-lg">
+                {currentPage} / {totalPages}
               </div>
             </div>
           </div>
         </div>
       </div>
+
       {/* 메인 테이블 컨테이너 */}
       <div className="bg-transparent">
         {/* 데스크톱 테이블 - 태블릿 이상에서만 표시 */}
         <div className="hidden lg:block">
-          <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl">
+          <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl">
             <table className="w-full">
               <thead className="sticky-header">
-                <tr className="border-b border-slate-200/30 dark:border-slate-700/30">
-                  <th className="px-4 xl:px-6 py-3 xl:py-4 text-left">
+                <tr className="border-b border-gray-200/30 dark:border-gray-700/30 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
+                  <th className="px-6 py-4 text-left">
                     <div className="flex items-center space-x-2">
-                      <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">종목</span>
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">🏆 순위 & 종목</span>
                     </div>
                   </th>
-                  <th className="px-4 xl:px-6 py-3 xl:py-4 text-right">
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">가격</span>
+                  <th className="px-6 py-4 text-right">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">💰 현재가</span>
                   </th>
-                  <th className="px-4 xl:px-6 py-3 xl:py-4 text-right">
-                    <div className="flex items-center justify-end space-x-1">
-                      <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">24시간 변동</span>
-                      <span className="text-xs text-slate-400">↓</span>
+                  <th className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end space-x-2">
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📈 24시간 변동</span>
+                      <span className="text-xs text-blue-500">↓</span>
                     </div>
                   </th>
-                  <th className="px-4 xl:px-6 py-3 xl:py-4 text-right">
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">거래량</span>
+                  <th className="px-6 py-4 text-right">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📊 거래량</span>
                   </th>
-                  <th className="px-4 xl:px-6 py-3 xl:py-4 text-center">
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">관심</span>
+                  <th className="px-6 py-4 text-center">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">⭐ 관심</span>
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200/20 dark:divide-slate-700/20">
+              <tbody className="divide-y divide-gray-200/20 dark:divide-gray-700/20">
                 {currentItems.map((crypto, index) => (
                   <CryptoRow
                     key={`desktop-${crypto.symbol}`}
@@ -139,7 +140,7 @@ export function CryptoTable({ cryptos, loading, error, onCryptoClick, onToggleFa
                     onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
                     isFavorite={isFavorite?.(crypto.symbol) || false}
                     variant="desktop"
-                    index={index}
+                    index={index + (currentPage - 1) * 20}
                   />
                 ))}
               </tbody>
@@ -149,25 +150,25 @@ export function CryptoTable({ cryptos, loading, error, onCryptoClick, onToggleFa
 
         {/* 태블릿 테이블 - 중간 크기 화면용 */}
         <div className="hidden md:block lg:hidden">
-          <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl">
+          <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl">
             <table className="w-full">
               <thead className="sticky-header">
-                <tr className="border-b border-slate-200/30 dark:border-slate-700/30">
-                  <th className="px-3 py-3 text-left">
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">종목</span>
+                <tr className="border-b border-gray-200/30 dark:border-gray-700/30 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
+                  <th className="px-4 py-4 text-left">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">🏆 순위 & 종목</span>
                   </th>
-                  <th className="px-3 py-3 text-right">
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">가격</span>
+                  <th className="px-4 py-4 text-right">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">💰 현재가</span>
                   </th>
-                  <th className="px-3 py-3 text-right">
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">변동률</span>
+                  <th className="px-4 py-4 text-right">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📈 변동률</span>
                   </th>
-                  <th className="px-3 py-3 text-center">
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">♡</span>
+                  <th className="px-4 py-4 text-center">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">⭐</span>
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200/20 dark:divide-slate-700/20">
+              <tbody className="divide-y divide-gray-200/20 dark:divide-gray-700/20">
                 {currentItems.map((crypto, index) => (
                   <CryptoRow
                     key={`tablet-${crypto.symbol}`}
@@ -176,7 +177,7 @@ export function CryptoTable({ cryptos, loading, error, onCryptoClick, onToggleFa
                     onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
                     isFavorite={isFavorite?.(crypto.symbol) || false}
                     variant="tablet"
-                    index={index}
+                    index={index + (currentPage - 1) * 20}
                   />
                 ))}
               </tbody>
@@ -185,7 +186,7 @@ export function CryptoTable({ cryptos, loading, error, onCryptoClick, onToggleFa
         </div>
 
         {/* 모바일 카드 레이아웃 */}
-        <div className="md:hidden bg-transparent p-2 sm:p-3 space-y-2">
+        <div className="md:hidden bg-transparent p-3 space-y-3">
           {currentItems.map((crypto, index) => (
             <CryptoRow
               key={`mobile-${crypto.symbol}`}
@@ -194,7 +195,7 @@ export function CryptoTable({ cryptos, loading, error, onCryptoClick, onToggleFa
               onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
               isFavorite={isFavorite?.(crypto.symbol) || false}
               variant="mobile"
-              index={index}
+              index={index + (currentPage - 1) * 20}
             />
           ))}
         </div>

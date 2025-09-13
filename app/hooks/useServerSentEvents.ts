@@ -105,18 +105,13 @@ export function useServerSentEvents() {
             setLastUpdated(new Date());
           }
         } catch (error) {
-          console.error('Error parsing SSE data:', error);
+          // Error handling - removed console.error for production
           setError('데이터 파싱 오류');
         }
       };
 
       eventSource.onerror = (error) => {
-        console.error('SSE error details:', {
-          error,
-          readyState: eventSource.readyState,
-          url: eventSource.url,
-          timestamp: new Date().toISOString()
-        });
+        // Error handling - removed console.error for production
         setError(`서버 연결 오류 (상태: ${eventSource.readyState})`);
         setIsConnected(false);
         
@@ -134,7 +129,7 @@ export function useServerSentEvents() {
       };
 
     } catch (error) {
-      console.error('Error creating SSE connection:', error);
+      // Error handling - removed console.error for production
       setError('SSE 연결 생성 실패');
     }
   };

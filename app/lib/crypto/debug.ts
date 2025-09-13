@@ -21,14 +21,10 @@ export function getSectorMappingStats(apiSymbols: string[]) {
   };
 }
 
-// 콘솔??매핑 ?�태 출력
+// 콘솔에 매핑 상태 출력
 export function logMappingStatus(apiSymbols: string[]) {
   const stats = getSectorMappingStats(apiSymbols);
   
   // Debug information - removed console logs for production
-  return stats;
-  
-  console.groupEnd();
-  
   return stats;
 }

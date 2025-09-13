@@ -83,13 +83,13 @@ export function useUpbitWebSocket(config: UpbitWebSocketConfig) {
                 });
               }
             } catch (parseError) {
-              console.error('Error parsing WebSocket message:', parseError);
+              // Error handling - removed console.error for production
             }
           };
           
           reader.readAsText(buffer);
         } catch (error) {
-          console.error('Error processing WebSocket message:', error);
+          // Error handling - removed console.error for production
         }
       };
 
@@ -104,14 +104,14 @@ export function useUpbitWebSocket(config: UpbitWebSocketConfig) {
       };
 
       ws.onerror = (error) => {
-        console.error('Upbit WebSocket error:', error);
-        setError('WebSocket ?�결 ?�패');
+        // Error handling - removed console.error for production
+        setError('WebSocket 연결 실패');
         setIsConnected(false);
       };
 
     } catch (error) {
-      console.error('Error creating WebSocket connection:', error);
-      setError('WebSocket ?�결 ?�성 ?�패');
+      // Error handling - removed console.error for production
+      setError('WebSocket 연결 생성 실패');
     }
   };
 

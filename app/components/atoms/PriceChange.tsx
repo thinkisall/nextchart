@@ -23,28 +23,28 @@ export function PriceChange({ value, percentage, isPositive, size = 'md' }: Pric
   
   const sizeClasses = {
     xs: {
-      container: 'px-1.5 py-0.5',
-      percentage: 'text-xs font-semibold',
-      value: 'text-xs hidden sm:block',
-      icon: 'text-xs'
-    },
-    sm: {
-      container: 'px-2 py-1',
+      container: 'px-2 py-1.5',
       percentage: 'text-xs font-bold',
       value: 'text-xs',
       icon: 'text-xs'
     },
-    md: {
-      container: 'px-2 sm:px-3 py-1 sm:py-1.5',
-      percentage: 'text-xs sm:text-sm font-bold',
+    sm: {
+      container: 'px-2.5 py-1.5',
+      percentage: 'text-sm font-bold',
       value: 'text-xs',
-      icon: 'text-xs sm:text-sm'
+      icon: 'text-sm'
+    },
+    md: {
+      container: 'px-3 py-2',
+      percentage: 'text-sm font-bold',
+      value: 'text-xs',
+      icon: 'text-sm'
     },
     lg: {
-      container: 'px-3 sm:px-4 py-1.5 sm:py-2',
-      percentage: 'text-sm sm:text-base font-bold',
-      value: 'text-xs sm:text-sm',
-      icon: 'text-sm sm:text-base'
+      container: 'px-4 py-2.5',
+      percentage: 'text-base font-bold',
+      value: 'text-sm',
+      icon: 'text-base'
     }
   };
 
@@ -52,24 +52,24 @@ export function PriceChange({ value, percentage, isPositive, size = 'md' }: Pric
 
   if (isPositive) {
     return (
-      <div className={`inline-flex flex-col items-end space-y-0.5 bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/30 dark:to-green-900/30 border border-emerald-200 dark:border-emerald-700/50 rounded-lg ${classes.container}`}>
-        <div className={`flex items-center space-x-1 text-emerald-600 dark:text-emerald-400 ${classes.percentage}`}>
+      <div className={`inline-flex flex-col items-end space-y-1 bg-gradient-to-br from-emerald-500 to-green-600 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 ${classes.container}`}>
+        <div className={`flex items-center space-x-1.5 ${classes.percentage}`}>
+          <span className={`${classes.icon} animate-pulse`}>🚀</span>
           <span>{symbol}{formatPercentage(percentage)}</span>
-          <span className={`${classes.icon}`}>▲</span>
         </div>
-        <div className={`text-emerald-600/70 dark:text-emerald-400/70 ${classes.value} tabular-nums`}>
+        <div className={`text-emerald-100 ${classes.value} tabular-nums font-medium`}>
           {symbol}{formatValue(value)}
         </div>
       </div>
     );
   } else {
     return (
-      <div className={`inline-flex flex-col items-end space-y-0.5 bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/30 dark:to-pink-900/30 border border-red-200 dark:border-red-700/50 rounded-lg ${classes.container}`}>
-        <div className={`flex items-center space-x-1 text-red-600 dark:text-red-400 ${classes.percentage}`}>
+      <div className={`inline-flex flex-col items-end space-y-1 bg-gradient-to-br from-red-500 to-pink-600 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 ${classes.container}`}>
+        <div className={`flex items-center space-x-1.5 ${classes.percentage}`}>
+          <span className={`${classes.icon} animate-pulse`}>📉</span>
           <span>{formatPercentage(percentage)}</span>
-          <span className={`${classes.icon}`}>▼</span>
         </div>
-        <div className={`text-red-600/70 dark:text-red-400/70 ${classes.value} tabular-nums`}>
+        <div className={`text-red-100 ${classes.value} tabular-nums font-medium`}>
           {formatValue(value)}
         </div>
       </div>

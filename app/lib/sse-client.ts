@@ -37,12 +37,12 @@ export class SSEConnectionManager {
           const data = JSON.parse(event.data);
           this.onMessage(data);
         } catch (error) {
-          console.error('SSE message parsing error:', error);
+          // Error handling - removed console.error for production
         }
       };
 
       this.eventSource.onerror = (error) => {
-        console.error('SSE connection error:', error);
+        // Error handling - removed console.error for production
         this.onStatusChange(false, 'Connection error');
         
         // 의도적으로 닫힌 것이 아니고 재연결 시도 횟수가 남아있다면
@@ -52,7 +52,7 @@ export class SSEConnectionManager {
       };
 
     } catch (error) {
-      console.error('Failed to create SSE connection:', error);
+      // Error handling - removed console.error for production
       this.onStatusChange(false, 'Failed to create connection');
     }
   }

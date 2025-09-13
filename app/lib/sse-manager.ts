@@ -89,7 +89,7 @@ const startGlobalFetching = () => {
       sseManager.broadcast(sseData);
       
     } catch (error) {
-      console.error('Global SSE fetch error:', error);
+      // Error handling - removed console.error for production
       const errorData = `data: ${JSON.stringify({ 
         error: 'Failed to fetch data',
         details: error instanceof Error ? error.message : 'Unknown error',
