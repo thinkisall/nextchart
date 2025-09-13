@@ -95,7 +95,7 @@ export function SectorGrid({ sectors, onSectorClick, formatNumber }: SectorGridP
                 </span>
                 <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                  변동률 기준
+                  평균 {stats.avgChange > 0 ? '+' : ''}{stats.avgChange.toFixed(2)}%
                 </span>
               </div>
             </div>
@@ -109,17 +109,17 @@ export function SectorGrid({ sectors, onSectorClick, formatNumber }: SectorGridP
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="space-y-2">
               <div className="text-2xl">📈</div>
-              <h4 className="font-semibold text-gray-900 dark:text-gray-100">실시간 분석</h4>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">실시간 순위</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                1초마다 업데이트되는 섹터별 실시간 데이터
+                평균 변동률 기준으로 실시간 섹터 순위 제공
               </p>
             </div>
             
             <div className="space-y-2">
               <div className="text-2xl">🎯</div>
-              <h4 className="font-semibold text-gray-900 dark:text-gray-100">정확한 분류</h4>
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">동적 정렬</h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                AI 기반 자동 분류로 정확한 섹터 구분
+                실시간 성과에 따라 자동으로 섹터 순위 업데이트
               </p>
             </div>
             

@@ -1,5 +1,5 @@
 import { CryptoPrice } from "../../../lib/types";
-import { getConsolidatedSectors, SECTOR_PRIORITY } from "../../../lib/crypto/consolidation";
+import { getConsolidatedSectors } from "../../../lib/crypto/consolidation";
 
 export function useSectorStats(cryptos: CryptoPrice[]) {
   // formatNumber 함수
@@ -38,7 +38,7 @@ export function useSectorStats(cryptos: CryptoPrice[]) {
     return acc;
   }, {} as Record<string, { count: number; totalVolume: number; avgChange: number; positiveCount: number }>);
 
-  // 평균 계산 및 정렬
+  // 평균 계산 및 정렬 - 평균 변동률 기준으로 정렬
   const sortedSectors = Object.entries(sectorStats)
     .map(([sector, stats]) => {
       return [
@@ -49,12 +49,12 @@ export function useSectorStats(cryptos: CryptoPrice[]) {
         },
       ] as [string, { count: number; totalVolume: number; avgChange: number; positiveCount: number }];
     })
-    .sort(([a], [b]) => {
-      const priorityA = SECTOR_PRIORITY[a] || 0;
-      const priorityB = SECTOR_PRIORITY[b] || 0;
-      return priorityB - priorityA;
+    .filter(([_, stats]) => stats.count >= 2) // 최소 2개 이상의 코인이 있는 섹터만 포함
+    .sort(([_, statsA], [__, statsB]) => {
+      // 평균 변동률 기준 내림차순 정렬 (높은 변동률이 먼저)
+      return statsB.avgChange - statsA.avgChange;
     })
-    .slice(0, 12);
+    .slice(0, 12); // 상위 12개 섹터만 표시
 
   const totalPositive = cryptos.filter((c) => c.is_positive).length;
   const totalNegative = cryptos.filter((c) => !c.is_positive).length;
