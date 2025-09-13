@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import { useState, useCallback } from "react";
 import { useSectorData } from "../../hooks/useSectorData";
 import { ClientOnly } from "../../hooks/useIsClient";
 import { CryptoTable } from "../../components/organisms/CryptoTable";
@@ -10,11 +11,16 @@ import { Breadcrumb } from "../../components/atoms/Breadcrumb";
 import { useFavorites } from "../../hooks/useFavorites";
 import { CRYPTO_SECTORS } from "../../lib/crypto";
 import { HeaderAd, FooterAd, SquareAd } from "../../components/AdSenseV2";
+import { SelectedCoinInfo } from "../../features/crypto/components/SelectedCoinInfo";
+import { CryptoPrice } from "../../lib/types";
 
 export default function SectorPage() {
   const params = useParams();
   const router = useRouter();
   const sectorName = decodeURIComponent(params.sectorName as string);
+  
+  // 선택된 코인 상태 추가
+  const [selectedCoin, setSelectedCoin] = useState<CryptoPrice | null>(null);
 
   const {
     filteredCryptos,
@@ -27,6 +33,16 @@ export default function SectorPage() {
   } = useSectorData(sectorName);
 
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
+
+  // 코인 클릭 핸들러 추가
+  const handleCryptoClick = useCallback((crypto: CryptoPrice) => {
+    setSelectedCoin(crypto);
+  }, []);
+
+  // 코인 정보 패널 닫기 핸들러 추가
+  const handleCloseCoinInfo = useCallback(() => {
+    setSelectedCoin(null);
+  }, []);
 
   const handleSectorChange = (newSector: string) => {
     router.push(`/sector/${encodeURIComponent(newSector)}`);
@@ -216,7 +232,7 @@ export default function SectorPage() {
                 cryptos={filteredCryptos}
                 loading={isLoading}
                 error={error}
-                onCryptoClick={() => {}}
+                onCryptoClick={handleCryptoClick}
                 isFavorite={isFavorite}
                 onToggleFavorite={toggleFavorite}
               />
@@ -244,6 +260,12 @@ export default function SectorPage() {
         </ClientOnly>
 
         <FooterAd />
+
+        {/* 선택된 코인 정보 패널 */}
+        <SelectedCoinInfo 
+          selectedCoin={selectedCoin} 
+          onClose={handleCloseCoinInfo} 
+        />
       </div>
     </div>
   );
