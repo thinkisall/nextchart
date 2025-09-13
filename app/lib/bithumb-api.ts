@@ -50,7 +50,6 @@ const BINANCE_ALPHA_COINS = new Set([
 
 // 바이낸스에서 거래되는 주요 코인들 (빗썸과 겹치는 코인들)
 const BINANCE_COINS = new Set([
-  "NXPC",
   "1INCH",
   "A",
   "AAVE",
