@@ -18,126 +18,160 @@ function SectorCardComponent({ sector, stats, onSectorClick, formatNumber }: Sec
   const positiveRate = (stats.positiveCount / stats.count) * 100;
   const isPositive = stats.avgChange >= 0;
 
+  // 섹터별 아이콘 매핑
+  const getSectorIcon = (sectorName: string) => {
+    const iconMap: { [key: string]: string } = {
+      'DeFi': '🏦',
+      'AI': '🤖',
+      'GameFi': '🎮',
+      'NFT': '🎨',
+      'Metaverse': '🌐',
+      'Layer1': '⛓️',
+      'Layer2': '🔗',
+      'Exchange': '💱',
+      'Privacy': '🔒',
+      'Oracle': '🔮',
+      'Infrastructure': '🏗️',
+      'Storage': '💾',
+      'Payment': '💳',
+      'Fan Token': '⚽',
+      'Meme': '😂',
+      'Stablecoin': '💰',
+      'PoW': '⚡',
+      'PoS': '🏅',
+      'DEX': '🔄',
+      'Lending': '🏪'
+    };
+    return iconMap[sectorName] || '📊';
+  };
+
   return (
     <button
       onClick={() => onSectorClick(sector)}
-      className="group relative overflow-hidden bg-gradient-to-br from-white/80 to-white/60 dark:from-gray-800/80 dark:to-gray-900/60 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-gray-700/40 p-5 hover:bg-gradient-to-br hover:from-white/90 hover:to-white/80 dark:hover:from-gray-800/90 dark:hover:to-gray-900/80 transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/20 w-full"
+      className="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-800/90 dark:to-gray-900/70 backdrop-blur-xl rounded-3xl border border-white/40 dark:border-gray-700/40 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] w-full min-h-[280px]"
     >
-      {/* Animated background gradient effect */}
+      {/* 배경 그라데이션 효과 */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${
+        className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ${
           isPositive
-            ? "from-emerald-500/8 via-green-500/5 to-teal-500/8 dark:from-emerald-400/15 dark:via-green-400/10 dark:to-teal-400/15"
-            : "from-red-500/8 via-pink-500/5 to-rose-500/8 dark:from-red-400/15 dark:via-pink-400/10 dark:to-rose-400/15"
-        } opacity-0 group-hover:opacity-100 transition-all duration-500`}
+            ? "bg-gradient-to-br from-emerald-50/50 via-green-50/30 to-teal-50/50 dark:from-emerald-900/20 dark:via-green-900/10 dark:to-teal-900/20"
+            : "bg-gradient-to-br from-red-50/50 via-pink-50/30 to-rose-50/50 dark:from-red-900/20 dark:via-pink-900/10 dark:to-rose-900/20"
+        }`}
       />
 
-      {/* Subtle border glow effect */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400/0 via-blue-400/20 to-blue-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* 장식적 원형 요소들 */}
+      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-indigo-400/10 to-transparent rounded-full transform translate-x-10 -translate-y-10" />
+      <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full transform -translate-x-8 translate-y-8" />
 
-      <div className="relative z-10">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          <span
-            className={`px-3 py-1.5 text-xs font-bold rounded-full shadow-lg ${
-              SECTOR_COLORS[sector] ||
-              "bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 text-gray-700 dark:text-gray-300"
-            } group-hover:scale-105 transition-transform duration-300`}
-          >
-            {sector.length > 10 ? sector.substring(0, 8) + ".." : sector}
-          </span>
-          <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-              {stats.count}
-            </span>
-            <div className="w-2 h-2 bg-gradient-to-r from-gray-400 to-gray-500 dark:from-gray-500 dark:to-gray-600 rounded-full group-hover:from-blue-500 group-hover:to-blue-600 transition-all duration-300 group-hover:scale-125" />
-          </div>
-        </div>
-
-        {/* Performance Metrics */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center p-2 rounded-lg bg-gradient-to-r from-gray-50/50 to-gray-100/50 dark:from-gray-700/30 dark:to-gray-800/30 group-hover:from-blue-50/50 group-hover:to-blue-100/50 dark:group-hover:from-blue-900/20 dark:group-hover:to-blue-800/20 transition-all duration-300">
-            <span className="text-xs font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-1">
-              <span>📈</span>
-              <span>평균 변동률</span>
-            </span>
-            <div
-              className={`flex items-center space-x-1 ${
-                isPositive
-                  ? "text-emerald-600 dark:text-emerald-400"
-                  : "text-red-600 dark:text-red-400"
-              }`}
-            >
-              <span className="text-sm font-bold">
-                {isPositive ? "+" : ""}
-                {stats.avgChange.toFixed(2)}%
-              </span>
-              <span className="text-lg">
-                {isPositive ? "🚀" : "📉"}
-              </span>
+      <div className="relative z-10 p-6 h-full flex flex-col">
+        {/* 헤더 섹션 */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            {/* 섹터 아이콘 */}
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+              <span className="text-xl">{getSectorIcon(sector)}</span>
+            </div>
+            
+            {/* 섹터 이름과 개수 */}
+            <div>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                {sector.length > 12 ? sector.substring(0, 10) + ".." : sector}
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                {stats.count}개 코인
+              </p>
             </div>
           </div>
 
-          <div className="flex justify-between items-center p-2 rounded-lg bg-gradient-to-r from-gray-50/50 to-gray-100/50 dark:from-gray-700/30 dark:to-gray-800/30 group-hover:from-blue-50/50 group-hover:to-blue-100/50 dark:group-hover:from-blue-900/20 dark:group-hover:to-blue-800/20 transition-all duration-300">
-            <span className="text-xs font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-1">
-              <span>🎯</span>
-              <span>시장 심리</span>
-            </span>
-            <span
-              className={`text-sm font-bold flex items-center space-x-1 ${
-                positiveRate >= 50
-                  ? "text-emerald-600 dark:text-emerald-400"
-                  : "text-red-600 dark:text-red-400"
-              }`}
-            >
-              <span>{positiveRate.toFixed(0)}% 강세</span>
-              <span>{positiveRate >= 50 ? "💪" : "😰"}</span>
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-1">
-              <span>💰</span>
-              <span>거래량</span>
-            </span>
-            <span className="text-sm font-bold text-red-600 dark:text-red-400 flex items-center space-x-1">
-              <span>{formatNumber(stats.totalVolume)}</span>
-              <span className="text-xs opacity-70">₩</span>
-            </span>
+          {/* 상태 인디케이터 */}
+          <div className={`w-4 h-4 rounded-full transition-all duration-300 group-hover:scale-125 ${
+            isPositive ? 'bg-gradient-to-r from-emerald-400 to-green-500' : 'bg-gradient-to-r from-red-400 to-pink-500'
+          }`}>
+            <div className={`absolute inset-0 w-4 h-4 rounded-full animate-ping opacity-30 ${
+              isPositive ? 'bg-emerald-400' : 'bg-red-400'
+            }`}></div>
           </div>
         </div>
 
-        {/* Enhanced Progress indicator */}
-        <div className="mt-4 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded-full h-3 overflow-hidden shadow-inner">
-          <div
-            className="h-full transition-all duration-700 ease-out shadow-lg bg-gradient-to-r from-red-400 via-red-500 to-red-600"
-            style={{
-              width: `${Math.min(Math.abs(stats.avgChange) * 5, 100)}%`,
-            }}
-          />
+        {/* 메트릭 섹션 */}
+        <div className="flex-1 space-y-5">
+          {/* 평균 변동률 */}
+          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-2xl p-4 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-2">
+                <span className="text-base">📈</span>
+                <span>평균 변동률</span>
+              </span>
+              <div className={`px-2 py-1 rounded-lg text-xs font-bold ${
+                isPositive 
+                  ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' 
+                  : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+              }`}>
+                {isPositive ? 'BULL' : 'BEAR'}
+              </div>
+            </div>
+            <div className={`text-2xl font-bold ${
+              isPositive
+                ? "text-emerald-600 dark:text-emerald-400"
+                : "text-red-600 dark:text-red-400"
+            }`}>
+              {isPositive ? "+" : ""}
+              {stats.avgChange.toFixed(2)}%
+            </div>
+          </div>
+
+          {/* 시장 심리 */}
+          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-2xl p-4 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-2">
+                <span className="text-base">🎯</span>
+                <span>강세 비율</span>
+              </span>
+            </div>
+            <div className={`text-2xl font-bold ${
+              positiveRate >= 50
+                ? "text-emerald-600 dark:text-emerald-400"
+                : "text-red-600 dark:text-red-400"
+            }`}>
+              {positiveRate.toFixed(0)}%
+            </div>
+            
+            {/* 프로그레스 바 */}
+            <div className="mt-3 bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+              <div
+                className={`h-full transition-all duration-700 ease-out ${
+                  positiveRate >= 50
+                    ? 'bg-gradient-to-r from-emerald-400 to-green-500'
+                    : 'bg-gradient-to-r from-red-400 to-pink-500'
+                }`}
+                style={{ width: `${positiveRate}%` }}
+              />
+            </div>
+          </div>
+
+          {/* 거래량 */}
+          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-2xl p-4 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-2">
+                <span className="text-base">💰</span>
+                <span>거래량</span>
+              </span>
+              <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                {formatNumber(stats.totalVolume)}₩
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Enhanced Sentiment visualization */}
-        <div className="mt-3 space-y-2">
-          <div className="flex justify-between text-xs font-medium">
-            <span className="text-red-500 dark:text-red-400 flex items-center space-x-1">
-              <span>😱</span>
-              <span>약세</span>
-            </span>
-            <span className="text-emerald-500 dark:text-emerald-400 flex items-center space-x-1">
-              <span>강세</span>
-              <span>🚀</span>
-            </span>
-          </div>
-          <div className="bg-gradient-to-r from-red-200 via-yellow-200 to-emerald-200 dark:from-red-800/50 dark:via-yellow-800/50 dark:to-emerald-800/50 rounded-full h-2 overflow-hidden shadow-inner">
-            <div
-              className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 transition-all duration-500 shadow-sm"
-              style={{
-                width: `${positiveRate}%`,
-                marginLeft: `${100 - positiveRate}%`,
-              }}
-            />
-          </div>
+        {/* 하단 액센트 */}
+        <div className="mt-6 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
+          <div className={`h-1 rounded-full transition-all duration-700 bg-gradient-to-r ${
+            isPositive
+              ? 'from-emerald-400 via-green-500 to-emerald-600'
+              : 'from-red-400 via-pink-500 to-red-600'
+          }`} style={{
+            width: `${Math.min(Math.abs(stats.avgChange) * 3, 100)}%`
+          }} />
         </div>
       </div>
     </button>

@@ -58,7 +58,7 @@ export function useSectorStats(cryptos: CryptoPrice[]) {
 
   const totalPositive = cryptos.filter((c) => c.is_positive).length;
   const totalNegative = cryptos.filter((c) => !c.is_positive).length;
-  const positivePercentage = ((totalPositive / cryptos.length) * 100).toFixed(1);
+  const positivePercentage = (totalPositive / cryptos.length) * 100;
 
   return {
     sortedSectors,

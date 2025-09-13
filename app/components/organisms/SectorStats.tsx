@@ -29,7 +29,10 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
   };
 
   return (
-    <div className="bg-transparent">
+    <div className="relative overflow-hidden">
+      {/* 배경 장식 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-purple-50/30 dark:from-blue-900/10 dark:via-transparent dark:to-purple-900/10" />
+      
       <SectorHeader activeSectors={Object.keys(sectorStats).length} />
       
       <MarketOverview
@@ -39,7 +42,7 @@ export function SectorStats({ cryptos }: SectorStatsProps) {
         positivePercentage={positivePercentage}
       />
 
-      <div className="p-4 sm:p-6">
+      <div className="relative p-4 sm:p-6 lg:p-8">
         <SectorCarousel
           sectors={sortedSectors}
           onSectorClick={handleSectorClick}

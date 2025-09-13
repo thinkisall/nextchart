@@ -86,7 +86,7 @@ export function SelectedCoinInfo({ selectedCoin, onClose }: SelectedCoinInfoProp
         
         // 1.5초 후 앱이 실행되지 않으면 웹사이트로 이동
         setTimeout(() => {
-          if (Date.now() - startTime < 2000) {
+          if (Date.now() - startTime < 2000 && urls.fallback) {
             window.open(urls.fallback, '_blank', 'noopener,noreferrer');
           }
         }, 1500);
@@ -97,12 +97,14 @@ export function SelectedCoinInfo({ selectedCoin, onClose }: SelectedCoinInfoProp
           
           // 2초 후 앱이 실행되지 않으면 웹사이트로 이동
           setTimeout(() => {
-            if (!document.hidden) {
+            if (!document.hidden && urls.fallback) {
               window.open(urls.fallback, '_blank', 'noopener,noreferrer');
             }
           }, 2000);
         } catch (error) {
-          window.open(urls.fallback, '_blank', 'noopener,noreferrer');
+          if (urls.fallback) {
+            window.open(urls.fallback, '_blank', 'noopener,noreferrer');
+          }
         }
       }
     } else {
