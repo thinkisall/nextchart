@@ -25,7 +25,6 @@ const BINANCE_ALPHA_COINS = new Set([
   "GRASS",
   "H",
   "MEW",
-  "MLK",
   "MOODENG",
   "NFT",
   "OBT",
@@ -597,25 +596,28 @@ export async function getMarkets(): Promise<MarketData[]> {
 export async function getAllTickers(): Promise<CryptoPrice[]> {
   try {
     // 서버 사이드에서는 절대 URL 필요
-    const baseUrl = typeof window !== 'undefined' 
-      ? '' // 클라이언트 사이드
-      : process.env.NEXTAUTH_URL || process.env.VERCEL_URL || 'http://localhost:3000'; // 서버 사이드
-    
+    const baseUrl =
+      typeof window !== "undefined"
+        ? "" // 클라이언트 사이드
+        : process.env.NEXTAUTH_URL ||
+          process.env.VERCEL_URL ||
+          "http://localhost:3000"; // 서버 사이드
+
     const apiUrl = `${baseUrl}/api/crypto`;
-    
-    console.log('🔗 getAllTickers fetching from:', apiUrl);
-    
+
+    console.log("🔗 getAllTickers fetching from:", apiUrl);
+
     // 타임아웃 설정 (5초)
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
-    
+
     const response = await fetch(apiUrl, {
       signal: controller.signal,
       headers: {
-        'Cache-Control': 'no-cache',
-      }
+        "Cache-Control": "no-cache",
+      },
     });
-    
+
     clearTimeout(timeoutId);
 
     if (!response.ok) {
@@ -686,10 +688,10 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
 
     return processedData as CryptoPrice[];
   } catch (error) {
-    console.error('❌ getAllTickers error:', error);
-    console.error('Error details:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      timestamp: new Date().toISOString()
+    console.error("❌ getAllTickers error:", error);
+    console.error("Error details:", {
+      message: error instanceof Error ? error.message : "Unknown error",
+      timestamp: new Date().toISOString(),
     });
     return [];
   }
