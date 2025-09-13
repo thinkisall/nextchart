@@ -59,6 +59,11 @@ async function fetchBithumbData(): Promise<CryptoPrice[]> {
         const isBinanceAlpha = BINANCE_ALPHA_COINS.has(symbol);
         const isOnUpbit = UPBIT_COINS.has(symbol);
 
+        // 디버깅: 바이낸스 알파 코인 로그
+        if (isBinanceAlpha) {
+          console.log(`🔶 Binance Alpha coin detected: ${symbol} (${cryptoInfo.koreanName})`);
+        }
+
         return {
           symbol,
           korean_name: cryptoInfo.koreanName,

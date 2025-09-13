@@ -12,6 +12,7 @@ import { CryptoFilter } from '../../components/molecules/CryptoFilter';
 import { SectorStats } from '../../components/organisms/SectorStats';
 import { ClientOnly } from '../../hooks/useIsClient';
 import { SquareAd } from '../../components/AdSenseV2';
+import { SelectedCoinInfo } from './components/SelectedCoinInfo';
 
 export function CryptoMarket() {
   // 성능 모니터링 - 일시적으로 비활성화
@@ -20,6 +21,7 @@ export function CryptoMarket() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [filteredData, setFilteredData] = useState<CryptoPrice[]>([]);
   const [isClient, setIsClient] = useState(false);
+  const [selectedCoin, setSelectedCoin] = useState<CryptoPrice | null>(null);
 
   // 클라이언트 사이드에서만 실행되도록 보장
   useEffect(() => {
@@ -63,7 +65,11 @@ export function CryptoMarket() {
   }, [refetch, isClient]);
 
   const handleCryptoClick = useCallback((crypto: CryptoPrice) => {
-    // 클릭 이벤트 처리 로직을 여기에 추가할 수 있습니다
+    setSelectedCoin(crypto);
+  }, []);
+
+  const handleCloseCoinInfo = useCallback(() => {
+    setSelectedCoin(null);
   }, []);
 
   const handleFilteredDataChange = useCallback((filtered: CryptoPrice[]) => {
@@ -217,6 +223,12 @@ export function CryptoMarket() {
           </div>
         </div>
       </ClientOnly>
+
+      {/* Selected Coin Info Panel */}
+      <SelectedCoinInfo 
+        selectedCoin={selectedCoin} 
+        onClose={handleCloseCoinInfo} 
+      />
     </div>
   );
 }

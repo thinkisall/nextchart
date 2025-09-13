@@ -15,6 +15,7 @@ import { CryptoMarketView } from './CryptoMarketView';
  */
 export function CryptoMarketContainer() {
   const [isClient, setIsClient] = useState(false);
+  const [selectedCoin, setSelectedCoin] = useState<CryptoPrice | null>(null);
 
   // 클라이언트 사이드에서만 실행되도록 보장
   useEffect(() => {
@@ -49,8 +50,12 @@ export function CryptoMarketContainer() {
 
   // 이벤트 핸들러들
   const handleCryptoClick = useCallback((crypto: CryptoPrice) => {
-    // 클릭 이벤트 처리 로직을 여기에 추가할 수 있습니다
-    console.log('Crypto clicked:', crypto.symbol);
+    setSelectedCoin(crypto);
+    console.log('Crypto selected:', crypto.symbol);
+  }, []);
+
+  const handleCloseCoinInfo = useCallback(() => {
+    setSelectedCoin(null);
   }, []);
 
   const handleRefreshData = useCallback(() => {
@@ -84,6 +89,7 @@ export function CryptoMarketContainer() {
       // 상태
       sseError={sseError}
       shouldUseVirtualScrolling={shouldUseVirtualScrolling}
+      selectedCoin={selectedCoin}
       
       // 이벤트 핸들러
       onFilteredDataChange={handleFilteredDataChange}
@@ -91,6 +97,7 @@ export function CryptoMarketContainer() {
       onToggleFavorite={toggleFavorite}
       isFavorite={isFavorite}
       onRefresh={handleRefreshData}
+      onCloseCoinInfo={handleCloseCoinInfo}
     />
   );
 }

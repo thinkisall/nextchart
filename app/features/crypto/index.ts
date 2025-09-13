@@ -6,6 +6,7 @@ export { CryptoMarketContainer } from './CryptoMarketContainer';
 export { CryptoMarketView } from './CryptoMarketView';
 export { CryptoDataTableSection } from './components/CryptoDataTableSection';
 export { CryptoFooter } from './components/CryptoFooter';
+export { SelectedCoinInfo } from './components/SelectedCoinInfo';
 
 // 훅들도 export
 export { useCryptoData } from './hooks/useCryptoData';

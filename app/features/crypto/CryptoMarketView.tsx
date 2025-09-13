@@ -5,6 +5,7 @@ import { SquareAd } from '../../components/AdSenseV2';
 import { ClientOnly } from '../../hooks/useIsClient';
 import { CryptoDataTableSection } from './components/CryptoDataTableSection';
 import { CryptoFooter } from './components/CryptoFooter';
+import { SelectedCoinInfo } from './components/SelectedCoinInfo';
 
 interface CryptoMarketViewProps {
   // 데이터
@@ -12,9 +13,10 @@ interface CryptoMarketViewProps {
   finalDisplayData: CryptoPrice[];
   favorites: string[];
   
-  // 상태 (에러는 테이블에서만 사용)
+  // 상태
   sseError: string | null;
   shouldUseVirtualScrolling: boolean;
+  selectedCoin: CryptoPrice | null;
   
   // 이벤트 핸들러
   onFilteredDataChange: (filtered: CryptoPrice[]) => void;
@@ -22,6 +24,7 @@ interface CryptoMarketViewProps {
   onToggleFavorite: (symbol: string) => void;
   isFavorite: (symbol: string) => boolean;
   onRefresh: () => void;
+  onCloseCoinInfo: () => void;
 }
 
 /**
@@ -34,10 +37,12 @@ export function CryptoMarketView({
   favorites,
   sseError,
   shouldUseVirtualScrolling,
+  selectedCoin,
   onFilteredDataChange,
   onCryptoClick,
   onToggleFavorite,
-  isFavorite
+  isFavorite,
+  onCloseCoinInfo
 }: CryptoMarketViewProps) {
   return (
     <div className="w-full max-w-7xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
@@ -86,6 +91,12 @@ export function CryptoMarketView({
       <CryptoFooter
         finalDisplayDataLength={finalDisplayData.length}
         displayDataLength={primaryData.length}
+      />
+
+      {/* Selected Coin Info Panel */}
+      <SelectedCoinInfo 
+        selectedCoin={selectedCoin} 
+        onClose={onCloseCoinInfo} 
       />
     </div>
   );
