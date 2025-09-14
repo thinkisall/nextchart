@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
-import { useSectorData } from "../../hooks/useSectorData";
+import { useModernSectorData } from "../../hooks/useModernSectorData";
 import { ClientOnly } from "../../hooks/useIsClient";
 import { CryptoTable } from "../../components/organisms/CryptoTable";
 import { CSVExportButton } from "../../components/atoms/CSVExportButton";
@@ -30,7 +30,9 @@ export default function SectorPage() {
     totalDataCount,
     dataSource,
     refresh,
-  } = useSectorData(sectorName);
+    sectorInfo,
+    hasData
+  } = useModernSectorData(sectorName);
 
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
 
@@ -197,13 +199,48 @@ export default function SectorPage() {
               totalDataCount > 0 && (
                 <div className="p-6 sm:p-8 text-center">
                   <div className="text-gray-500 dark:text-gray-400">
-                    <p className="text-base sm:text-lg font-medium mb-2">
-                      📭 {sectorName} 섹터에 코인이 없습니다
-                    </p>
-                    <p className="text-xs sm:text-sm mb-4">
-                      현재 {totalDataCount}개의 코인이 로드되었지만,{" "}
-                      {sectorName} 섹터에 해당하는 코인은 없습니다.
-                    </p>
+                    {sectorInfo ? (
+                      <>
+                        <div className="text-4xl mb-4">{sectorInfo.icon}</div>
+                        <p className="text-base sm:text-lg font-medium mb-2">
+                          {sectorInfo.displayName} 섹터
+                        </p>
+                        <p className="text-xs sm:text-sm mb-4 text-gray-600 dark:text-gray-400">
+                          {sectorInfo.description}
+                        </p>
+                        <p className="text-xs sm:text-sm mb-4">
+                          현재 {totalDataCount}개의 코인이 로드되었지만,{" "}
+                          이 섹터에 해당하는 활성 코인이 없습니다.
+                        </p>
+                        <div className="space-y-2 mb-4">
+                          <p className="text-xs text-gray-400">
+                            💡 이 섹터에는 다음과 같은 코인들이 포함됩니다:
+                          </p>
+                          <div className="flex flex-wrap gap-1 justify-center max-w-md mx-auto">
+                            {Object.keys(sectorInfo.sectors).slice(0, 10).map(symbol => (
+                              <span key={symbol} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                                {symbol}
+                              </span>
+                            ))}
+                            {Object.keys(sectorInfo.sectors).length > 10 && (
+                              <span className="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded text-xs">
+                                +{Object.keys(sectorInfo.sectors).length - 10}개 더
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-base sm:text-lg font-medium mb-2">
+                          📭 {sectorName} 섹터에 코인이 없습니다
+                        </p>
+                        <p className="text-xs sm:text-sm mb-4">
+                          현재 {totalDataCount}개의 코인이 로드되었지만,{" "}
+                          {sectorName} 섹터에 해당하는 코인은 없습니다.
+                        </p>
+                      </>
+                    )}
                     <button
                       onClick={() => router.push("/")}
                       className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"

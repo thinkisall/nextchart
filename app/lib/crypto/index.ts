@@ -6,6 +6,9 @@ export * from './categories';
 export * from './utils';
 export * from './consolidation';
 
+// 새로운 모듈화된 섹터 구조 export
+export * from './sectors/index';
+
 // 편의를 위한 재export (기존 코드 호환성)
 export { getCryptoInfo } from './utils';
 export { CRYPTO_KOREAN_NAMES } from './korean-names';

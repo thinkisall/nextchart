@@ -1,11 +1,15 @@
+'use client';
+
 import { CryptoPrice } from '../../lib/types';
-import { SectorStats } from '../../components/organisms/SectorStats';
+import { SectorAnalysisContainer } from '../sector-analysis';
+import { SectorNavigationUtils } from '../sector-analysis/utils/SectorNavigationUtils';
 import { CryptoFilter } from '../../components/molecules/CryptoFilter';
 import { SquareAd } from '../../components/AdSenseV2';
 import { ClientOnly } from '../../hooks/useIsClient';
 import { CryptoDataTableSection } from './components/CryptoDataTableSection';
 import { CryptoFooter } from './components/CryptoFooter';
 import { SelectedCoinInfo } from './components/SelectedCoinInfo';
+import { useRouter } from 'next/navigation';
 
 interface CryptoMarketViewProps {
   // 데이터
@@ -44,6 +48,14 @@ export function CryptoMarketView({
   isFavorite,
   onCloseCoinInfo
 }: CryptoMarketViewProps) {
+  const router = useRouter();
+  
+  // 섹터 클릭 핸들러 - 상세 페이지로 라우팅
+  const handleSectorClick = (analysis: any) => {
+    const sectorUrl = SectorNavigationUtils.getSectorPageUrl(analysis);
+    router.push(sectorUrl);
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
       {/* Sector Analytics */}
@@ -51,7 +63,10 @@ export function CryptoMarketView({
         <div className="h-32 sm:h-40 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>
       }>
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl">
-          <SectorStats cryptos={primaryData} />
+          <SectorAnalysisContainer 
+            cryptos={primaryData}
+            onSectorClick={handleSectorClick}
+          />
         </div>
       </ClientOnly>
 
