@@ -58,7 +58,7 @@ export function SectorGrid({ sectors, onSectorClick, formatNumber }: SectorGridP
       </div>
 
       {/* 그리드 레이아웃 */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-4 lg:gap-6">
         {sectors.map(([sector, stats], index) => (
           <div 
             key={sector} 

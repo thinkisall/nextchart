@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { CryptoPrice } from "../../lib/types";
 import { useDebounce } from "../../hooks/useDebounce";
 import { CRYPTO_SECTORS } from "../../lib/crypto";
+import { hasUpbitUsdtPair } from "../../lib/exchanges";
 import { Button } from "../atoms/Button";
 
 interface CryptoFilterProps {
@@ -28,7 +29,7 @@ export function CryptoFilter({
   >("all");
   const [selectedSector, setSelectedSector] = useState<string>("all");
   const [selectedExchange, setSelectedExchange] = useState<
-    "all" | "bithumb" | "binance" | "binance-alpha" | "upbit"
+    "all" | "bithumb" | "binance" | "binance-alpha" | "upbit" | "upbit-usdt"
   >("all");
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -75,6 +76,9 @@ export function CryptoFilter({
         break;
       case "upbit":
         filtered = filtered.filter((crypto) => crypto.isOnUpbit === true);
+        break;
+      case "upbit-usdt":
+        filtered = filtered.filter((crypto) => hasUpbitUsdtPair(`${crypto.symbol}_KRW`));
         break;
     }
 
@@ -149,6 +153,7 @@ export function CryptoFilter({
       binance: cryptos.filter((c) => c.isOnBinance).length,
       binanceAlpha: cryptos.filter((c) => c.isBinanceAlpha).length,
       upbit: cryptos.filter((c) => c.isOnUpbit).length,
+      upbitUsdt: cryptos.filter((c) => hasUpbitUsdtPair(`${c.symbol}_KRW`)).length,
     };
   };
 
@@ -234,6 +239,7 @@ export function CryptoFilter({
               <option value="binance">🟡 바이낸스</option>
               <option value="binance-alpha">⭐ 바이낸스 알파</option>
               <option value="upbit">🔵 업비트</option>
+              <option value="upbit-usdt">🔷 업비트 USDT</option>
             </select>
           </div>
 
@@ -275,6 +281,9 @@ export function CryptoFilter({
             </div>
             <div className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 rounded-md text-indigo-700 dark:text-indigo-300">
               🔵 업비트: {stats.upbit}개
+            </div>
+            <div className="px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-md text-sky-700 dark:text-sky-300">
+              🔷 업비트 USDT: {stats.upbitUsdt}개
             </div>
           </div>
         </div>

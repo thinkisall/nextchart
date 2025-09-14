@@ -6,3 +6,4 @@ export { CSVExportButton } from './CSVExportButton';
 export { BinanceBadge } from './BinanceBadge';
 export { BinanceAlphaBadge, SimpleAlphaBadge, AlphaIcon } from './BinanceAlphaBadge';
 export { UpbitBadge } from './UpbitBadge';
+export { UPusdtBadge } from './UPusdtBadge';

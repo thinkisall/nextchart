@@ -230,7 +230,7 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   SOPH: "소프",
   HYPER: "하이퍼",
   PROVE: "프루브",
-  FORT: "포트",
+  FORT: "포르타",
   HUMA: "휴마",
   SPK: "스파크",
   USD1: "USD1",
@@ -529,7 +529,7 @@ export const FALLBACK_KOREAN_NAMES: { [key: string]: string } = {
 
   // 새로 추가된 코인들 한국어 이름
   ATH: "에이셔",
-  FORT: "포트",
+  FORT: "포르타",
   ACE: "퓨저니스트",
   WAL: "월러스",
   HAEDAL: "해달",

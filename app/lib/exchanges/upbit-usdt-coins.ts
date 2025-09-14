@@ -1,0 +1,157 @@
+/**
+ * 업비트 USDT 마켓 코인 목록 관리
+ */
+
+export const UPBIT_USDT_COINS = new Set([
+  "PEPE",
+  "WCT", 
+  "DOGE",
+  "AXL",
+  "JASMY",
+  "BONK",
+  "WAL",
+  "WLFI",
+  "RENDER",
+  "LPT",
+  "ARPA",
+  "ANIME",
+  "USDC",
+  "TREE",
+  "WLD",
+  "SCR",
+  "BAT",
+  "BEAM",
+  "FIL",
+  "HUMA",
+  "USD1",
+  "OBSR",
+  "CARV",
+  "JUP",
+  "BIGTIME",
+  "JTO",
+  "NEWT",
+  "BCH",
+  "DGB",
+  "LWA",
+  "TUSD",
+  "UNI",
+  "OAS",
+  "NEAR",
+  "BNT",
+  "AGLD",
+  "HYPER",
+  "SOL",
+  "SWELL",
+  "MOODENG",
+  "EGLD",
+  "DRIFT",
+  "SONIC",
+  "SHELL",
+  "ARKM",
+  "MEW",
+  "PUFFER",
+  "AERO",
+  "UXLINK",
+  "API3",
+  "MOCA",
+  "TAIKO",
+  "NXPC",
+  "BTC",
+  "LINEA",
+  "ONDO",
+  "VIRTUAL",
+  "TRUMP",
+  "MNT",
+  "PUMP",
+  "LAYER",
+  "GAS",
+  "W",
+  "OXT",
+  "HAEDAL",
+  "ASTR",
+  "OPEN",
+  "SAHARA",
+  "CYBER",
+  "POKT",
+  "RAY",
+  "SAFE",
+  "RAD",
+  "XLM",
+  "INJ",
+  "ADA",
+  "GO",
+  "TIA",
+  "ACS",
+  "RED",
+  "ZETA",
+  "ZRX",
+  "ZRO",
+  "AHT",
+  "EPT",
+  "LA",
+  "HOLO",
+  "FORT",
+  "CKB",
+  "IP",
+  "FLOCK",
+  "IO",
+  "ENA",
+  "KERNEL",
+  "XRP",
+  "ALT",
+  "BLAST",
+  "OP",
+  "OM",
+  "PENGU",
+  "ETC",
+  "ETH",
+  "OMNI",
+  "KAITO",
+  "NEO",
+  "COW",
+  "VTHO",
+  "AKT",
+  "RLY",
+  "MOVE",
+  "ME",
+  "NCT",
+  "ERA",
+  "VANA",
+  "SC",
+  "SIGN",
+  "BERA",
+  "SOPH",
+  "ORCA",
+  "PROVE",
+  "TRX",
+  "RVN",
+  "SOON",
+  "BABY",
+  "DEEP",
+  "BRETT",
+  "SYRUP",
+]);
+
+/**
+ * 업비트 USDT 마켓에서 거래 가능한 코인인지 확인
+ */
+export function isUpbitUsdtCoin(symbol: string): boolean {
+  // _KRW 제거한 순수 심볼로 확인
+  const cleanSymbol = symbol.replace('_KRW', '');
+  return UPBIT_USDT_COINS.has(cleanSymbol);
+}
+
+/**
+ * 업비트 USDT 심볼 생성 (USDT-XXX 형태)
+ */
+export function getUpbitUsdtSymbol(symbol: string): string | null {
+  const cleanSymbol = symbol.replace('_KRW', '');
+  return isUpbitUsdtCoin(symbol) ? `USDT-${cleanSymbol}` : null;
+}
+
+/**
+ * 빗썸 심볼이 업비트 USDT 마켓에서 거래 가능한지 확인 (기존 API 호환)
+ */
+export function hasUpbitUsdtPair(bithumbSymbol: string): boolean {
+  return isUpbitUsdtCoin(bithumbSymbol);
+}

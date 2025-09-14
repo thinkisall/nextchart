@@ -5,7 +5,9 @@ import { PriceChange } from "../atoms/PriceChange";
 import { BinanceBadge } from "../atoms/BinanceBadge";
 import { AlphaIcon } from "../atoms/BinanceAlphaBadge";
 import { UpbitBadge } from "../atoms/UpbitBadge";
+import { UPusdtBadge } from "../atoms/UPusdtBadge";
 import { SECTOR_COLORS } from "../../lib/crypto";
+import { hasUpbitUsdtPair } from "../../lib/exchanges";
 
 interface CryptoRowProps {
   crypto: CryptoPrice;
@@ -187,6 +189,7 @@ export function CryptoRow({
               {crypto.isBinanceAlpha && <AlphaIcon />}
               {crypto.isOnBinance && <BinanceBadge size="sm" />}
               {crypto.isOnUpbit && <UpbitBadge size="sm" />}
+              {hasUpbitUsdtPair(crypto.symbol) && <UPusdtBadge size="sm" />}
             </div>
           </div>
 
@@ -269,6 +272,7 @@ export function CryptoRow({
                   {crypto.isBinanceAlpha && <AlphaIcon className="ml-1" />}
                   {crypto.isOnBinance && <BinanceBadge size="sm" />}
                   {crypto.isOnUpbit && <UpbitBadge size="sm" />}
+                  {hasUpbitUsdtPair(crypto.symbol) && <UPusdtBadge size="sm" />}
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400 font-mono">
                   {crypto.symbol}
@@ -365,6 +369,7 @@ export function CryptoRow({
                 {crypto.isBinanceAlpha && <AlphaIcon className="ml-1" />}
                 {crypto.isOnBinance && <BinanceBadge size="md" />}
                 {crypto.isOnUpbit && <UpbitBadge size="md" />}
+                {hasUpbitUsdtPair(crypto.symbol) && <UPusdtBadge size="md" />}
                 {crypto.sector && (
                   <span
                     className={`px-3 py-1 text-xs font-bold rounded-lg ${

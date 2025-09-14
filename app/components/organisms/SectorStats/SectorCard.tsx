@@ -48,7 +48,7 @@ function SectorCardComponent({ sector, stats, onSectorClick, formatNumber }: Sec
   return (
     <button
       onClick={() => onSectorClick(sector)}
-      className="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-800/90 dark:to-gray-900/70 backdrop-blur-xl rounded-3xl border border-white/40 dark:border-gray-700/40 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02] w-full min-h-[280px]"
+      className="group relative overflow-hidden bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-800/90 dark:to-gray-900/70 backdrop-blur-xl rounded-2xl border border-white/40 dark:border-gray-700/40 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] w-full min-h-[220px]"
     >
       {/* 배경 그라데이션 효과 */}
       <div
@@ -63,13 +63,13 @@ function SectorCardComponent({ sector, stats, onSectorClick, formatNumber }: Sec
       <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-indigo-400/10 to-transparent rounded-full transform translate-x-10 -translate-y-10" />
       <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full transform -translate-x-8 translate-y-8" />
 
-      <div className="relative z-10 p-6 h-full flex flex-col">
+      <div className="relative z-10 p-4 h-full flex flex-col">
         {/* 헤더 섹션 */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
             {/* 섹터 아이콘 */}
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-              <span className="text-xl">{getSectorIcon(sector)}</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+              <span className="text-lg">{getSectorIcon(sector)}</span>
             </div>
             
             {/* 섹터 이름과 개수 */}
@@ -94,9 +94,9 @@ function SectorCardComponent({ sector, stats, onSectorClick, formatNumber }: Sec
         </div>
 
         {/* 메트릭 섹션 */}
-        <div className="flex-1 space-y-5">
+        <div className="flex-1 space-y-3">
           {/* 평균 변동률 */}
-          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-2xl p-4 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
+          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-3 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-2">
                 <span className="text-base">📈</span>
@@ -121,7 +121,7 @@ function SectorCardComponent({ sector, stats, onSectorClick, formatNumber }: Sec
           </div>
 
           {/* 시장 심리 */}
-          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-2xl p-4 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
+          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-3 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-2">
                 <span className="text-base">🎯</span>
@@ -150,7 +150,7 @@ function SectorCardComponent({ sector, stats, onSectorClick, formatNumber }: Sec
           </div>
 
           {/* 거래량 */}
-          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-2xl p-4 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
+          <div className="bg-gradient-to-r from-gray-50/80 to-gray-100/80 dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-3 group-hover:from-indigo-50/80 group-hover:to-purple-50/80 dark:group-hover:from-indigo-900/20 dark:group-hover:to-purple-900/20 transition-all duration-300">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center space-x-2">
                 <span className="text-base">💰</span>
@@ -164,7 +164,7 @@ function SectorCardComponent({ sector, stats, onSectorClick, formatNumber }: Sec
         </div>
 
         {/* 하단 액센트 */}
-        <div className="mt-6 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
+        <div className="mt-4 pt-3 border-t border-gray-200/50 dark:border-gray-700/50">
           <div className={`h-1 rounded-full transition-all duration-700 bg-gradient-to-r ${
             isPositive
               ? 'from-emerald-400 via-green-500 to-emerald-600'

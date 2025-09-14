@@ -267,7 +267,6 @@ const BINANCE_COINS = new Set([
 ]);
 
 const BINANCE_ALPHA_COINS = new Set([
-  "LINEA",
   "AERO",
   "ATH",
   "AVAIL",
