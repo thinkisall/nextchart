@@ -207,7 +207,7 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   'LA': 'LA',
   'SOPH': '소프',
   'HYPER': '하이퍼',
-  'PROVE': '프루브',
+  'PROVE': '석싱트',
   'FORT': 포르타',
   'HUMA': '휴마',
   'SPK': 'SPK',

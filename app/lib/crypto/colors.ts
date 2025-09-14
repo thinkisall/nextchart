@@ -154,6 +154,17 @@ export const SECTOR_COLORS: { [key: string]: string } = {
   "LST/비트코인": "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300",
   "밈코인/런치패드": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
 
+  // 상위 20위 코인 새로운 섹터들 (2025)
+  "NFT/콘텐츠": "bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300",
+  "인프라/프라이버시": "bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-300", 
+  "스테이블코인 연관 자산": "bg-stone-100 text-stone-800 dark:bg-stone-900/30 dark:text-stone-300",
+  "데이터/프라이버시": "bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-300",
+  "클라우드 컴퓨팅": "bg-sky-100 text-sky-800 dark:bg-sky-900/30 dark:text-sky-300",
+  "의료": "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
+  "레이어1": "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
+  "보안": "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300",
+  "게임": "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300",
+
   // 기타 (기본값)
   "기타": "bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-400",
   "기타/테스트": "bg-gray-50 text-gray-500 dark:bg-gray-900/20 dark:text-gray-500",

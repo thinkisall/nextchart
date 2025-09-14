@@ -293,7 +293,6 @@ const BINANCE_ALPHA_COINS = new Set([
   "PLUME",
   "POKT",
   "PROMPT",
-  "PROVE",
   "PUMP",
   "PUMPBTC",
   "RESOLV",
