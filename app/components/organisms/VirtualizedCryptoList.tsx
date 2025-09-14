@@ -1,7 +1,7 @@
 "use client";
 import { memo, useMemo, useState, useEffect } from "react";
 import { CryptoPrice } from "../../lib/types";
-import { CryptoRow } from "../molecules/CryptoRow";
+import { CryptoRowProfessional } from "../molecules/CryptoRowProfessional";
 
 interface VirtualizedCryptoListProps {
   cryptos: CryptoPrice[];
@@ -73,7 +73,7 @@ export const VirtualizedCryptoList = memo(
           >
             {visibleItems.map((crypto, index) => (
               <div key={crypto.symbol} style={{ height: itemHeight }}>
-                <CryptoRow
+                <CryptoRowProfessional
                   crypto={crypto}
                   onClick={() => onCryptoClick?.(crypto)}
                   onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}

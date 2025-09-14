@@ -1,5 +1,5 @@
 import { CryptoPrice } from '../../lib/types';
-import { CryptoRow } from '../molecules/CryptoRow';
+import { CryptoRowProfessional } from '../molecules/CryptoRowProfessional';
 import { LoadingSpinner } from '../atoms/LoadingSpinner';
 import { Pagination } from '../molecules/Pagination';
 import { VirtualizedCryptoList } from './VirtualizedCryptoList';
@@ -187,7 +187,7 @@ export function CryptoTable({
               </thead>
               <tbody className="divide-y divide-gray-200/20 dark:divide-gray-700/20">
                 {currentItems.map((crypto, index) => (
-                  <CryptoRow
+                  <CryptoRowProfessional
                     key={`desktop-${crypto.symbol}`}
                     crypto={crypto}
                     onClick={() => onCryptoClick?.(crypto)}
@@ -224,7 +224,7 @@ export function CryptoTable({
               </thead>
               <tbody className="divide-y divide-gray-200/20 dark:divide-gray-700/20">
                 {currentItems.map((crypto, index) => (
-                  <CryptoRow
+                  <CryptoRowProfessional
                     key={`tablet-${crypto.symbol}`}
                     crypto={crypto}
                     onClick={() => onCryptoClick?.(crypto)}
@@ -256,7 +256,7 @@ export function CryptoTable({
             // 일반 렌더링
             <div className="p-4 space-y-3">
               {currentItems.map((crypto, index) => (
-                <CryptoRow
+                <CryptoRowProfessional
                   key={`mobile-${crypto.symbol}`}
                   crypto={crypto}
                   onClick={() => onCryptoClick?.(crypto)}
