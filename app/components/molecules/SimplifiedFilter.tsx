@@ -131,15 +131,8 @@ export function SimplifiedFilter({
   ]);
 
   useEffect(() => {
-    console.log('🔄 Filter applied:', { sortBy, sortOrder, searchTerm: debouncedSearchTerm });
     applyFilters();
   }, [applyFilters]);
-
-  const handleSortChange = (newSortBy: typeof sortBy, newSortOrder: typeof sortOrder) => {
-    console.log('🎯 Sort button clicked:', { newSortBy, newSortOrder });
-    setSortBy(newSortBy);
-    setSortOrder(newSortOrder);
-  };
   return (
     <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/30 shadow-xl p-6">
       {/* 검색 바 */}
@@ -260,61 +253,6 @@ export function SimplifiedFilter({
         >
           <span>🟩</span>
           <span>UP USDT</span>
-        </button>
-      </div>
-
-      {/* 정렬 옵션 - 작은 버튼들로 */}
-      <div className="grid grid-cols-4 gap-2 mb-6">
-        <button
-          onClick={() => handleSortChange("change", "desc")}
-          className={`
-            px-3 py-2 text-xs rounded-lg transition-all duration-200
-            ${sortBy === "change" && sortOrder === "desc"
-              ? 'bg-emerald-500 text-white shadow-md'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-            }
-          `}
-        >
-          📈 상승률
-        </button>
-        
-        <button
-          onClick={() => handleSortChange("change", "asc")}
-          className={`
-            px-3 py-2 text-xs rounded-lg transition-all duration-200
-            ${sortBy === "change" && sortOrder === "asc"
-              ? 'bg-red-500 text-white shadow-md'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-            }
-          `}
-        >
-          📉 하락률
-        </button>
-        
-        <button
-          onClick={() => handleSortChange("price", "desc")}
-          className={`
-            px-3 py-2 text-xs rounded-lg transition-all duration-200
-            ${sortBy === "price"
-              ? 'bg-blue-500 text-white shadow-md'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-            }
-          `}
-        >
-          💰 가격순
-        </button>
-        
-        <button
-          onClick={() => handleSortChange("volume", "desc")}
-          className={`
-            px-3 py-2 text-xs rounded-lg transition-all duration-200
-            ${sortBy === "volume"
-              ? 'bg-purple-500 text-white shadow-md'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-            }
-          `}
-        >
-          📊 거래량
         </button>
       </div>
 

@@ -3,6 +3,11 @@
 import { useState, useMemo } from 'react';
 import { CryptoPrice } from '../../lib/types';
 import { ClientOnly } from '../../hooks/useIsClient';
+import { BinanceBadge } from '../atoms/BinanceBadge';
+import { AlphaIcon } from '../atoms/BinanceAlphaBadge';
+import { UpbitBadge } from '../atoms/UpbitBadge';
+import { UPusdtBadge } from '../atoms/UPusdtBadge';
+import { hasUpbitUsdtPair } from '../../lib/exchanges';
 
 interface UpbitStyleRankingProps {
   data: CryptoPrice[];
@@ -170,8 +175,15 @@ export function UpbitStyleRanking({
               {getRankBadge(index + 1)}
               
               <div className="flex-1 min-w-0">
-                <div className="font-bold text-gray-900 dark:text-white text-base truncate">
-                  {item.korean_name}
+                <div className="flex items-center space-x-2 mb-1">
+                  <div className="font-bold text-gray-900 dark:text-white text-base truncate">
+                    {item.korean_name}
+                  </div>
+                  {/* 거래소 배지들 */}
+                  {item.isBinanceAlpha && <AlphaIcon />}
+                  {item.isOnBinance && <BinanceBadge size="sm" />}
+                  {item.isOnUpbit && <UpbitBadge size="sm" />}
+                  {hasUpbitUsdtPair(item.symbol) && <UPusdtBadge size="sm" />}
                 </div>
                 <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
                   {item.symbol}
