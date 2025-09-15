@@ -33,6 +33,8 @@ export function useModernSectorData(sectorName: string) {
   const filteredCryptos = useMemo(() => {
     if (displayData.length === 0) return [];
     
+    console.log('🔍 Filtering for sector:', sectorName, 'with', displayData.length, 'total items');
+    
     // 모든 섹터 그룹 가져오기
     const sectorGroups = SectorAnalysisService.getAllSectorGroups();
     
@@ -75,8 +77,36 @@ export function useModernSectorData(sectorName: string) {
       }
     }
     
-    // 3. 여전히 없으면 기존 방식으로 폴백
+    // 3. 여전히 없으면 기존 방식으로 폴백 + "기타" 특별 처리
     if (Object.keys(targetSectors).length === 0) {
+      // "기타" 섹터의 경우 특별 처리
+      if (sectorName === '기타') {
+        console.log('🔍 Processing "기타" sector...');
+        
+        // 모든 섹터에 정의된 토큰들 수집
+        const allDefinedTokens = new Set<string>();
+        for (const [groupKey, group] of Object.entries(sectorGroups)) {
+          Object.keys(group.sectors).forEach(symbol => {
+            allDefinedTokens.add(symbol);
+          });
+        }
+        
+        // 정의되지 않은 토큰들을 "기타"로 분류
+        const undefinedTokens = displayData.filter(crypto => {
+          // 1. 섹터 매핑에 없고
+          const notInSectorMapping = !allDefinedTokens.has(crypto.symbol);
+          // 2. crypto.sector가 없거나 "기타"인 경우
+          const hasNoSector = !crypto.sector || crypto.sector === '기타' || crypto.sector.includes('기타');
+          
+          return notInSectorMapping || hasNoSector;
+        });
+        
+        console.log('📊 Undefined tokens for "기타":', undefinedTokens.length, 'out of', displayData.length);
+        console.log('🔍 Sample undefined tokens:', undefinedTokens.slice(0, 5).map(t => t.symbol));
+        
+        return undefinedTokens;
+      }
+      
       // 기존 CRYPTO_SECTORS에서 해당 섹터명을 포함하는 토큰들 찾기
       return displayData.filter(crypto => {
         return crypto.sector === sectorName || 
@@ -85,9 +115,16 @@ export function useModernSectorData(sectorName: string) {
     }
     
     // 4. 새로운 섹터 구조로 필터링
-    return displayData.filter(crypto => {
+    const result = displayData.filter(crypto => {
       return crypto.symbol in targetSectors;
     });
+    
+    console.log('✅ Filtered result:', result.length, 'items for sector:', sectorName);
+    if (result.length < 5) {
+      console.log('🔍 Sample filtered items:', result.map(r => r.symbol));
+    }
+    
+    return result;
     
   }, [displayData, sectorName]);
   

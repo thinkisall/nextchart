@@ -625,18 +625,33 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
 
     const apiUrl = `${baseUrl}/api/crypto`;
 
-    // 타임아웃 설정 (10초로 늘림)
+    // 타임아웃 설정 (브라우저 호환성 개선)
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const timeoutId = setTimeout(() => {
+      try {
+        controller.abort();
+      } catch (error) {
+        console.warn('⚠️ AbortController timeout failed:', error);
+      }
+    }, 10000);
 
     console.log('🔗 Fetching from API:', apiUrl);
 
-    const response = await fetch(apiUrl, {
-      signal: controller.signal,
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    });
+    let response;
+    try {
+      response = await fetch(apiUrl, {
+        signal: controller.signal,
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      if (fetchError.name === 'AbortError') {
+        throw new Error('Request timeout (10 seconds)');
+      }
+      throw fetchError;
+    }
 
     clearTimeout(timeoutId);
     console.log('📡 Response received:', response.status, response.statusText);
