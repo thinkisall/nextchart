@@ -300,7 +300,6 @@ const BINANCE_ALPHA_COINS = new Set([
   "SD",
   "SUNDOG",
   "TAIKO",
-  "TOWNS",
   "XTER",
   "ZETA",
   "ZRC",
