@@ -29,13 +29,22 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // 정적 자산 강력한 캐싱
+      // 정적 자산 강력한 캐싱 - 안전한 패턴 사용
       {
-        source: '/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))',
+        source: '/_next/static/:path*',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable', // 1년 캐시
+          },
+        ],
+      },
+      {
+        source: '/favicon.ico',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400', // 24시간 캐시
           },
         ],
       },
