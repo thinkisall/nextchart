@@ -91,20 +91,20 @@ export function useModernSectorData(sectorName: string) {
           });
         }
         
-        // 정의되지 않은 토큰들을 "기타"로 분류
-        const undefinedTokens = displayData.filter(crypto => {
-          // 1. 섹터 매핑에 없고
+        // 정의되지 않은 토큰들을 "기타"로 분류 + 명시적으로 "기타"에 정의된 토큰들도 포함
+        const miscellaneousTokens = displayData.filter(crypto => {
+          // 1. 명시적으로 기타 섹터에 정의된 토큰
+          const isExplicitMisc = sectorGroups['miscellaneous']?.sectors[crypto.symbol];
+          // 2. 섹터 매핑에 없는 토큰 (이것만 기타로 분류)
           const notInSectorMapping = !allDefinedTokens.has(crypto.symbol);
-          // 2. crypto.sector가 없거나 "기타"인 경우
-          const hasNoSector = !crypto.sector || crypto.sector === '기타' || crypto.sector.includes('기타');
           
-          return notInSectorMapping || hasNoSector;
+          return isExplicitMisc || notInSectorMapping;
         });
         
-        console.log('📊 Undefined tokens for "기타":', undefinedTokens.length, 'out of', displayData.length);
-        console.log('🔍 Sample undefined tokens:', undefinedTokens.slice(0, 5).map(t => t.symbol));
+        console.log('📊 Total "기타" tokens:', miscellaneousTokens.length, 'out of', displayData.length);
+        console.log('🔍 Sample "기타" tokens:', miscellaneousTokens.slice(0, 5).map(t => t.symbol));
         
-        return undefinedTokens;
+        return miscellaneousTokens;
       }
       
       // 기존 CRYPTO_SECTORS에서 해당 섹터명을 포함하는 토큰들 찾기

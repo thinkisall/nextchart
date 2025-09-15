@@ -1,5 +1,6 @@
 import { CryptoPrice } from "../../../lib/types";
 import { getConsolidatedSectors } from "../../../lib/crypto/consolidation";
+import { SectorAnalysisService } from "../../../features/sector-analysis/services/SectorAnalysisService";
 
 export function useSectorStats(cryptos: CryptoPrice[]) {
   // formatNumber 함수
@@ -12,10 +13,26 @@ export function useSectorStats(cryptos: CryptoPrice[]) {
     return num.toFixed(0);
   };
 
+  // 토큰의 실제 섹터를 찾는 함수
+  const getTokenSector = (symbol: string): string => {
+    const sectorGroups = SectorAnalysisService.getAllSectorGroups();
+    
+    // 각 섹터 그룹을 순회하며 토큰이 속하는 그룹 찾기
+    for (const [groupKey, group] of Object.entries(sectorGroups)) {
+      if (symbol in group.sectors) {
+        // 세부 섹터명 반환 (예: "L1/이더리움오리지널(PoW)")
+        return group.sectors[symbol];
+      }
+    }
+    
+    return "기타"; // 어떤 섹터에도 정의되지 않은 경우
+  };
+
   // 섹터별 통계 계산
   const sectorStats = cryptos.reduce((acc, crypto) => {
-    const originalSector = crypto.sector || "기타";
-    const sectors = getConsolidatedSectors(originalSector);
+    // crypto.sector 대신 실제 섹터 매핑을 사용
+    const actualSector = getTokenSector(crypto.symbol);
+    const sectors = getConsolidatedSectors(actualSector);
 
     sectors.forEach((sector) => {
       if (!acc[sector]) {

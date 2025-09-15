@@ -1,13 +1,18 @@
 'use client';
 
 import { CryptoMarket } from "./features/crypto";
+import { ExchangePerformanceAnalysis } from "./features/exchange-performance";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
 import { HeaderAd, FooterAd } from "./components/AdSenseV2";
 import { BitcoinDominance } from "./components/molecules/BitcoinDominance";
+import { useCryptoPrices } from "./hooks/useCryptoPrices";
 import Link from "next/link";
 
 export default function Home() {
+  // 거래소 성과 분석을 위한 데이터 가져오기
+  const { prices } = useCryptoPrices();
+
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 dark:from-slate-900 dark:via-gray-900 dark:to-slate-800">
@@ -118,6 +123,32 @@ export default function Home() {
           >
             <div className="mb-8">
               <BitcoinDominance />
+            </div>
+          </ClientOnly>
+
+          {/* 거래소별 성과 분석 */}
+          <ClientOnly
+            fallback={
+              <div className="mb-8 space-y-6">
+                <div className="bg-white/60 dark:bg-gray-800/60 rounded-3xl p-8 animate-pulse backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50">
+                  <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4 w-1/3"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-6 w-2/3"></div>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {[...Array(4)].map((_, i) => (
+                      <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+                    ))}
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="h-64 bg-white/60 dark:bg-gray-800/60 rounded-2xl animate-pulse"></div>
+                  ))}
+                </div>
+              </div>
+            }
+          >
+            <div className="mb-8">
+              <ExchangePerformanceAnalysis coins={prices} />
             </div>
           </ClientOnly>
 
