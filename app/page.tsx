@@ -3,6 +3,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
 import { HeaderAd, FooterAd } from "./components/AdSenseV2";
 import { BitcoinDominance } from "./components/molecules/BitcoinDominance";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -79,6 +80,33 @@ export default function Home() {
           
           {/* Header Advertisement */}
           <HeaderAd />
+
+          {/* 오늘의 코인 추천 룰렛 버튼 */}
+          <div className="mb-8">
+            <Link href="/coin-roulette">
+              <div className="group relative bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 rounded-3xl p-6 shadow-2xl border border-white/20 transition-all duration-500 hover:scale-[1.02] cursor-pointer overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">
+                      🎰
+                    </div>
+                    <div className="text-white">
+                      <h3 className="text-xl font-bold mb-1">오늘의 코인 추천 룰렛</h3>
+                      <p className="text-purple-100 text-sm">바이낸스 & 알파 코인 중 랜덤 추천!</p>
+                    </div>
+                  </div>
+                  <div className="text-white/80 group-hover:text-white transition-colors duration-300">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+                
+                {/* 반짝이는 효과 */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 group-hover:translate-x-full transition-transform duration-1000 ease-in-out opacity-0 group-hover:opacity-100" />
+              </div>
+            </Link>
+          </div>
 
           {/* Bitcoin Dominance - 세련된 글로벌 마켓 통계 */}
           <ClientOnly
