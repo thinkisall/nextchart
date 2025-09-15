@@ -6,6 +6,25 @@ import {
 } from "./types";
 import { CRYPTO_KOREAN_NAMES, getCryptoInfo } from "./crypto";
 
+// 안전한 숫자 파싱 함수
+function safeParseFloat(value: string | number | undefined | null, fallback: number = 0): number {
+  if (value === null || value === undefined || value === '') {
+    return fallback;
+  }
+  
+  const parsed = typeof value === 'string' ? parseFloat(value) : value;
+  return !isNaN(parsed) && isFinite(parsed) ? parsed : fallback;
+}
+
+// 안전한 가격 데이터 검증 함수
+function validatePriceData(tickerData: BithumbTickerData): boolean {
+  const closingPrice = safeParseFloat(tickerData.closing_price);
+  const prevPrice = safeParseFloat(tickerData.prev_closing_price);
+  
+  // 가격이 0보다 큰 경우만 유효
+  return closingPrice > 0 || prevPrice > 0;
+}
+
 // 바이낸스 알파와 빗썸에서 겹치는 코인들
 const BINANCE_ALPHA_COINS = new Set([
   "LINEA",
@@ -664,45 +683,53 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
         ([symbol, ticker]) => symbol !== "date" && typeof ticker === "object"
       )
       .map(([symbol, ticker]) => {
-        const tickerData = ticker as BithumbTickerData;
-        let currentPrice = parseFloat(tickerData.closing_price);
-        const prevPrice = parseFloat(tickerData.prev_closing_price);
+        try {
+          const tickerData = ticker as BithumbTickerData;
+          
+          // 안전한 파싱 사용
+          let currentPrice = safeParseFloat(tickerData.closing_price);
+          const prevPrice = safeParseFloat(tickerData.prev_closing_price);
 
-        if (!currentPrice || currentPrice === 0) {
-          currentPrice = prevPrice;
-        }
+          if (currentPrice === 0) {
+            currentPrice = prevPrice;
+          }
 
-        if (!currentPrice || currentPrice <= 0) {
+          if (currentPrice <= 0) {
+            console.warn(`⚠️ Invalid price for ${symbol}: current=${currentPrice}, prev=${prevPrice}`);
+            return null;
+          }
+
+          const changeAmount = currentPrice - prevPrice;
+          const changeRate =
+            prevPrice !== 0 ? (changeAmount / prevPrice) * 100 : 0;
+
+          const cryptoInfo = getCryptoInfo(symbol);
+          const isOnBinance = BINANCE_COINS.has(symbol);
+          const isBinanceAlpha = BINANCE_ALPHA_COINS.has(symbol);
+          const isOnUpbit = UPBIT_COINS.has(symbol);
+
+          return {
+            symbol,
+            korean_name: cryptoInfo.koreanName,
+            english_name: symbol,
+            current_price: currentPrice,
+            change_rate: changeRate,
+            change_amount: changeAmount,
+            high_price: safeParseFloat(tickerData.max_price, currentPrice),
+            low_price: safeParseFloat(tickerData.min_price, currentPrice),
+            volume: safeParseFloat(tickerData.acc_trade_value_24H, 0),
+            is_positive: changeAmount >= 0,
+            sector: cryptoInfo.sector,
+            isOnBinance,
+            binanceSymbol: isOnBinance ? `${symbol}USDT` : undefined,
+            isBinanceAlpha,
+            isOnUpbit,
+            upbitSymbol: isOnUpbit ? `KRW-${symbol}` : undefined,
+          };
+        } catch (itemError) {
+          console.error(`❌ Error processing ${symbol}:`, itemError);
           return null;
         }
-
-        const changeAmount = currentPrice - prevPrice;
-        const changeRate =
-          prevPrice !== 0 ? (changeAmount / prevPrice) * 100 : 0;
-
-        const cryptoInfo = getCryptoInfo(symbol);
-        const isOnBinance = BINANCE_COINS.has(symbol);
-        const isBinanceAlpha = BINANCE_ALPHA_COINS.has(symbol);
-        const isOnUpbit = UPBIT_COINS.has(symbol);
-
-        return {
-          symbol,
-          korean_name: cryptoInfo.koreanName,
-          english_name: symbol,
-          current_price: currentPrice,
-          change_rate: changeRate,
-          change_amount: changeAmount,
-          high_price: parseFloat(tickerData.max_price) || currentPrice,
-          low_price: parseFloat(tickerData.min_price) || currentPrice,
-          volume: parseFloat(tickerData.acc_trade_value_24H) || 0,
-          is_positive: changeAmount >= 0,
-          sector: cryptoInfo.sector,
-          isOnBinance,
-          binanceSymbol: isOnBinance ? `${symbol}USDT` : undefined,
-          isBinanceAlpha,
-          isOnUpbit,
-          upbitSymbol: isOnUpbit ? `KRW-${symbol}` : undefined,
-        };
       })
       .filter((crypto) => crypto !== null && crypto!.current_price > 0)
       .sort((a, b) => {
