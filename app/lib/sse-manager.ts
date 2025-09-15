@@ -272,6 +272,7 @@ const BINANCE_ALPHA_COINS = new Set([
   "AVAIL",
   "ai16z",
   "AVL",
+  "AVNT",
   "B3",
   "BLUE",
   "CARV",
