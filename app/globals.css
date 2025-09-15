@@ -862,3 +862,6 @@ body {
 .animate-slide-up {
   animation: slide-up 0.3s ease-out forwards;
 }
+
+/* 성능 최적화 CSS Import */
+@import './styles/performance.css';

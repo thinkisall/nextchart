@@ -6,69 +6,7 @@ import {
 } from "./types";
 import { CRYPTO_KOREAN_NAMES, getCryptoInfo } from "./crypto";
 
-// 안전한 숫자 파싱 함수
-function safeParseFloat(value: string | number | undefined | null, fallback: number = 0): number {
-  if (value === null || value === undefined || value === '') {
-    return fallback;
-  }
-  
-  const parsed = typeof value === 'string' ? parseFloat(value) : value;
-  return !isNaN(parsed) && isFinite(parsed) ? parsed : fallback;
-}
-
-// 안전한 가격 데이터 검증 함수
-function validatePriceData(tickerData: BithumbTickerData): boolean {
-  const closingPrice = safeParseFloat(tickerData.closing_price);
-  const prevPrice = safeParseFloat(tickerData.prev_closing_price);
-  
-  // 가격이 0보다 큰 경우만 유효
-  return closingPrice > 0 || prevPrice > 0;
-}
-
-// 바이낸스 알파와 빗썸에서 겹치는 코인들
-const BINANCE_ALPHA_COINS = new Set([
-  "LINEA",
-  "AERO",
-  "ATH",
-  "AVAIL",
-  "ai16z",
-  "AVL",
-  "B3",
-  "BLUE",
-  "CARV",
-  "DRIFT",
-  "EPT",
-  "F",
-  "FLOCK",
-  "G",
-  "GOAT",
-  "GRASS",
-  "H",
-  "MEW",
-  "MOODENG",
-  "NFT",
-  "OBT",
-  "ORDER",
-  "PEFFUR",
-  "PEAQ",
-  "PLUME",
-  "POKT",
-  "PROMPT",
-  "PROVE",
-  "PUMP",
-  "PUMPBTC",
-  "RESOLV",
-  "SAFE",
-  "SD",
-  "SUNDOG",
-  "TAIKO",
-  "TOWNS",
-  "XTER",
-  "ZETA",
-  "ZRC",
-]);
-
-// 바이낸스에서 거래되는 주요 코인들 (빗썸과 겹치는 코인들)
+// 바이낸스 및 업비트 코인 목록 (전체)
 const BINANCE_COINS = new Set([
   "1INCH",
   "A",
@@ -333,7 +271,6 @@ const BINANCE_COINS = new Set([
   "ZRX",
 ]);
 
-// 업비트와 빗썸에서 겹치는 코인들
 const UPBIT_COINS = new Set([
   "1INCH",
   "A",
@@ -424,7 +361,6 @@ const UPBIT_COINS = new Set([
   "GRS",
   "GRT",
   "GTC",
-  "HAEDAL",
   "HBAR",
   "HIVE",
   "HP",
@@ -457,7 +393,6 @@ const UPBIT_COINS = new Set([
   "LPT",
   "LRC",
   "LSK",
-  "LWA",
   "MAGIC",
   "MANA",
   "MASK",
@@ -475,7 +410,6 @@ const UPBIT_COINS = new Set([
   "MOVE",
   "MTL",
   "MVL",
-  "NCT",
   "NEAR",
   "NEO",
   "NEWT",
@@ -540,73 +474,141 @@ const UPBIT_COINS = new Set([
   "STX",
   "SUI",
   "SUN",
-  "SWELL",
+  "SUSHI",
   "SXP",
   "SYRUP",
   "T",
   "TAIKO",
   "TFUEL",
+  "THE",
   "THETA",
   "TIA",
-  "TOKAMAK",
+  "TON",
   "TREE",
-  "TRUMP",
   "TRX",
-  "TT",
+  "TURBO",
+  "UMA",
   "UNI",
-  "USD1",
   "USDC",
-  "USDS",
   "USDT",
-  "UXLINK",
   "VANA",
   "VET",
   "VIRTUAL",
   "VTHO",
   "W",
-  "WAL",
-  "WAVES",
   "WAXP",
   "WCT",
+  "WIF",
   "WLD",
-  "WLFI",
+  "WOO",
+  "XAI",
   "XEC",
   "XLM",
   "XRP",
   "XTZ",
+  "YFI",
   "YGG",
-  "ZETA",
   "ZIL",
+  "ZK",
   "ZRO",
   "ZRX",
 ]);
 
-const BITHUMB_API_BASE = "/api/crypto";
+// 안전한 숫자 파싱 함수
+function safeParseFloat(
+  value: string | number | undefined | null,
+  fallback: number = 0
+): number {
+  if (value === null || value === undefined || value === "") {
+    return fallback;
+  }
+
+  const parsed = typeof value === "string" ? parseFloat(value) : value;
+  return !isNaN(parsed) && isFinite(parsed) ? parsed : fallback;
+}
+
+// 안전한 가격 데이터 검증 함수
+function validatePriceData(tickerData: BithumbTickerData): boolean {
+  const closingPrice = safeParseFloat(tickerData.closing_price);
+  const prevPrice = safeParseFloat(tickerData.prev_closing_price);
+
+  // 가격이 0보다 큰 경우만 유효
+  return closingPrice > 0 || prevPrice > 0;
+}
+
+// 바이낸스 알파와 빗썸에서 겹치는 코인들
+const BINANCE_ALPHA_COINS = new Set([
+  "LINEA",
+  "AERO",
+  "ATH",
+  "AVAIL",
+  "ai16z",
+  "AVL",
+  "B3",
+  "BLUE",
+  "CARV",
+  "DRIFT",
+  "EPT",
+  "F",
+  "FLOCK",
+  "G",
+  "GOAT",
+  "GRASS",
+  "H",
+  "MEW",
+  "MOODENG",
+  "NFT",
+  "OBT",
+  "ORDER",
+  "PEFFUR",
+  "PEAQ",
+  "PLUME",
+  "POKT",
+  "PROMPT",
+  "PUMP",
+  "PUMPBTC",
+  "RESOLV",
+  "SAFE",
+  "SD",
+  "SUNDOG",
+  "TAIKO",
+  "XTER",
+  "ZETA",
+  "ZRC",
+]);
 
 /**
- * 마켓 정보 조회
+ * 안전한 fetch 함수
  */
-export async function getMarkets(): Promise<MarketData[]> {
+async function safeFetch(url: string, options: RequestInit = {}): Promise<Response> {
+  const controller = new AbortController();
+  
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, 15000); // 15초 타임아웃
+  
   try {
-    const response = await fetch(BITHUMB_API_BASE);
-    const data: BithumbTickerResponse = await response.json();
-
-    if (data.status !== "0000") {
-      throw new Error(`API Error: ${data.error || "Unknown error"}`);
-    }
-
-    return Object.keys(data.data)
-      .filter((key) => key !== "date")
-      .map((symbol) => {
-        const cryptoInfo = getCryptoInfo(symbol);
-        return {
-          market: `${symbol}_KRW`,
-          korean_name: cryptoInfo.koreanName,
-          english_name: symbol,
-        };
-      });
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    
+    clearTimeout(timeoutId);
+    return response;
   } catch (error) {
-    return [];
+    clearTimeout(timeoutId);
+    
+    // 네트워크 오류 세분화
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        throw new Error('요청 시간 초과 (15초) - 서버 응답이 지연되고 있습니다');
+      }
+      if (error.message.includes('Failed to fetch')) {
+        throw new Error('네트워크 연결 오류 - 인터넷 연결을 확인해주세요');
+      }
+    }
+    
+    throw error;
   }
 }
 
@@ -624,74 +626,73 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
           "http://localhost:3000"; // 서버 사이드
 
     const apiUrl = `${baseUrl}/api/crypto`;
+    
+    console.log("🔗 Fetching from API:", apiUrl);
 
-    // 타임아웃 설정 (브라우저 호환성 개선)
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => {
-      try {
-        controller.abort();
-      } catch (error) {
-        console.warn('⚠️ AbortController timeout failed:', error);
-      }
-    }, 10000);
+    const response = await safeFetch(apiUrl, {
+      headers: {
+        "Cache-Control": "no-cache",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    });
 
-    console.log('🔗 Fetching from API:', apiUrl);
-
-    let response;
-    try {
-      response = await fetch(apiUrl, {
-        signal: controller.signal,
-        headers: {
-          "Cache-Control": "no-cache",
-        },
-      });
-    } catch (fetchError) {
-      clearTimeout(timeoutId);
-      if (fetchError.name === 'AbortError') {
-        throw new Error('Request timeout (10 seconds)');
-      }
-      throw fetchError;
-    }
-
-    clearTimeout(timeoutId);
-    console.log('📡 Response received:', response.status, response.statusText);
+    console.log("📡 Response received:", response.status, response.statusText);
 
     if (!response.ok) {
-      console.error('❌ HTTP Error Details:', {
+      console.error("❌ HTTP Error Details:", {
         status: response.status,
         statusText: response.statusText,
         url: response.url,
-        headers: Object.fromEntries(response.headers.entries())
       });
-      throw new Error(
-        `HTTP error! status: ${response.status}, statusText: ${response.statusText}`
-      );
+      
+      // 구체적인 에러 메시지 제공
+      let errorMessage = `서버 오류 (${response.status})`;
+      if (response.status === 429) {
+        errorMessage = "요청 한도 초과 - 잠시 후 다시 시도해주세요";
+      } else if (response.status >= 500) {
+        errorMessage = "서버 내부 오류 - 잠시 후 다시 시도해주세요";
+      } else if (response.status === 404) {
+        errorMessage = "API 엔드포인트를 찾을 수 없습니다";
+      }
+      
+      throw new Error(errorMessage);
     }
 
     const contentType = response.headers.get("content-type");
-    console.log('📋 Content-Type:', contentType);
-    
+    console.log("📋 Content-Type:", contentType);
+
     if (!contentType || !contentType.includes("application/json")) {
       const textResponse = await response.text();
-      console.error('❌ Invalid content type. Response preview:', textResponse.substring(0, 200));
-      throw new Error("Invalid response format: expected JSON");
+      console.error(
+        "❌ Invalid content type. Response preview:",
+        textResponse.substring(0, 200)
+      );
+      throw new Error("서버에서 잘못된 응답 형식을 반환했습니다");
     }
 
     let data: BithumbTickerResponse;
     try {
       data = await response.json();
-      console.log('✅ JSON parsed successfully. Status:', data.status);
+      console.log("✅ JSON parsed successfully. Status:", data.status);
     } catch (jsonError) {
-      console.error('❌ JSON parse error:', jsonError);
-      throw new Error('Failed to parse JSON response');
+      console.error("❌ JSON parse error:", jsonError);
+      throw new Error("서버 응답을 처리할 수 없습니다 - 잠시 후 다시 시도해주세요");
     }
 
+    // API 응답 상태 확인
     if (data.status !== "0000") {
-      console.error('❌ API Error:', data.status, data.error);
-      throw new Error(`API Error: ${data.error || "Unknown error"}`);
+      console.error("❌ API Error:", data.status, data.error);
+      const errorMessage = data.error || "알 수 없는 API 오류";
+      throw new Error(`API 오류: ${errorMessage}`);
     }
 
-    console.log('✅ Data received successfully, processing...');
+    // 데이터 유효성 검사
+    if (!data.data || typeof data.data !== 'object') {
+      throw new Error("서버에서 올바르지 않은 데이터를 받았습니다");
+    }
+
+    console.log("✅ Data received successfully, processing...");
 
     const processedData = Object.entries(data.data)
       .filter(
@@ -699,62 +700,48 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
       )
       .map(([symbol, ticker]) => {
         try {
-          const tickerData = ticker as BithumbTickerData;
-          
-          // 안전한 파싱 사용
-          let currentPrice = safeParseFloat(tickerData.closing_price);
-          const prevPrice = safeParseFloat(tickerData.prev_closing_price);
-
-          if (currentPrice === 0) {
-            currentPrice = prevPrice;
-          }
-
-          if (currentPrice <= 0) {
-            console.warn(`⚠️ Invalid price for ${symbol}: current=${currentPrice}, prev=${prevPrice}`);
+          if (!validatePriceData(ticker as BithumbTickerData)) {
             return null;
           }
 
-          const changeAmount = currentPrice - prevPrice;
-          const changeRate =
-            prevPrice !== 0 ? (changeAmount / prevPrice) * 100 : 0;
-
+          const tickerData = ticker as BithumbTickerData;
           const cryptoInfo = getCryptoInfo(symbol);
-          const isOnBinance = BINANCE_COINS.has(symbol);
-          const isBinanceAlpha = BINANCE_ALPHA_COINS.has(symbol);
-          const isOnUpbit = UPBIT_COINS.has(symbol);
+          
+          const currentPrice = safeParseFloat(tickerData.closing_price);
+          const prevPrice = safeParseFloat(tickerData.prev_closing_price || tickerData.opening_price);
+          const changeAmount = safeParseFloat(tickerData.fluctate_24H);
+          const changeRate = safeParseFloat(tickerData.fluctate_rate_24H);
 
           return {
             symbol,
-            korean_name: cryptoInfo.koreanName,
-            english_name: symbol,
+            korean_name: CRYPTO_KOREAN_NAMES[symbol] || symbol,
             current_price: currentPrice,
-            change_rate: changeRate,
             change_amount: changeAmount,
-            high_price: safeParseFloat(tickerData.max_price, currentPrice),
-            low_price: safeParseFloat(tickerData.min_price, currentPrice),
-            volume: safeParseFloat(tickerData.acc_trade_value_24H, 0),
+            change_rate: changeRate,
             is_positive: changeAmount >= 0,
+            volume: safeParseFloat(tickerData.acc_trade_value_24H),
+            isOnBinance: BINANCE_COINS.has(symbol),
+            isOnUpbit: UPBIT_COINS.has(symbol),
+            isBinanceAlpha: BINANCE_ALPHA_COINS.has(symbol),
             sector: cryptoInfo.sector,
-            isOnBinance,
-            binanceSymbol: isOnBinance ? `${symbol}USDT` : undefined,
-            isBinanceAlpha,
-            isOnUpbit,
-            upbitSymbol: isOnUpbit ? `KRW-${symbol}` : undefined,
-          };
-        } catch (itemError) {
-          console.error(`❌ Error processing ${symbol}:`, itemError);
+          } as CryptoPrice;
+        } catch (error) {
+          console.warn(`⚠️ Error processing ${symbol}:`, error);
           return null;
         }
       })
-      .filter((crypto) => crypto !== null && crypto!.current_price > 0)
+      .filter((item): item is CryptoPrice => item !== null)
       .sort((a, b) => {
-        // 변동률 절댓값 기준으로 정렬 (가장 변동이 큰 순서)
         const aAbsChange = Math.abs(a!.change_rate);
         const bAbsChange = Math.abs(b!.change_rate);
         return bAbsChange - aAbsChange;
       });
 
-    console.log('✅ Processing complete. Returning', processedData.length, 'items');
+    console.log(
+      "✅ Processing complete. Returning",
+      processedData.length,
+      "items"
+    );
     return processedData as CryptoPrice[];
   } catch (error) {
     console.error("❌ getAllTickers error:", error);
@@ -771,13 +758,18 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
 /**
  * 특정 심볼의 시세 조회
  */
-export async function getTicker(symbol: string): Promise<CryptoPrice> {
-  const allTickers = await getAllTickers();
-  const ticker = allTickers.find((t) => t.symbol === symbol);
+export async function getTicker(symbol: string): Promise<CryptoPrice | null> {
+  try {
+    const allTickers = await getAllTickers();
+    const ticker = allTickers.find((t) => t.symbol === symbol);
 
-  if (!ticker) {
-    throw new Error(`Ticker not found for symbol: ${symbol}`);
+    if (!ticker) {
+      throw new Error(`Ticker not found for symbol: ${symbol}`);
+    }
+
+    return ticker;
+  } catch (error) {
+    console.error(`❌ getTicker error for ${symbol}:`, error);
+    return null;
   }
-
-  return ticker;
 }

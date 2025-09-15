@@ -1,5 +1,5 @@
 import { CryptoPrice } from '../../../lib/types';
-import { CryptoTable } from '../../../components/organisms/CryptoTable';
+import { CryptoTableOptimized } from '../../../components/organisms/CryptoTableOptimized';
 import { ClientOnly } from '../../../hooks/useIsClient';
 
 interface CryptoDataTableSectionProps {
@@ -9,6 +9,7 @@ interface CryptoDataTableSectionProps {
   onToggleFavorite: (symbol: string) => void;
   isFavorite: (symbol: string) => boolean;
   shouldUseVirtualScrolling: boolean;
+  onRefresh?: () => void; // 새로고침 함수 추가
 }
 
 /**
@@ -21,7 +22,8 @@ export function CryptoDataTableSection({
   onCryptoClick,
   onToggleFavorite,
   isFavorite,
-  shouldUseVirtualScrolling
+  shouldUseVirtualScrolling,
+  onRefresh
 }: CryptoDataTableSectionProps) {
   const isLoading = false; // SSE는 로딩 상태가 없음
 
@@ -37,7 +39,7 @@ export function CryptoDataTableSection({
       </div>
     }>
       <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-2xl overflow-hidden">
-        <CryptoTable
+        <CryptoTableOptimized
           cryptos={finalDisplayData}
           loading={isLoading}
           error={sseError}
@@ -45,6 +47,7 @@ export function CryptoDataTableSection({
           onToggleFavorite={onToggleFavorite}
           isFavorite={isFavorite}
           useVirtualScrolling={shouldUseVirtualScrolling}
+          onRetry={onRefresh}
         />
       </div>
     </ClientOnly>

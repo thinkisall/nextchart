@@ -46,6 +46,7 @@ export function CryptoMarketView({
   onCryptoClick,
   onToggleFavorite,
   isFavorite,
+  onRefresh,
   onCloseCoinInfo
 }: CryptoMarketViewProps) {
   const router = useRouter();
@@ -100,6 +101,7 @@ export function CryptoMarketView({
         onToggleFavorite={onToggleFavorite}
         isFavorite={isFavorite}
         shouldUseVirtualScrolling={shouldUseVirtualScrolling}
+        onRefresh={onRefresh}
       />
 
       {/* Professional Footer */}

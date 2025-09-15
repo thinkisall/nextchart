@@ -1,0 +1,172 @@
+/* 모바일 성능 최적화 CSS */
+
+/* Virtual Scrolling 컨테이너 최적화 */
+.virtual-scroll-container {
+  /* 하드웨어 가속 활성화 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  
+  /* 스크롤 성능 최적화 */
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  
+  /* 스크롤바 스타일링 (모바일에서 숨김) */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.virtual-scroll-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.virtual-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.virtual-scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 2px;
+}
+
+/* 모바일에서 스크롤바 완전히 숨김 */
+@media (max-width: 768px) {
+  .virtual-scroll-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .virtual-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Virtual Scrolling Content 최적화 */
+.virtual-scroll-content {
+  /* GPU 레이어 분리 */
+  will-change: transform;
+  contain: layout style paint;
+  
+  /* 리플로우 방지 */
+  position: relative;
+  overflow: hidden;
+}
+
+/* 애니메이션 성능 최적화 */
+.crypto-row-optimized {
+  /* GPU 가속 */
+  will-change: transform;
+  
+  /* 리플로우 최소화 */
+  contain: layout style paint;
+  
+  /* 터치 반응성 향상 */
+  touch-action: manipulation;
+}
+
+/* 모바일 터치 최적화 */
+@media (max-width: 768px) {
+  .crypto-row-optimized {
+    /* 터치 지연 제거 */
+    -webkit-tap-highlight-color: transparent;
+    
+    /* 터치 반응성 향상 */
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  /* 모바일에서 호버 효과 비활성화 */
+  .crypto-row-optimized:hover {
+    transform: none;
+  }
+  
+  /* 활성 상태만 유지 */
+  .crypto-row-optimized:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out;
+  }
+}
+
+/* 텍스트 렌더링 최적화 */
+.crypto-text-optimized {
+  /* 텍스트 렌더링 최적화 */
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* 폰트 변형 방지 */
+  font-variant-numeric: tabular-nums;
+}
+
+/* 가격 변동 애니메이션 최적화 */
+.price-flash-optimized {
+  /* 애니메이션을 transform으로 최적화 */
+  animation: price-flash 0.3s ease-out;
+}
+
+@keyframes price-flash {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(34, 197, 94, 0.1);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* 로딩 최적화 */
+.loading-optimized {
+  /* 로딩 스피너 최적화 */
+  will-change: transform;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 메모리 사용량 최적화 */
+.memory-optimized {
+  /* 메모리 사용량 최소화 */
+  contain: strict;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 140px; /* 모바일 카드 높이 */
+}
+
+/* 반응형 최적화 */
+@media (max-width: 640px) {
+  .mobile-optimized {
+    /* 모바일에서 불필요한 효과 제거 */
+    backdrop-filter: none;
+    box-shadow: none;
+    border-radius: 8px;
+  }
+}
+
+/* 고해상도 디스플레이 최적화 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .high-dpi-optimized {
+    /* 고해상도에서 텍스트 선명도 향상 */
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+/* 다크모드 성능 최적화 */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-optimized {
+    /* 다크모드에서 GPU 가속 유지 */
+    color-scheme: dark;
+  }
+}
+
+/* 터치 디바이스 최적화 */
+@media (pointer: coarse) {
+  .touch-optimized {
+    /* 터치 타겟 크기 최적화 */
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

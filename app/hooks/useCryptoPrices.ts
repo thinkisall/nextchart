@@ -19,11 +19,25 @@ export function useCryptoPrices() {
       setPrices(data);
     } catch (error) {
       console.error('❌ fetchPrices failed:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch crypto prices';
+      
+      let errorMessage = '암호화폐 시세를 불러올 수 없습니다';
+      
+      if (error instanceof Error) {
+        if (error.message.includes('시간 초과')) {
+          errorMessage = '서버 응답이 지연되고 있습니다. 잠시 후 다시 시도해주세요.';
+        } else if (error.message.includes('네트워크')) {
+          errorMessage = '인터넷 연결을 확인해주세요.';
+        } else if (error.message.includes('Failed to fetch')) {
+          errorMessage = '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       setError(errorMessage);
       
       // 네트워크 오류인 경우 기존 데이터 유지
-      if (errorMessage.includes('Failed to fetch') || errorMessage.includes('network')) {
+      if (errorMessage.includes('네트워크') || errorMessage.includes('연결')) {
         console.log('📡 Network error detected, keeping existing data');
       }
     } finally {
