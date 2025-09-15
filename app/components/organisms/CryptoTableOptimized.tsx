@@ -30,12 +30,12 @@ export function CryptoTableOptimized({
   onCryptoClick, 
   onToggleFavorite, 
   isFavorite, 
-  useVirtualScrolling = true, // 기본값을 true로 변경
+  useVirtualScrolling = false, // Virtual Scrolling 완전 비활성화
   onRetry
 }: CryptoTableOptimizedProps) {
   
-  // 모바일에서는 항상 Virtual Scrolling 사용
-  const shouldUseVirtualScrolling = useVirtualScrolling || (typeof window !== 'undefined' && window.innerWidth < 768);
+  // Virtual Scrolling 완전 비활성화 - 모든 화면에서 페이지네이션 사용
+  const shouldUseVirtualScrolling = false;
   
   const {
     currentItems,
@@ -51,7 +51,7 @@ export function CryptoTableOptimized({
     stats
   } = usePagination({
     items: cryptos,
-    itemsPerPage: shouldUseVirtualScrolling ? 100 : 20 // Virtual Scrolling 시 더 많이 로드
+    itemsPerPage: 20 // 일반적인 페이지네이션 사용
   });
 
   // 로딩 상태 - 최적화된 디자인
@@ -112,11 +112,10 @@ export function CryptoTableOptimized({
                 <span className="text-xs text-green-100 font-semibold">LIVE</span>
               </div>
               
-              {!shouldUseVirtualScrolling && (
-                <div className="text-sm text-blue-200">
-                  {currentPage} / {totalPages}
-                </div>
-              )}
+              {/* 페이지 정보 항상 표시 */}
+              <div className="text-sm text-blue-200">
+                {currentPage} / {totalPages}
+              </div>
             </div>
           </div>
         </div>
@@ -147,31 +146,17 @@ export function CryptoTableOptimized({
                 </tr>
               </thead>
               <tbody>
-                {shouldUseVirtualScrolling ? (
-                  <tr>
-                    <td colSpan={5} className="p-0">
-                      <VirtualizedCryptoListV2
-                        cryptos={currentItems}
-                        onCryptoClick={onCryptoClick}
-                        onToggleFavorite={onToggleFavorite}
-                        isFavorite={isFavorite}
-                        variant="desktop"
-                      />
-                    </td>
-                  </tr>
-                ) : (
-                  currentItems.map((crypto, index) => (
-                    <CryptoRowOptimized
-                      key={crypto.symbol}
-                      crypto={crypto}
-                      onClick={() => onCryptoClick?.(crypto)}
-                      onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
-                      isFavorite={isFavorite?.(crypto.symbol) || false}
-                      variant="desktop"
-                      index={index + (currentPage - 1) * 20}
-                    />
-                  ))
-                )}
+                {currentItems.map((crypto, index) => (
+                  <CryptoRowOptimized
+                    key={crypto.symbol}
+                    crypto={crypto}
+                    onClick={() => onCryptoClick?.(crypto)}
+                    onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
+                    isFavorite={isFavorite?.(crypto.symbol) || false}
+                    variant="desktop"
+                    index={index + (currentPage - 1) * 20}
+                  />
+                ))}
               </tbody>
             </table>
           </div>
@@ -198,69 +183,57 @@ export function CryptoTableOptimized({
                 </tr>
               </thead>
               <tbody>
-                {shouldUseVirtualScrolling ? (
-                  <tr>
-                    <td colSpan={4} className="p-0">
-                      <VirtualizedCryptoListV2
-                        cryptos={currentItems}
-                        onCryptoClick={onCryptoClick}
-                        onToggleFavorite={onToggleFavorite}
-                        isFavorite={isFavorite}
-                        variant="tablet"
-                      />
-                    </td>
-                  </tr>
-                ) : (
-                  currentItems.map((crypto, index) => (
-                    <CryptoRowOptimized
-                      key={crypto.symbol}
-                      crypto={crypto}
-                      onClick={() => onCryptoClick?.(crypto)}
-                      onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
-                      isFavorite={isFavorite?.(crypto.symbol) || false}
-                      variant="tablet"
-                      index={index + (currentPage - 1) * 20}
-                    />
-                  ))
-                )}
+                {currentItems.map((crypto, index) => (
+                  <CryptoRowOptimized
+                    key={crypto.symbol}
+                    crypto={crypto}
+                    onClick={() => onCryptoClick?.(crypto)}
+                    onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
+                    isFavorite={isFavorite?.(crypto.symbol) || false}
+                    variant="tablet"
+                    index={index + (currentPage - 1) * 20}
+                  />
+                ))}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* 모바일 카드 레이아웃 - Virtual Scrolling 기본 적용 */}
+        {/* 모바일 카드 레이아웃 - 페이지네이션 사용 */}
         <div className="md:hidden bg-transparent">
-          <div className="p-3">
-            <VirtualizedCryptoListV2
-              cryptos={currentItems}
-              onCryptoClick={onCryptoClick}
-              onToggleFavorite={onToggleFavorite}
-              isFavorite={isFavorite}
-              variant="mobile"
-            />
+          <div className="p-3 space-y-3">
+            {currentItems.map((crypto, index) => (
+              <CryptoRowOptimized
+                key={crypto.symbol}
+                crypto={crypto}
+                onClick={() => onCryptoClick?.(crypto)}
+                onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
+                isFavorite={isFavorite?.(crypto.symbol) || false}
+                variant="mobile"
+                index={index + (currentPage - 1) * 20}
+              />
+            ))}
           </div>
         </div>
       </div>
 
-      {/* 페이지네이션 - Virtual Scrolling 사용 시 숨김 */}
-      {!shouldUseVirtualScrolling && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          goToPage={goToPage}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          getPageRange={getPageRange}
-          hasNextPage={hasNextPage}
-          hasPrevPage={hasPrevPage}
-          isChangingPage={isChangingPage}
-          stats={{
-            startIndex: stats.startIndex,
-            endIndex: stats.endIndex,
-            total: stats.total
-          }}
-        />
-      )}
+      {/* 페이지네이션 - 항상 표시 */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        goToPage={goToPage}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        getPageRange={getPageRange}
+        hasNextPage={hasNextPage}
+        hasPrevPage={hasPrevPage}
+        isChangingPage={isChangingPage}
+        stats={{
+          startIndex: stats.startIndex,
+          endIndex: stats.endIndex,
+          total: stats.total
+        }}
+      />
     </div>
   );
 }

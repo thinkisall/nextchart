@@ -152,7 +152,7 @@ export const VirtualizedCryptoListV2 = memo(({
                   onClick={() => onCryptoClick?.(crypto)}
                   onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
                   isFavorite={isFavorite?.(crypto.symbol) || false}
-                  variant={variant}
+                  variant="mobile" // Virtual Scrolling에서는 항상 mobile variant 사용
                   index={actualIndex}
                 />
               </div>

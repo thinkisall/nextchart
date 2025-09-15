@@ -3,9 +3,10 @@ interface PriceChangeProps {
   percentage: number;
   isPositive: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  compact?: boolean; // 모바일용 컴팩트 모드 추가
 }
 
-export function PriceChange({ value, percentage, isPositive, size = 'md' }: PriceChangeProps) {
+export function PriceChange({ value, percentage, isPositive, size = 'md', compact = false }: PriceChangeProps) {
   const formatValue = (num: number) => {
     return new Intl.NumberFormat('ko-KR', {
       style: 'currency',
@@ -49,6 +50,17 @@ export function PriceChange({ value, percentage, isPositive, size = 'md' }: Pric
   };
 
   const classes = sizeClasses[size];
+
+  // 컴팩트 모드 (모바일용 - 배경 없이 텍스트만)
+  if (compact) {
+    return (
+      <div className={`inline-flex items-center ${isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
+        <span className="text-xs font-bold tracking-tight">
+          {isPositive ? '▲' : '▼'} {symbol}{formatPercentage(percentage)}
+        </span>
+      </div>
+    );
+  }
 
   if (isPositive) {
     return (

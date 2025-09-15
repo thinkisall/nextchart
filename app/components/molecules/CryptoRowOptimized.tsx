@@ -118,17 +118,22 @@ const CryptoRowOptimized = memo(({
             </div>
           </div>
 
-          {/* 가격과 변동률 */}
-          <div className="flex justify-between items-end">
-            <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 crypto-text-optimized">
-              {formattedPrice}
+          {/* 가격과 변동률 - 충돌 방지 레이아웃 */}
+          <div className="flex justify-between items-center gap-2">
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 crypto-text-optimized truncate">
+                {formattedPrice}
+              </div>
             </div>
-            <PriceChange
-              value={crypto.change_amount}
-              percentage={crypto.change_rate}
-              isPositive={crypto.is_positive}
-              size="sm"
-            />
+            <div className="flex-shrink-0">
+              <PriceChange
+                value={crypto.change_amount}
+                percentage={crypto.change_rate}
+                isPositive={crypto.is_positive}
+                size="sm"
+                compact={true}
+              />
+            </div>
           </div>
         </div>
       </div>
