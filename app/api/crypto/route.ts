@@ -41,7 +41,7 @@ export async function GET() {
     
     // 응답 크기 최적화 - 불필요한 필드 제거
     if (data && data.data) {
-      const optimizedData = {
+      const optimizedData: any = {
         status: data.status,
         data: {}
       };

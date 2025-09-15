@@ -86,13 +86,12 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // 아이콘 크기
   },
 
-  // JavaScript 번들 압축
-  swcMinify: true,
+  // JavaScript 번들 압축 (Next.js 15에서는 기본 활성화)
   
-  // 실험적 기능으로 더 나은 압축
-  experimental: {
-    optimizeCss: true,
-  },
+  // 실험적 기능 비활성화 (빌드 에러 방지)
+  // experimental: {
+  //   optimizeCss: true,
+  // },
 };
 
 export default nextConfig;
