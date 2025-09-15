@@ -12,6 +12,7 @@ export function usePagination<T>({
   itemsPerPage = 20 
 }: UsePaginationProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isChangingPage, setIsChangingPage] = useState(false);
 
   // 중복 제거된 아이템을 메모이제이션으로 최적화
   const uniqueItems = useMemo(() => {
@@ -31,28 +32,75 @@ export function usePagination<T>({
     return uniqueItems.slice(startIndex, endIndex);
   }, [uniqueItems, currentPage, itemsPerPage]);
 
+  // 스크롤 함수 개선
+  const scrollToTable = useCallback(() => {
+    // 여러 선택자로 테이블 또는 목록 컨테이너 찾기 (우선순위 순)
+    const selectors = [
+      '[data-crypto-table]',
+      '.crypto-table-container', 
+      '[role="table"]',
+      'table',
+      '.bg-gradient-to-r.from-slate-900', // 테이블 헤더
+      'h2:contains("변동률")', // 제목
+      'h2' // 임의의 제목
+    ];
+    
+    let targetElement = null;
+    for (const selector of selectors) {
+      targetElement = document.querySelector(selector);
+      if (targetElement) break;
+    }
+    
+    if (targetElement) {
+      const headerOffset = 80; // 고정 헤더나 여유 공간
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: 'smooth'
+      });
+    } else {
+      // 요소를 찾지 못한 경우 적당한 위치로
+      window.scrollTo({ 
+        top: 300, // 300px 정도 아래로 (헤더 + 여유공간)
+        behavior: 'smooth' 
+      });
+    }
+  }, []);
+
   // 페이지 변경
   const goToPage = useCallback((page: number) => {
-    if (page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      setIsChangingPage(true);
       setCurrentPage(page);
-      // 페이지 변경 시 스크롤을 맨 위로
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // DOM 업데이트 후 스크롤
+      setTimeout(() => {
+        scrollToTable();
+        setIsChangingPage(false);
+      }, 100);
     }
-  }, [totalPages]);
+  }, [totalPages, currentPage, scrollToTable]);
 
   // 다음 페이지
   const nextPage = useCallback(() => {
-    goToPage(currentPage + 1);
-  }, [currentPage, goToPage]);
+    if (currentPage < totalPages) {
+      goToPage(currentPage + 1);
+    }
+  }, [currentPage, totalPages, goToPage]);
 
   // 이전 페이지
   const prevPage = useCallback(() => {
-    goToPage(currentPage - 1);
+    if (currentPage > 1) {
+      goToPage(currentPage - 1);
+    }
   }, [currentPage, goToPage]);
 
   // 아이템이 변경될 때 첫 페이지로 리셋
   useEffect(() => {
     setCurrentPage(1);
+    setIsChangingPage(false);
   }, [uniqueItems.length]);
 
   // 페이지 범위 계산 (표시할 페이지 번호들)
@@ -103,6 +151,7 @@ export function usePagination<T>({
     prevPage,
     getPageRange,
     stats,
+    isChangingPage,
     hasNextPage: currentPage < totalPages,
     hasPrevPage: currentPage > 1
   };

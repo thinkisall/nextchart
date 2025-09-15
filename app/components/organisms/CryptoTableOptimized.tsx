@@ -47,6 +47,7 @@ export function CryptoTableOptimized({
     getPageRange,
     hasNextPage,
     hasPrevPage,
+    isChangingPage,
     stats
   } = usePagination({
     items: cryptos,
@@ -90,7 +91,7 @@ export function CryptoTableOptimized({
   }
 
   return (
-    <div className="bg-transparent">
+    <div className="bg-transparent" data-crypto-table>
       {/* 간소화된 헤더 */}
       <div className="bg-gradient-to-r from-slate-900 to-blue-900 border-b border-blue-500/20">
         <div className="px-4 py-4">
@@ -252,6 +253,7 @@ export function CryptoTableOptimized({
           getPageRange={getPageRange}
           hasNextPage={hasNextPage}
           hasPrevPage={hasPrevPage}
+          isChangingPage={isChangingPage}
           stats={{
             startIndex: stats.startIndex,
             endIndex: stats.endIndex,

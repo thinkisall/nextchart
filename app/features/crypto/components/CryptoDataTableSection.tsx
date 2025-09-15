@@ -1,3 +1,6 @@
+'use client';
+
+import { useRef } from 'react';
 import { CryptoPrice } from '../../../lib/types';
 import { CryptoTableOptimized } from '../../../components/organisms/CryptoTableOptimized';
 import { ClientOnly } from '../../../hooks/useIsClient';
@@ -26,6 +29,7 @@ export function CryptoDataTableSection({
   onRefresh
 }: CryptoDataTableSectionProps) {
   const isLoading = false; // SSE는 로딩 상태가 없음
+  const tableRef = useRef<HTMLDivElement>(null);
 
   return (
     <ClientOnly fallback={
@@ -38,7 +42,7 @@ export function CryptoDataTableSection({
         </div>
       </div>
     }>
-      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-2xl overflow-hidden">
+      <div ref={tableRef} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-2xl overflow-hidden" data-crypto-table>
         <CryptoTableOptimized
           cryptos={finalDisplayData}
           loading={isLoading}
