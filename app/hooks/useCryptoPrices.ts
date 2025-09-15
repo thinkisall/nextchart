@@ -8,33 +8,46 @@ export function useCryptoPrices() {
   const [prices, setPrices] = useState<CryptoPrice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
-  const fetchPrices = useCallback(async () => {
+  const fetchPrices = useCallback(async (isRetry = false) => {
     try {
-      console.log('🔄 Starting fetchPrices...');
+      console.log('🔄 Starting fetchPrices...', isRetry ? `(retry ${retryCount + 1})` : '');
       setLoading(true);
       setError(null);
+      
       const data = await getAllTickers();
       console.log('✅ Prices fetched successfully:', data.length, 'items');
+      
       setPrices(data);
+      setRetryCount(0); // 성공 시 재시도 카운터 리셋
     } catch (error) {
       console.error('❌ fetchPrices failed:', error);
       
       let errorMessage = '암호화폐 시세를 불러올 수 없습니다';
       
       if (error instanceof Error) {
-        if (error.message.includes('시간 초과')) {
-          errorMessage = '서버 응답이 지연되고 있습니다. 잠시 후 다시 시도해주세요.';
-        } else if (error.message.includes('네트워크')) {
-          errorMessage = '인터넷 연결을 확인해주세요.';
+        if (error.message.includes('시간 초과') || error.message.includes('timeout')) {
+          errorMessage = '서버 응답이 지연되고 있습니다. 잠시 후 자동으로 재시도됩니다.';
+        } else if (error.message.includes('네트워크') || error.message.includes('연결')) {
+          errorMessage = '네트워크 연결을 확인해주세요. 자동으로 재시도됩니다.';
         } else if (error.message.includes('Failed to fetch')) {
-          errorMessage = '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.';
+          errorMessage = '서버에 연결할 수 없습니다. 자동으로 재시도됩니다.';
         } else {
           errorMessage = error.message;
         }
       }
       
       setError(errorMessage);
+      
+      // 자동 재시도 로직 (최대 3번)
+      if (retryCount < 3) {
+        console.log(`🔄 Auto-retry in ${(retryCount + 1) * 5} seconds...`);
+        setTimeout(() => {
+          setRetryCount(prev => prev + 1);
+          fetchPrices(true);
+        }, (retryCount + 1) * 5000); // 5초, 10초, 15초 간격
+      }
       
       // 네트워크 오류인 경우 기존 데이터 유지
       if (errorMessage.includes('네트워크') || errorMessage.includes('연결')) {
@@ -43,13 +56,13 @@ export function useCryptoPrices() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [retryCount]);
 
   useEffect(() => {
     fetchPrices();
     
-    // 30초마다 업데이트 (WebSocket이 없을 때)
-    const interval = setInterval(fetchPrices, 30000);
+    // 60초마다 업데이트 (더 긴 간격으로 서버 부하 감소)
+    const interval = setInterval(() => fetchPrices(), 60000);
     
     return () => clearInterval(interval);
   }, [fetchPrices]);
@@ -58,7 +71,8 @@ export function useCryptoPrices() {
     prices,
     loading,
     error,
-    refetch: fetchPrices
+    retryCount,
+    refetch: () => fetchPrices()
   };
 }
 
