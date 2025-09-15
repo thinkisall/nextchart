@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { CryptoPrice } from '../../../lib/types';
-import { CryptoTableOptimized } from '../../../components/organisms/CryptoTableOptimized';
+import { UpbitStyleRanking } from '../../../components/organisms/UpbitStyleRanking';
 import { ClientOnly } from '../../../hooks/useIsClient';
 
 interface CryptoDataTableSectionProps {
@@ -42,16 +42,11 @@ export function CryptoDataTableSection({
         </div>
       </div>
     }>
-      <div ref={tableRef} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-2xl overflow-hidden" data-crypto-table>
-        <CryptoTableOptimized
-          cryptos={finalDisplayData}
-          loading={isLoading}
-          error={sseError}
-          onCryptoClick={onCryptoClick}
-          onToggleFavorite={onToggleFavorite}
-          isFavorite={isFavorite}
-          useVirtualScrolling={shouldUseVirtualScrolling}
-          onRetry={onRefresh}
+      <div ref={tableRef} className="max-w-md mx-auto" data-crypto-ranking>
+        <UpbitStyleRanking
+          data={finalDisplayData || []}
+          maxItems={50}
+          onItemClick={onCryptoClick}
         />
       </div>
     </ClientOnly>

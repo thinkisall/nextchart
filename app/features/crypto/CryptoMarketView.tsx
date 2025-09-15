@@ -3,7 +3,7 @@
 import { CryptoPrice } from '../../lib/types';
 import { SectorAnalysisContainer } from '../sector-analysis';
 import { SectorNavigationUtils } from '../sector-analysis/utils/SectorNavigationUtils';
-import { CryptoFilter } from '../../components/molecules/CryptoFilter';
+import { SimplifiedFilter } from '../../components/molecules/SimplifiedFilter';
 import { SquareAd } from '../../components/AdSenseV2';
 import { ClientOnly } from '../../hooks/useIsClient';
 import { CryptoDataTableSection } from './components/CryptoDataTableSection';
@@ -82,15 +82,13 @@ export function CryptoMarketView({
 
       {/* Advanced Filtering */}
       <ClientOnly fallback={
-        <div className="h-16 sm:h-20 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>
+        <div className="h-32 bg-white/60 dark:bg-gray-800/60 rounded-2xl animate-pulse backdrop-blur"></div>
       }>
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-xl border border-white/20 dark:border-gray-700/30 shadow-xl">
-          <CryptoFilter
-            cryptos={primaryData}
-            onFilteredDataChange={onFilteredDataChange}
-            favorites={favorites}
-          />
-        </div>
+        <SimplifiedFilter
+          cryptos={primaryData}
+          onFilteredDataChange={onFilteredDataChange}
+          favorites={favorites}
+        />
       </ClientOnly>
 
       {/* Main Trading Table */}
@@ -115,6 +113,7 @@ export function CryptoMarketView({
         selectedCoin={selectedCoin} 
         onClose={onCloseCoinInfo} 
       />
+
     </div>
   );
 }

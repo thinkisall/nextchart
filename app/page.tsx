@@ -1,3 +1,5 @@
+'use client';
+
 import { CryptoMarket } from "./features/crypto";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
