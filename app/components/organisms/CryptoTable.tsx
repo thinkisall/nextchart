@@ -128,12 +128,12 @@ export function CryptoTable({
           <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="flex items-center space-x-3 mb-2">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
-                  <span className="text-xl font-bold text-white">🏆</span>
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-400 via-orange-400 to-yellow-400 flex items-center justify-center shadow-lg">
+                  <span className="text-xl font-bold text-white">📈</span>
                 </div>
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight">실시간 순위</h2>
-                  <p className="text-sm sm:text-base text-blue-100 font-medium">24시간 변동률 기준</p>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight">변동률 순위</h2>
+                  <p className="text-sm sm:text-base text-blue-100 font-medium">24시간 변동률이 가장 큰 순서</p>
                 </div>
               </div>
             </div>
@@ -165,7 +165,7 @@ export function CryptoTable({
                 <tr className="border-b border-gray-200/30 dark:border-gray-700/30 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
                   <th className="px-6 py-4 text-left">
                     <div className="flex items-center space-x-2">
-                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">🏆 순위 & 종목</span>
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📈 변동률 순위 & 종목</span>
                     </div>
                   </th>
                   <th className="px-6 py-4 text-right">
@@ -173,8 +173,8 @@ export function CryptoTable({
                   </th>
                   <th className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end space-x-2">
-                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📈 24시간 변동</span>
-                      <span className="text-xs text-blue-500">↓</span>
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📊 24시간 변동률</span>
+                      <span className="text-xs text-red-500">📈</span>
                     </div>
                   </th>
                   <th className="px-6 py-4 text-right">
@@ -209,13 +209,13 @@ export function CryptoTable({
               <thead className="sticky-header">
                 <tr className="border-b border-gray-200/30 dark:border-gray-700/30 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
                   <th className="px-4 py-4 text-left">
-                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">🏆 순위 & 종목</span>
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📈 변동률 순위</span>
                   </th>
                   <th className="px-4 py-4 text-right">
                     <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">💰 현재가</span>
                   </th>
                   <th className="px-4 py-4 text-right">
-                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📈 변동률</span>
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">📊 24H 변동률</span>
                   </th>
                   <th className="px-4 py-4 text-center">
                     <span className="text-sm font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">⭐</span>

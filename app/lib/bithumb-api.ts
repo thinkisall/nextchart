@@ -683,7 +683,12 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
         };
       })
       .filter((crypto) => crypto !== null && crypto!.current_price > 0)
-      .sort((a, b) => b!.change_rate - a!.change_rate);
+      .sort((a, b) => {
+        // 변동률 절댓값 기준으로 정렬 (가장 변동이 큰 순서)
+        const aAbsChange = Math.abs(a!.change_rate);
+        const bAbsChange = Math.abs(b!.change_rate);
+        return bAbsChange - aAbsChange;
+      });
 
     return processedData as CryptoPrice[];
   } catch (error) {
