@@ -1,17 +1,25 @@
 import { NextResponse } from 'next/server';
 import { sseManager, startGlobalFetching, stopGlobalFetching } from '../../lib/sse-manager';
 
+// 연결 수 제한 및 압축
+const MAX_CONNECTIONS = 50; // 동시 연결 수 제한
+let compressionEnabled = true;
+
 export async function GET() {
   try {
+    // 연결 수 제한
+    if (sseManager.getConnectionCount() >= MAX_CONNECTIONS) {
+      return new NextResponse('Too many connections', { status: 429 });
+    }
+
     const stream = new ReadableStream({
       start(controller) {
         let isClosed = false;
         
-        // 초기 연결 메시지 전송
+        // 초기 연결 메시지 전송 (최소화)
         const welcomeMessage = `data: ${JSON.stringify({ 
-          type: 'connected', 
-          message: 'SSE connected successfully',
-          timestamp: new Date().toISOString()
+          type: 'connected',
+          timestamp: Date.now() // ISO 문자열 대신 timestamp 사용
         })}\n\n`;
         controller.enqueue(new TextEncoder().encode(welcomeMessage));
         

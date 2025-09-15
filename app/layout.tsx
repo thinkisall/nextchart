@@ -8,11 +8,15 @@ import { StructuredData } from "./components/seo/StructuredData";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap', // 폰트 로딩 최적화
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-geist-mono", 
   subsets: ["latin"],
+  display: 'swap', // 폰트 로딩 최적화
+  preload: false, // 모노폰트는 필요시에만 로드
 });
 
 export const metadata: Metadata = {
