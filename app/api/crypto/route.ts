@@ -88,6 +88,12 @@ export async function GET() {
     
   } catch (error) {
     console.error('❌ Error fetching Bithumb data:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      name: error instanceof Error ? error.name : 'Unknown',
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    });
     
     // 캐시된 데이터가 있으면 그것을 반환 (stale-while-revalidate 패턴)
     if (cachedData) {
@@ -101,7 +107,11 @@ export async function GET() {
     }
     
     return NextResponse.json(
-      { error: 'Failed to fetch crypto data' },
+      { 
+        error: 'Failed to fetch crypto data',
+        details: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
+      },
       { 
         status: 500,
         headers: {

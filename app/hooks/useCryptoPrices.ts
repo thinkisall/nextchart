@@ -11,12 +11,21 @@ export function useCryptoPrices() {
 
   const fetchPrices = useCallback(async () => {
     try {
+      console.log('🔄 Starting fetchPrices...');
       setLoading(true);
       setError(null);
       const data = await getAllTickers();
+      console.log('✅ Prices fetched successfully:', data.length, 'items');
       setPrices(data);
     } catch (error) {
-      setError('Failed to fetch crypto prices');
+      console.error('❌ fetchPrices failed:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch crypto prices';
+      setError(errorMessage);
+      
+      // 네트워크 오류인 경우 기존 데이터 유지
+      if (errorMessage.includes('Failed to fetch') || errorMessage.includes('network')) {
+        console.log('📡 Network error detected, keeping existing data');
+      }
     } finally {
       setLoading(false);
     }
@@ -46,12 +55,16 @@ export function useCryptoPrice(symbol: string) {
 
   const fetchPrice = useCallback(async () => {
     try {
+      console.log('🔄 Fetching price for:', symbol);
       setLoading(true);
       setError(null);
       const data = await getTicker(symbol);
+      console.log('✅ Price fetched for', symbol, ':', data?.current_price);
       setPrice(data);
     } catch (error) {
-      setError(`Failed to fetch price for ${symbol}`);
+      console.error('❌ fetchPrice failed for', symbol, ':', error);
+      const errorMessage = error instanceof Error ? error.message : `Failed to fetch price for ${symbol}`;
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

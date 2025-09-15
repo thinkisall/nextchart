@@ -606,9 +606,11 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
 
     const apiUrl = `${baseUrl}/api/crypto`;
 
-    // 타임아웃 설정 (5초)
+    // 타임아웃 설정 (10초로 늘림)
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    console.log('🔗 Fetching from API:', apiUrl);
 
     const response = await fetch(apiUrl, {
       signal: controller.signal,
@@ -618,24 +620,44 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
     });
 
     clearTimeout(timeoutId);
+    console.log('📡 Response received:', response.status, response.statusText);
 
     if (!response.ok) {
+      console.error('❌ HTTP Error Details:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: response.url,
+        headers: Object.fromEntries(response.headers.entries())
+      });
       throw new Error(
         `HTTP error! status: ${response.status}, statusText: ${response.statusText}`
       );
     }
 
     const contentType = response.headers.get("content-type");
+    console.log('📋 Content-Type:', contentType);
+    
     if (!contentType || !contentType.includes("application/json")) {
       const textResponse = await response.text();
+      console.error('❌ Invalid content type. Response preview:', textResponse.substring(0, 200));
       throw new Error("Invalid response format: expected JSON");
     }
 
-    const data: BithumbTickerResponse = await response.json();
+    let data: BithumbTickerResponse;
+    try {
+      data = await response.json();
+      console.log('✅ JSON parsed successfully. Status:', data.status);
+    } catch (jsonError) {
+      console.error('❌ JSON parse error:', jsonError);
+      throw new Error('Failed to parse JSON response');
+    }
 
     if (data.status !== "0000") {
+      console.error('❌ API Error:', data.status, data.error);
       throw new Error(`API Error: ${data.error || "Unknown error"}`);
     }
+
+    console.log('✅ Data received successfully, processing...');
 
     const processedData = Object.entries(data.data)
       .filter(
@@ -690,11 +712,14 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
         return bAbsChange - aAbsChange;
       });
 
+    console.log('✅ Processing complete. Returning', processedData.length, 'items');
     return processedData as CryptoPrice[];
   } catch (error) {
     console.error("❌ getAllTickers error:", error);
     console.error("Error details:", {
       message: error instanceof Error ? error.message : "Unknown error",
+      name: error instanceof Error ? error.name : "Unknown",
+      stack: error instanceof Error ? error.stack : undefined,
       timestamp: new Date().toISOString(),
     });
     return [];
