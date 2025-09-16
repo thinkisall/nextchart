@@ -338,7 +338,6 @@ const UPBIT_COINS = new Set([
   "AVAX",
   "AWE",
   "AXS",
-  "BABY",
   "BAT",
   "BCH",
   "BEAM",

@@ -217,6 +217,24 @@ export const FeatureRequestModal = memo<FeatureRequestModalProps>(({
                 </div>
               </div>
 
+              {/* 테스트 버튼 (개발 환경에서만) */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      console.log('🧪 EmailJS 테스트 시작');
+                      const { EmailService } = await import('../services/emailService');
+                      const result = await EmailService.sendTestEmail();
+                      alert(result ? '테스트 이메일 전송 성공!' : '테스트 이메일 전송 실패!');
+                    }}
+                    className="w-full px-3 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm font-medium"
+                  >
+                    🧪 EmailJS 테스트 (개발자용)
+                  </button>
+                </div>
+              )}
+
               {/* 폼 검증 상태 표시 (디버깅용) */}
               {process.env.NODE_ENV === 'development' && (
                 <div className="text-xs text-gray-500 p-2 bg-gray-100 dark:bg-gray-700 rounded">

@@ -10,7 +10,7 @@ export class EmailService {
   // EmailJS 설정
   private static readonly SERVICE_ID = 'service_5cgxi7h';
   private static readonly TEMPLATE_ID = 'template_b48xnbm';
-  private static readonly PUBLIC_KEY = 'KIVQU5JLPR3XSOSUFFGWYKSGGNXUOZQZPZME26QSHIMTAHYDPYKR6LDAGIXEWFD6';
+  private static readonly PUBLIC_KEY = '3n5QreFtI0daC2QTM';
   private static readonly USE_DUMMY_MODE = false; // 실제 이메일 전송 활성화!
   
   // Gmail 주소로 변경
@@ -77,9 +77,19 @@ export class EmailService {
 
       // EmailJS 로드 확인
       if (typeof emailjs === 'undefined') {
-        console.error('EmailJS 라이브러리가 로드되지 않았습니다.');
+        console.error('❌ EmailJS 라이브러리가 로드되지 않았습니다.');
+        console.log('🔍 window.emailjs:', typeof window !== 'undefined' ? (window as any).emailjs : 'server environment');
         return false;
+      } else {
+        console.log('✅ EmailJS 라이브러리 로드 확인됨');
       }
+
+      console.log('🔧 EmailJS 설정 확인:', {
+        SERVICE_ID: this.SERVICE_ID,
+        TEMPLATE_ID: this.TEMPLATE_ID,
+        PUBLIC_KEY_LENGTH: this.PUBLIC_KEY.length,
+        ADMIN_EMAIL: this.getAdminEmail()
+      });
 
       console.log('📧 기능 요청 전송 시작:', {
         type: this.getTypeLabel(request.type),
@@ -89,8 +99,9 @@ export class EmailService {
 
       // EmailJS 초기화
       const initResult = this.initialize();
+      console.log('🔧 EmailJS 초기화 결과:', initResult);
       if (!initResult) {
-        console.error('EmailJS 초기화에 실패했습니다.');
+        console.error('❌ EmailJS 초기화에 실패했습니다.');
         return false;
       }
 
@@ -107,8 +118,9 @@ export class EmailService {
         user_agent: request.userAgent || 'Unknown'
       };
 
-      console.log('전송할 템플릿 파라미터:', templateParams);
+      console.log('📨 전송할 파라미터:', JSON.stringify(templateParams, null, 2));
 
+      console.log('🚀 EmailJS.send() 호출 시작...');
       const response = await emailjs.send(
         this.SERVICE_ID,
         this.TEMPLATE_ID,
@@ -116,16 +128,30 @@ export class EmailService {
         this.PUBLIC_KEY
       );
 
-      console.log('이메일 전송 성공:', response);
+      console.log('✅ 이메일 전송 성공! 응답:', response);
       return response.status === 200;
 
     } catch (error) {
-      console.error('이메일 전송 실패:', error);
+      console.error('💥 이메일 전송 실패:', error);
       
       // 더 자세한 에러 정보 출력
       if (error instanceof Error) {
-        console.error('에러 메시지:', error.message);
-        console.error('에러 스택:', error.stack);
+        console.error('❌ 에러 메시지:', error.message);
+        console.error('📍 에러 스택:', error.stack);
+        console.error('🔍 에러 이름:', error.name);
+      } else {
+        console.error('🔍 에러 타입:', typeof error);
+        console.error('🔍 에러 값:', error);
+        console.error('🔍 에러 JSON:', JSON.stringify(error));
+      }
+      
+      // EmailJS 특정 에러 체크
+      if (error && typeof error === 'object') {
+        console.error('🔧 에러 상세:', {
+          status: (error as any).status,
+          text: (error as any).text,
+          message: (error as any).message
+        });
       }
       
       return false;
