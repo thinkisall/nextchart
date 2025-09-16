@@ -6,12 +6,12 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
 import { HeaderAd, FooterAd } from "./components/AdSenseV2";
 import { BitcoinDominance } from "./components/molecules/BitcoinDominance";
-import { useCryptoPrices } from "./hooks/useCryptoPrices";
+import { useCryptoData } from "./features/crypto/hooks/useCryptoData";
 import Link from "next/link";
 
 export default function Home() {
-  // 거래소 성과 분석을 위한 데이터 가져오기
-  const { prices } = useCryptoPrices();
+  // 실시간 데이터 (SSE + WebSocket + REST API 통합)
+  const { primaryData } = useCryptoData();
 
   return (
     <ErrorBoundary>
@@ -148,7 +148,7 @@ export default function Home() {
             }
           >
             <div className="mb-8">
-              <ExchangePerformanceAnalysis coins={prices} />
+              <ExchangePerformanceAnalysis coins={primaryData} />
             </div>
           </ClientOnly>
 

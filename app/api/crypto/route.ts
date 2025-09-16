@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// 메모리 캐시 (더 긴 캐시 시간)
+// 메모리 캐시 (실시간 데이터를 위해 캐시 시간 단축)
 let cachedData: any = null;
 let cacheTimestamp = 0;
-const CACHE_DURATION = 60 * 1000; // 60초 캐시
+const CACHE_DURATION = 30 * 1000; // 30초 캐시 (60초에서 단축)
 
 // 건강성 체크를 위한 변수 (더 관대하게)
 let consecutiveFailures = 0;
@@ -111,20 +111,25 @@ async function safeFetchWithRetry(url: string, options: RequestInit = {}, retryC
 }
 
 // 빗썸 API 프록시 엔드포인트 (강화된 에러 핸들링)
-export async function GET() {
+export async function GET(request: NextRequest) {
   console.log('🔗 /api/crypto called at:', new Date().toLocaleTimeString());
   
-  // 캐시 확인
+  // URL에서 강제 새로고침 파라미터 확인
+  const { searchParams } = new URL(request.url);
+  const forceRefresh = searchParams.get('refresh') === 'true';
+  
+  // 캐시 확인 (강제 새로고침이 아닌 경우만)
   const now = Date.now();
-  if (cachedData && (now - cacheTimestamp) < CACHE_DURATION) {
+  if (!forceRefresh && cachedData && (now - cacheTimestamp) < CACHE_DURATION) {
     console.log('📋 Returning cached data');
     return NextResponse.json(cachedData, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Cache-Control': 'public, max-age=60, s-maxage=60',
+        'Cache-Control': 'public, max-age=30, s-maxage=30', // 캐시 시간 단축
         'X-Data-Source': 'cache',
+        'X-Cache-Age': ((now - cacheTimestamp) / 1000).toFixed(1),
       },
     });
   }
@@ -191,8 +196,10 @@ export async function GET() {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', 
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Cache-Control': 'public, max-age=60, s-maxage=60',
+        'Cache-Control': 'public, max-age=30, s-maxage=30', // 캐시 시간 단축
         'X-Data-Source': 'api',
+        'X-Timestamp': now.toString(),
+        'X-Fresh-Data': 'true',
       },
     });
     

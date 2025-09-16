@@ -7,6 +7,7 @@ interface PerformanceSummaryProps {
   worstPerformer: ExchangeStats | null;
   totalExchanges: number;
   activeExchanges: number;
+  lastUpdate?: Date;
 }
 
 /**
@@ -18,18 +19,32 @@ export const PerformanceSummary = memo<PerformanceSummaryProps>(({
   bestPerformer,
   worstPerformer,
   totalExchanges,
-  activeExchanges
+  activeExchanges,
+  lastUpdate
 }) => {
   return (
     <div className="bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-800 dark:to-blue-900 
       rounded-2xl p-6 border border-slate-200 dark:border-slate-700 mb-6">
       
       {/* 제목 */}
-      <div className="flex items-center space-x-2 mb-4">
-        <span className="text-2xl">📊</span>
-        <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200">
-          거래소별 성과 분석
-        </h2>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <span className="text-2xl">📊</span>
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200">
+            거래소별 성과 분석
+          </h2>
+        </div>
+        
+        {/* 실시간 업데이트 표시 */}
+        {lastUpdate && (
+          <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-400">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span>실시간</span>
+            <span className="text-xs">
+              {lastUpdate.toLocaleTimeString('ko-KR')}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* 요약 텍스트 */}

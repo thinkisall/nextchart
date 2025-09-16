@@ -32,7 +32,8 @@ export function ExchangePerformanceContainer({
     summary,
     isLoading,
     totalExchanges,
-    activeExchanges
+    activeExchanges,
+    lastUpdate
   } = useExchangePerformance(coins, filter);
 
   if (isLoading) {
@@ -61,60 +62,72 @@ export function ExchangePerformanceContainer({
         worstPerformer={worstPerformer}
         totalExchanges={totalExchanges}
         activeExchanges={activeExchanges}
+        lastUpdate={lastUpdate}
       />
 
       {/* 필터 컨트롤 */}
       <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-4 
         border border-gray-200/50 dark:border-gray-700/50">
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           
-          {/* 정렬 기준 */}
-          <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              정렬:
-            </label>
-            <select
-              value={filter.sortBy}
-              onChange={(e) => setFilter(prev => ({ 
+          <div className="flex flex-wrap items-center gap-4">
+            {/* 정렬 기준 */}
+            <div className="flex items-center space-x-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                정렬:
+              </label>
+              <select
+                value={filter.sortBy}
+                onChange={(e) => setFilter(prev => ({ 
+                  ...prev, 
+                  sortBy: e.target.value as PerformanceFilter['sortBy'] 
+                }))}
+                className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 
+                  rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              >
+                <option value="averageChange">평균 변동률</option>
+                <option value="positivePercentage">상승 비율</option>
+                <option value="totalCoins">코인 수</option>
+              </select>
+            </div>
+
+            {/* 정렬 순서 */}
+            <button
+              onClick={() => setFilter(prev => ({ 
                 ...prev, 
-                sortBy: e.target.value as PerformanceFilter['sortBy'] 
+                sortOrder: prev.sortOrder === 'desc' ? 'asc' : 'desc' 
               }))}
-              className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 
-                rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 
+                rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
             >
-              <option value="averageChange">평균 변동률</option>
-              <option value="positivePercentage">상승 비율</option>
-              <option value="totalCoins">코인 수</option>
-            </select>
+              {filter.sortOrder === 'desc' ? '↓ 내림차순' : '↑ 오름차순'}
+            </button>
+
+            {/* 양수 필터 */}
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={filter.showOnlyPositive}
+                onChange={(e) => setFilter(prev => ({ 
+                  ...prev, 
+                  showOnlyPositive: e.target.checked 
+                }))}
+                className="rounded border-gray-300 dark:border-gray-600"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                상승만 보기
+              </span>
+            </label>
           </div>
 
-          {/* 정렬 순서 */}
-          <button
-            onClick={() => setFilter(prev => ({ 
-              ...prev, 
-              sortOrder: prev.sortOrder === 'desc' ? 'asc' : 'desc' 
-            }))}
-            className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 
-              rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
-          >
-            {filter.sortOrder === 'desc' ? '↓ 내림차순' : '↑ 오름차순'}
-          </button>
-
-          {/* 양수 필터 */}
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={filter.showOnlyPositive}
-              onChange={(e) => setFilter(prev => ({ 
-                ...prev, 
-                showOnlyPositive: e.target.checked 
-              }))}
-              className="rounded border-gray-300 dark:border-gray-600"
-            />
-            <span className="text-sm text-gray-700 dark:text-gray-300">
-              상승만 보기
-            </span>
-          </label>
+          {/* 새로고침 버튼 및 업데이트 시간 */}
+          <div className="flex items-center space-x-3">
+            {lastUpdate && (
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                마지막 업데이트: {lastUpdate.toLocaleTimeString('ko-KR')}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

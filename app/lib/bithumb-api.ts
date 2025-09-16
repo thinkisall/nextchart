@@ -615,7 +615,7 @@ async function safeFetch(url: string, options: RequestInit = {}): Promise<Respon
 /**
  * 전체 암호화폐 시세 조회 (간소화 버전)
  */
-export async function getAllTickers(): Promise<CryptoPrice[]> {
+export async function getAllTickers(forceRefresh: boolean = false): Promise<CryptoPrice[]> {
   try {
     // 서버 사이드에서는 절대 URL 필요
     const baseUrl =
@@ -625,13 +625,17 @@ export async function getAllTickers(): Promise<CryptoPrice[]> {
           process.env.VERCEL_URL ||
           "http://localhost:3000"; // 서버 사이드
 
-    const apiUrl = `${baseUrl}/api/crypto`;
+    // 강제 새로고침 파라미터 추가
+    const refreshParam = forceRefresh ? '?refresh=true' : '';
+    const apiUrl = `${baseUrl}/api/crypto${refreshParam}`;
     
-    console.log("🔗 Fetching from API:", apiUrl);
+    console.log("🔗 Fetching from API:", apiUrl, forceRefresh ? '(forced refresh)' : '');
 
     const response = await safeFetch(apiUrl, {
       headers: {
-        "Cache-Control": "no-cache",
+        "Cache-Control": forceRefresh ? "no-cache, no-store, must-revalidate" : "no-cache",
+        "Pragma": forceRefresh ? "no-cache" : undefined,
+        "Expires": forceRefresh ? "0" : undefined,
         "Accept": "application/json",
         "Content-Type": "application/json",
       },

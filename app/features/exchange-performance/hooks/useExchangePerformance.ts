@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { CryptoPrice } from '../../../lib/types';
 import { ExchangePerformanceService } from '../services/exchangePerformanceService';
 import type { ExchangePerformance, PerformanceFilter } from '../types';
@@ -6,6 +6,7 @@ import type { ExchangePerformance, PerformanceFilter } from '../types';
 /**
  * 거래소 성과 분석 훅
  * 코인 데이터를 기반으로 거래소별 성과 통계를 계산
+ * 실시간 데이터 업데이트 지원
  */
 export function useExchangePerformance(
   coins: CryptoPrice[],
@@ -15,6 +16,14 @@ export function useExchangePerformance(
     showOnlyPositive: false
   }
 ) {
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+
+  // 데이터 변경 시 타임스탬프 업데이트
+  useEffect(() => {
+    if (coins && coins.length > 0) {
+      setLastUpdate(new Date());
+    }
+  }, [coins]);
   // 거래소별 성과 분석
   const performance = useMemo((): ExchangePerformance => {
     if (!coins || coins.length === 0) {
@@ -81,6 +90,7 @@ export function useExchangePerformance(
     
     // 상태
     isLoading,
+    lastUpdate,
     
     // 통계
     totalExchanges: Object.keys(performance).length,

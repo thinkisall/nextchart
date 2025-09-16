@@ -10,13 +10,13 @@ export function useCryptoPrices() {
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
-  const fetchPrices = useCallback(async (isRetry = false) => {
+  const fetchPrices = useCallback(async (isRetry = false, forceRefresh = false) => {
     try {
-      console.log('🔄 Starting fetchPrices...', isRetry ? `(retry ${retryCount + 1})` : '');
+      console.log('🔄 Starting fetchPrices...', isRetry ? `(retry ${retryCount + 1})` : '', forceRefresh ? '(force refresh)' : '');
       setLoading(true);
       setError(null);
       
-      const data = await getAllTickers();
+      const data = await getAllTickers(forceRefresh);
       console.log('✅ Prices fetched successfully:', data.length, 'items');
       
       setPrices(data);
@@ -61,8 +61,8 @@ export function useCryptoPrices() {
   useEffect(() => {
     fetchPrices();
     
-    // 60초마다 업데이트 (더 긴 간격으로 서버 부하 감소)
-    const interval = setInterval(() => fetchPrices(), 60000);
+    // 30초마다 업데이트 (60초에서 단축하여 더 빠른 실시간 반영)
+    const interval = setInterval(() => fetchPrices(), 30000);
     
     return () => clearInterval(interval);
   }, [fetchPrices]);
@@ -72,7 +72,8 @@ export function useCryptoPrices() {
     loading,
     error,
     retryCount,
-    refetch: () => fetchPrices()
+    refetch: () => fetchPrices(false, true), // 강제 새로고침 옵션 추가
+    softRefresh: () => fetchPrices(false, false) // 일반 새로고침
   };
 }
 
