@@ -267,6 +267,7 @@ export const BINANCE_COINS = new Set([
 ]);
 
 export const BINANCE_ALPHA_COINS = new Set([
+  "MERL",
   "AVNT",
   "AERO",
   "ATH",
