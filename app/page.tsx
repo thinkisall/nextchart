@@ -2,6 +2,7 @@
 
 import { CryptoMarket } from "./features/crypto";
 import { ExchangePerformanceAnalysis } from "./features/exchange-performance";
+import { FloatingFeatureButton } from "./features/feature-request";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
 import { HeaderAd, FooterAd } from "./components/AdSenseV2";
@@ -182,6 +183,9 @@ export default function Home() {
           {/* Footer Advertisement */}
           <FooterAd />
         </div>
+
+        {/* 플로팅 기능 요청 버튼 */}
+        <FloatingFeatureButton />
       </div>
     </ErrorBoundary>
   );
