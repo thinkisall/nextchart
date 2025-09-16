@@ -105,8 +105,23 @@ export class EmailService {
         return false;
       }
 
+      // 이메일 주소 디코딩 테스트
+      const adminEmail = this.getAdminEmail();
+      console.log('🔍 관리자 이메일 확인:', {
+        encoded: this.ENCODED_EMAIL,
+        decoded: adminEmail,
+        isValid: adminEmail.includes('@')
+      });
+
       const templateParams = {
+        // EmailJS에서 일반적으로 사용하는 수신자 필드명들
+        to_name: '다모아봄 관리자',
         to_email: this.getAdminEmail(),
+        reply_to: this.getAdminEmail(),
+        // 추가 수신자 필드 (백업용)
+        recipient_email: this.getAdminEmail(),
+        admin_email: this.getAdminEmail(),
+        
         from_name: request.userName || '익명 사용자',
         from_email: request.userEmail || 'noreply@damoabom.com',
         subject: `[${this.getTypeLabel(request.type)}] ${request.title}`,
@@ -119,6 +134,13 @@ export class EmailService {
       };
 
       console.log('📨 전송할 파라미터:', JSON.stringify(templateParams, null, 2));
+
+      // 수신자 이메일 검증 (기존 adminEmail 변수 재사용)
+      if (!adminEmail || !adminEmail.includes('@')) {
+        console.error('❌ 수신자 이메일 주소가 유효하지 않습니다:', adminEmail);
+        return false;
+      }
+      console.log('✅ 수신자 이메일 검증 통과:', adminEmail);
 
       console.log('🚀 EmailJS.send() 호출 시작...');
       const response = await emailjs.send(

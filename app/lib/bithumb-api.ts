@@ -634,8 +634,8 @@ export async function getAllTickers(forceRefresh: boolean = false): Promise<Cryp
     const response = await safeFetch(apiUrl, {
       headers: {
         "Cache-Control": forceRefresh ? "no-cache, no-store, must-revalidate" : "no-cache",
-        "Pragma": forceRefresh ? "no-cache" : undefined,
-        "Expires": forceRefresh ? "0" : undefined,
+        ...(forceRefresh && { "Pragma": "no-cache" }),
+        ...(forceRefresh && { "Expires": "0" }),
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
