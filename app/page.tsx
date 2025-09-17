@@ -246,6 +246,65 @@ export default function Home() {
                 </p>
               </div>
 
+              {/* 거래소별 성과 분석 섹션 광고 */}
+              <div className="mb-6 sm:mb-8">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl border border-blue-200 dark:border-gray-600 overflow-hidden">
+                  <div className="p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row items-center justify-between">
+                      {/* 왼쪽: 광고 내용 */}
+                      <div className="flex-1 text-center sm:text-left mb-4 sm:mb-0">
+                        <div className="flex items-center justify-center sm:justify-start space-x-2 mb-2">
+                          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white text-sm font-bold">📊</span>
+                          </div>
+                          <span className="text-sm font-medium text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded-full">
+                            SPONSORED
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                          프리미엄 거래소 분석 리포트
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          전문 트레이더들의 실시간 분석과 투자 인사이트를 받아보세요
+                        </p>
+                      </div>
+
+                      {/* 오른쪽: CTA 버튼 */}
+                      <div className="flex space-x-3">
+                        <button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-105 shadow-lg">
+                          무료 체험하기
+                        </button>
+                        <button className="border-2 border-blue-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-gray-500 text-blue-600 dark:text-blue-400 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:bg-blue-50 dark:hover:bg-gray-700">
+                          자세히 보기
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* 하단: 추가 정보 */}
+                    <div className="mt-4 pt-4 border-t border-blue-200 dark:border-gray-600">
+                      <div className="flex flex-wrap items-center justify-center sm:justify-start space-x-4 text-xs text-gray-500 dark:text-gray-400">
+                        <span className="flex items-center space-x-1">
+                          <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                          <span>실시간 데이터</span>
+                        </span>
+                        <span className="flex items-center space-x-1">
+                          <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                          <span>전문가 분석</span>
+                        </span>
+                        <span className="flex items-center space-x-1">
+                          <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                          <span>모바일 알림</span>
+                        </span>
+                        <span className="flex items-center space-x-1">
+                          <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                          <span>24시간 지원</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <ClientOnly
                 fallback={
                   <div className="space-y-6">
