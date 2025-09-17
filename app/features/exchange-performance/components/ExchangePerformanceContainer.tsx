@@ -131,8 +131,8 @@ export function ExchangePerformanceContainer({
         </div>
       </div>
 
-      {/* 거래소 카드들 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* 거래소 카드들 - 모든 화면에서 2열로 표시 */}
+      <div className="grid grid-cols-2 gap-3 md:gap-6">
         {filteredExchanges.map((exchange, index) => (
           <ExchangeCard
             key={exchange.name}

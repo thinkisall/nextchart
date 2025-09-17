@@ -52,18 +52,18 @@ export const ExchangeCard = memo<ExchangeCardProps>(({
   };
 
   return (
-    <div className={`relative p-6 rounded-2xl bg-gradient-to-br ${theme.bg} 
+    <div className={`relative p-3 sm:p-6 rounded-2xl bg-gradient-to-br ${theme.bg} 
       border ${theme.border} transition-all duration-300 hover:scale-[1.02] hover:shadow-lg`}>
       
       {/* 헤더 */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-3">
-          <div className="text-2xl">{exchange.icon}</div>
-          <div>
-            <h3 className={`font-bold text-lg ${theme.text}`}>
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+          <div className="text-xl sm:text-2xl flex-shrink-0">{exchange.icon}</div>
+          <div className="min-w-0">
+            <h3 className={`font-bold text-sm sm:text-lg ${theme.text} truncate`}>
               {exchange.displayName}
             </h3>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
               {exchange.totalCoins}개 코인
             </div>
           </div>
@@ -73,16 +73,16 @@ export const ExchangeCard = memo<ExchangeCardProps>(({
       </div>
 
       {/* 주요 지표 */}
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="text-center p-3 bg-white/50 dark:bg-gray-800/50 rounded-xl">
-          <div className={`text-2xl font-bold ${getChangeStyle()}`}>
+      <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-3 sm:mb-4">
+        <div className="text-center p-2 sm:p-3 bg-white/50 dark:bg-gray-800/50 rounded-xl">
+          <div className={`text-lg sm:text-2xl font-bold ${getChangeStyle()}`}>
             {ExchangePerformanceService.formatPercentage(exchange.averageChange)}
           </div>
           <div className="text-xs text-gray-600 dark:text-gray-400">평균 변동률</div>
         </div>
         
-        <div className="text-center p-3 bg-white/50 dark:bg-gray-800/50 rounded-xl">
-          <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+        <div className="text-center p-2 sm:p-3 bg-white/50 dark:bg-gray-800/50 rounded-xl">
+          <div className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">
             {exchange.positivePercentage.toFixed(1)}%
           </div>
           <div className="text-xs text-gray-600 dark:text-gray-400">상승 비율</div>
@@ -90,7 +90,7 @@ export const ExchangeCard = memo<ExchangeCardProps>(({
       </div>
 
       {/* 상승/하락 코인 수 */}
-      <div className="flex justify-between text-sm mb-4">
+      <div className="flex justify-between text-xs sm:text-sm mb-3 sm:mb-4">
         <span className="text-red-600 dark:text-red-400">
           ▲ {exchange.positiveCoins}개
         </span>
@@ -101,17 +101,17 @@ export const ExchangeCard = memo<ExchangeCardProps>(({
 
       {/* 상위/하위 코인 (선택적 표시) */}
       {showTopCoins && (
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {exchange.topGainers.length > 0 && (
             <div>
-              <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+              <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">
                 🚀 상위 상승
               </div>
               <div className="space-y-1">
                 {exchange.topGainers.slice(0, 2).map((coin) => (
                   <div key={coin.symbol} className="flex justify-between text-xs">
-                    <span className="font-mono">{coin.symbol.replace('_KRW', '')}</span>
-                    <span className="text-red-600 dark:text-red-400 font-semibold">
+                    <span className="font-mono truncate pr-1">{coin.symbol.replace('_KRW', '')}</span>
+                    <span className="text-red-600 dark:text-red-400 font-semibold flex-shrink-0">
                       +{coin.change_rate.toFixed(2)}%
                     </span>
                   </div>
