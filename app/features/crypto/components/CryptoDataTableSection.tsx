@@ -42,7 +42,7 @@ export function CryptoDataTableSection({
         </div>
       </div>
     }>
-      <div ref={tableRef} className="max-w-md mx-auto" data-crypto-ranking>
+      <div ref={tableRef} className="max-w-md sm:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto" data-crypto-ranking>
         <UpbitStyleRanking
           data={finalDisplayData || []}
           maxItems={50}

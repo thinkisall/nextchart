@@ -3,6 +3,7 @@
  */
 
 export const UPBIT_COINS = new Set([
+  "EUL",
   "AVNT",
   "1INCH",
   "A",

@@ -58,7 +58,7 @@ export function CryptoMarketView({
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
+    <div className="w-full max-w-md sm:max-w-2xl lg:max-w-4xl xl:max-w-7xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
       {/* Sector Analytics */}
       <ClientOnly fallback={
         <div className="h-32 sm:h-40 bg-white/60 dark:bg-gray-800/60 rounded-xl animate-pulse backdrop-blur"></div>

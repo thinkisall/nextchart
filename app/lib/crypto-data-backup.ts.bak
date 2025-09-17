@@ -216,7 +216,7 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   'NEWT': '뉴트',
   'RESOLV': '리졸브',
   'TREE': '트리',
-  'EUL': '율러',
+  'EUL': '오',
   'SD': 'SD',
   'TOWNS': '타운즈',
   'CAMP': '캠프',
