@@ -307,6 +307,7 @@ const BINANCE_ALPHA_COINS = new Set([
 ]);
 
 const UPBIT_COINS = new Set([
+  "HOLO",
   "1INCH",
   "A",
   "AAVE",

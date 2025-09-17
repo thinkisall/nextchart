@@ -7,7 +7,9 @@ import { BinanceBadge } from '../atoms/BinanceBadge';
 import { AlphaIcon } from '../atoms/BinanceAlphaBadge';
 import { UpbitBadge } from '../atoms/UpbitBadge';
 import { UPusdtBadge } from '../atoms/UPusdtBadge';
+import { SectorBadge } from '../atoms/SectorBadge';
 import { hasUpbitUsdtPair } from '../../lib/exchanges';
+import { CRYPTO_SECTORS } from '../../lib/crypto/sectors';
 
 interface UpbitStyleRankingProps {
   data: CryptoPrice[];
@@ -102,9 +104,9 @@ export function UpbitStyleRanking({
     return (
       <div className={`
         ${style.bg} ${style.text} ${style.border} 
-        w-8 h-8 flex items-center justify-center 
-        rounded-xl font-bold border shadow-lg
-        transition-all duration-200 hover:scale-105
+        w-7 h-7 flex items-center justify-center 
+        rounded-lg font-bold border shadow-lg
+        transition-all duration-200 hover:scale-105 text-sm
       `}>
         {rank}
       </div>
@@ -163,7 +165,7 @@ export function UpbitStyleRanking({
               bg-white dark:bg-gray-800 
               hover:bg-gray-50 dark:hover:bg-gray-750
               border-b border-gray-100 dark:border-gray-700
-              px-4 py-4
+              px-3 py-3
               transition-colors duration-200
               cursor-pointer
               active:bg-gray-100 dark:active:bg-gray-700
@@ -171,34 +173,43 @@ export function UpbitStyleRanking({
             onClick={() => onItemClick?.(item)}
           >
             {/* 왼쪽: 순위 + 코인 정보 */}
-            <div className="flex items-center space-x-3 flex-1 min-w-0">
+            <div className="flex items-center space-x-2 flex-1 min-w-0">
               {getRankBadge(index + 1)}
               
               <div className="flex-1 min-w-0">
-                <div className="flex items-center space-x-2 mb-1">
-                  <div className="font-bold text-gray-900 dark:text-white text-base truncate">
+                <div className="mb-1">
+                  <div className="font-bold text-gray-900 dark:text-white text-base truncate mb-1">
                     {item.korean_name}
                   </div>
-                  {/* 거래소 배지들 */}
-                  {item.isBinanceAlpha && <AlphaIcon />}
-                  {item.isOnBinance && <BinanceBadge size="sm" />}
-                  {item.isOnUpbit && <UpbitBadge size="sm" />}
-                  {hasUpbitUsdtPair(item.symbol) && <UPusdtBadge size="sm" />}
+                  {/* 거래소 배지들을 코인 이름 바로 아래에 배치 */}
+                  <div className="flex items-center space-x-1 flex-wrap">
+                    {item.isBinanceAlpha && <AlphaIcon />}
+                    {item.isOnBinance && <BinanceBadge size="sm" />}
+                    {item.isOnUpbit && <UpbitBadge size="sm" />}
+                    {hasUpbitUsdtPair(item.symbol) && <UPusdtBadge size="sm" />}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                  {item.symbol}
+                <div className="flex items-center space-x-2">
+                  <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                    {item.symbol}
+                  </div>
+                  {/* 섹터 뱃지를 심볼 옆에 배치 */}
+                  <SectorBadge 
+                    sector={item.sector || CRYPTO_SECTORS[item.symbol] || '기타'} 
+                    size="sm" 
+                  />
                 </div>
               </div>
             </div>
 
             {/* 오른쪽: 가격 + 변동률 + 즐겨찾기 */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
               <div className="text-right">
-                <div className="font-bold text-gray-900 dark:text-white text-base">
+                <div className="font-bold text-gray-900 dark:text-white text-sm">
                   {formatPrice(item.current_price)}
                 </div>
                 <div className={`
-                  flex items-center font-bold tracking-tight text-sm
+                  flex items-center font-bold tracking-tight text-xs
                   ${item.is_positive 
                     ? 'text-emerald-600 dark:text-emerald-400' 
                     : 'text-red-600 dark:text-red-400'
@@ -218,7 +229,7 @@ export function UpbitStyleRanking({
                   e.stopPropagation();
                   handleFavoriteToggle(item.symbol);
                 }}
-                className="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-yellow-500 transition-colors duration-200"
+                className="w-4 h-4 flex items-center justify-center text-gray-400 hover:text-yellow-500 transition-colors duration-200"
               >
                 {favorites.has(item.symbol) ? '⭐' : '☆'}
               </button>

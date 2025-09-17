@@ -1,6 +1,8 @@
 import { RankBadge } from '../atoms/RankBadge';
 import { FavoriteButton } from '../atoms/FavoriteButton';
 import { MobilePriceChange } from '../atoms/MobilePriceChange';
+import { SectorBadge } from '../atoms/SectorBadge';
+import { CRYPTO_SECTORS } from '../../lib/crypto/sectors';
 
 interface CryptoRankingItemProps {
   rank: number;
@@ -8,6 +10,7 @@ interface CryptoRankingItemProps {
   koreanName: string;
   price: number;
   changePercentage: number;
+  sector?: string;
   isFavorite?: boolean;
   onFavoriteClick?: () => void;
   onClick?: () => void;
@@ -19,6 +22,7 @@ export function CryptoRankingItem({
   koreanName,
   price,
   changePercentage,
+  sector,
   isFavorite = false,
   onFavoriteClick,
   onClick
@@ -42,6 +46,10 @@ export function CryptoRankingItem({
   };
 
   const isPositive = changePercentage > 0;
+  
+  // 섹터 정보 - prop으로 받은 것을 우선 사용, 없으면 CRYPTO_SECTORS에서 조회
+  const displaySector = sector || CRYPTO_SECTORS[symbol] || '기타';
+  
   return (
     <div 
       className="
@@ -61,8 +69,11 @@ export function CryptoRankingItem({
         <RankBadge rank={rank} size="md" />
         
         <div className="flex-1 min-w-0">
-          <div className="font-bold text-gray-900 dark:text-white text-base truncate">
-            {koreanName}
+          <div className="flex items-center space-x-2 mb-1">
+            <div className="font-bold text-gray-900 dark:text-white text-base truncate">
+              {koreanName}
+            </div>
+            <SectorBadge sector={displaySector} size="sm" />
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
             {symbol}

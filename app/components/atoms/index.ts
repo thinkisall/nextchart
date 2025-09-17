@@ -13,3 +13,4 @@ export { RankBadge } from './RankBadge';
 export { FavoriteButton } from './FavoriteButton';
 export { MobilePriceChange } from './MobilePriceChange';
 export { RankingButton } from './RankingButton';
+export { SectorBadge } from './SectorBadge';

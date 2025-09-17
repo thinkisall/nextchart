@@ -32,6 +32,7 @@ export const CRYPTO_CATEGORIES = {
     "HUMA", // 휴마
     "CTC", // 크레딧코인
     "SXT", // SXT
+    "THE",
   ],
   LAYER1: [
     "SOL",
@@ -109,6 +110,7 @@ export const CRYPTO_CATEGORIES = {
   ],
   M2E: ["GRND"], // 슈퍼워크
   MEME: [
+    "TOSHI",
     "DOGE",
     "SHIB",
     "PEPE",
@@ -131,6 +133,7 @@ export const CRYPTO_CATEGORIES = {
     "SPX",
     "TURBO",
     "FARTCOIN",
+    "TOSHI",
   ],
   KOREAN: [
     "ICX",
@@ -149,6 +152,7 @@ export const CRYPTO_CATEGORIES = {
     "TOKAMAK",
   ],
   AI: [
+    "HOLO",
     "WLD",
     "FET",
     "AGIX",

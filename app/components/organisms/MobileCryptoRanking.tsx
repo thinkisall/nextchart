@@ -72,6 +72,7 @@ export function MobileCryptoRanking({
             koreanName={item.korean_name}
             price={item.current_price}
             changePercentage={item.change_rate}
+            sector={item.sector}
             isFavorite={favorites.has(item.symbol)}
             onFavoriteClick={() => handleFavoriteToggle(item.symbol)}
             onClick={() => onItemClick?.(item)}
