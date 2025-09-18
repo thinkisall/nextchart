@@ -193,3 +193,98 @@ export function SquareAd() {
     </div>
   );
 }
+
+
+// RPM 최적화를 위한 새로운 광고 단위들
+export function InArticleAd() {
+  return (
+    <div className="my-6 flex justify-center">
+      <AdSense
+        adSlot="4888258657"
+        adFormat="fluid"
+        className="w-full max-w-4xl"
+        adKey="in-article"
+        style={{
+          display: "block",
+          textAlign: "center",
+        }}
+      />
+    </div>
+  );
+}
+
+// 고수익 네이티브 광고
+export function NativeAd() {
+  return (
+    <div className="my-4">
+      <AdSense
+        adSlot="3726156857"
+        adFormat="fluid"
+        className="w-full"
+        adKey="native"
+        style={{
+          display: "block",
+        }}
+      />
+    </div>
+  );
+}
+
+// 스티키 광고 (높은 viewability)
+export function StickyAd() {
+  return (
+    <div className="sticky top-4 z-40 mb-4">
+      <AdSense
+        adSlot="4975687285"
+        adFormat="rectangle"
+        className="mx-auto"
+        adKey="sticky"
+        style={{
+          display: "block",
+          width: "320px",
+          height: "50px",
+          maxWidth: "100%",
+        }}
+      />
+    </div>
+  );
+}
+
+// 모바일 최적화 광고
+export function MobileAd() {
+  return (
+    <div className="block md:hidden my-4">
+      <AdSense
+        adSlot="4975687285"
+        adFormat="rectangle"
+        className="mx-auto"
+        adKey="mobile"
+        style={{
+          display: "block",
+          width: "320px",
+          height: "50px",
+        }}
+      />
+    </div>
+  );
+}
+
+// 데스크톱 큰 광고 (높은 RPM)
+export function LargeDesktopAd() {
+  return (
+    <div className="hidden md:block my-6">
+      <AdSense
+        adSlot="8550607113"
+        adFormat="rectangle"
+        className="mx-auto"
+        adKey="large-desktop"
+        style={{
+          display: "block",
+          width: "970px",
+          height: "250px",
+          maxWidth: "100%",
+        }}
+      />
+    </div>
+  );
+}

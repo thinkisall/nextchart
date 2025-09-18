@@ -6,7 +6,7 @@ import { NewListingsContainer } from "./features/new-listings";
 import { FloatingFeatureButton } from "./features/feature-request";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
-import { HeaderAd, FooterAd } from "./components/AdSenseV2";
+import { HeaderAd, FooterAd, InArticleAd, LargeDesktopAd, StickyAd, NativeAd } from "./components/AdSenseV2";
 import { BitcoinDominance } from "./components/molecules/BitcoinDominance";
 import { useCryptoData } from "./features/crypto/hooks/useCryptoData";
 import Link from "next/link";
@@ -177,6 +177,13 @@ export default function Home() {
 
         {/* 메인 콘텐츠 */}
         <main className="relative">
+          {/* 스티키 광고 (고수익) */}
+          <div className="hidden lg:block fixed top-20 right-4 z-50">
+            <ClientOnly fallback={<div className="w-80 h-12 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>}>
+              <StickyAd />
+            </ClientOnly>
+          </div>
+
           {/* Header Advertisement */}
           <div className="px-3 sm:px-6 py-2 sm:py-4">
             <HeaderAd />
@@ -203,6 +210,13 @@ export default function Home() {
               >
                 <BitcoinDominance />
               </ClientOnly>
+
+              {/* 첫 번째 In-Article 광고 */}
+              <div className="mt-6">
+                <ClientOnly fallback={<div className="h-20 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>}>
+                  <InArticleAd />
+                </ClientOnly>
+              </div>
             </div>
           </section>
 
@@ -228,6 +242,13 @@ export default function Home() {
               >
                 <NewListingsContainer maxItems={6} />
               </ClientOnly>
+
+              {/* 큰 데스크톱 광고 */}
+              <div className="mt-6">
+                <ClientOnly fallback={<div className="h-64 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>}>
+                  <LargeDesktopAd />
+                </ClientOnly>
+              </div>
             </div>
           </section>
 
@@ -318,6 +339,13 @@ export default function Home() {
               >
                 <CryptoMarket />
               </ClientOnly>
+
+              {/* 두 번째 In-Article 광고 + 네이티브 광고 */}
+              <div className="mt-8 space-y-4">
+                <ClientOnly fallback={<div className="h-20 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>}>
+                  <NativeAd />
+                </ClientOnly>
+              </div>
             </div>
           </section>
 
