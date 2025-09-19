@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
 
+// 번들 분석기
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig: NextConfig = {
-  // 압축 활성화
-  compress: true,
+  // 압축 및 기본 설정
+  compress: true, // gzip 압축
+  poweredByHeader: false, // X-Powered-By 헤더 제거
   
   // PWA 설정
   async headers() {
@@ -22,10 +28,10 @@ const nextConfig: NextConfig = {
             key: 'Access-Control-Allow-Headers',
             value: 'Content-Type, Authorization',
           },
-          // API 응답 캐싱 (암호화폐 데이터는 자주 변경되므로 짧게)
+          // API 응답 캐싱 개선 (Fast Origin Transfer 절약)
           {
             key: 'Cache-Control',
-            value: 'public, max-age=30', // 30초 캐시
+            value: 'public, s-maxage=60, stale-while-revalidate=300', // 60초 캐시, 5분 stale
           },
         ],
       },
@@ -78,20 +84,36 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // 이미지 최적화 활성화
+  // 이미지 최적화 완전 비활성화 (Fast Origin Transfer 비용 절약)
   images: {
-    formats: ['image/webp', 'image/avif'], // 최신 압축 포맷 사용
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30일 캐시
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920], // 반응형 크기
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // 아이콘 크기
+    unoptimized: true, // 이미지 최적화 완전 비활성화
+    minimumCacheTTL: 2678400, // 31일 캐시 (최대한 길게)
   },
 
-  // JavaScript 번들 압축 (Next.js 15에서는 기본 활성화)
+  // 성능 최적화
+  experimental: {
+    optimizeCss: false, // CSS 최적화 비활성화 (빌드 에러 방지)
+  },
   
-  // 실험적 기능 비활성화 (빌드 에러 방지)
-  // experimental: {
-  //   optimizeCss: true,
-  // },
+  // 서버 외부 패키지 최적화
+  serverExternalPackages: [],
+
+  // 웹팩 최적화
+  webpack: (config, { dev, isServer }) => {
+    // 프로덕션 환경에서만 최적화 적용
+    if (!dev) {
+      // 번들 크기 줄이기
+      config.optimization.splitChunks.cacheGroups = {
+        ...config.optimization.splitChunks.cacheGroups,
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      };
+    }
+    return config;
+  },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

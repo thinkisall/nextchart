@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // 메모리 캐시 (실시간 데이터를 위해 캐시 시간 단축)
 let cachedData: any = null;
 let cacheTimestamp = 0;
-const CACHE_DURATION = 30 * 1000; // 30초 캐시 (60초에서 단축)
+const CACHE_DURATION = 60 * 1000; // 60초 캐시 (Fast Origin Transfer 절약)
 
 // 건강성 체크를 위한 변수 (더 관대하게)
 let consecutiveFailures = 0;
@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Cache-Control': 'public, max-age=30, s-maxage=30', // 캐시 시간 단축
+        'Cache-Control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=600', // Fast Origin Transfer 절약
         'X-Data-Source': 'cache',
         'X-Cache-Age': ((now - cacheTimestamp) / 1000).toFixed(1),
       },

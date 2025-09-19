@@ -1,8 +1,6 @@
 "use client";
 
 import { CryptoMarket } from "./features/crypto";
-import { ExchangePerformanceAnalysis } from "./features/exchange-performance";
-import { NewListingsContainer } from "./features/new-listings";
 import { FloatingFeatureButton } from "./features/feature-request";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
@@ -10,6 +8,45 @@ import { HeaderAd, FooterAd, InArticleAd, LargeDesktopAd, StickyAd, NativeAd } f
 import { BitcoinDominance } from "./components/molecules/BitcoinDominance";
 import { useCryptoData } from "./features/crypto/hooks/useCryptoData";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+// 큰 컴포넌트들을 Dynamic Import로 최적화 (Fast Origin Transfer 절약)
+const ExchangePerformanceAnalysis = dynamic(
+  () => import("./features/exchange-performance").then(mod => ({ default: mod.ExchangePerformanceAnalysis })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="space-y-6">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-200 dark:border-gray-700 animate-pulse">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+);
+
+const NewListingsContainer = dynamic(
+  () => import("./features/new-listings").then(mod => ({ default: mod.NewListingsContainer })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-pulse">
+        <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 h-24 rounded-t-3xl"></div>
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-48 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+);
 
 export default function Home() {
   // 실시간 데이터 (SSE + WebSocket + REST API 통합)
@@ -56,6 +93,7 @@ export default function Home() {
                   <Link
                     href="/coin-roulette"
                     className="text-gray-700 dark:text-blue-100 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
+                    prefetch={false}
                   >
                     코인룰렛
                   </Link>
@@ -286,14 +324,6 @@ export default function Home() {
                           ></div>
                         ))}
                       </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {[...Array(6)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="h-80 bg-white dark:bg-gray-800 rounded-2xl shadow-xl animate-pulse"
-                        ></div>
-                      ))}
                     </div>
                   </div>
                 }
