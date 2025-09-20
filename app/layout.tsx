@@ -93,6 +93,12 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
+        {/* 외부 API DNS prefetch */}
+        <link rel="dns-prefetch" href="//api.binance.com" />
+        <link rel="dns-prefetch" href="//pro-api.coinmarketcap.com" />
+        <link rel="dns-prefetch" href="//api.bithumb.com" />
+        <link rel="dns-prefetch" href="//api.coingecko.com" />
+        
         {/* Google Search Console 인증 */}
         <meta name="google-site-verification" content="-FZw_8bxUpyUpVyhH0AKVeIM6UemTMyJ3JL6NTtVuuM" />
         

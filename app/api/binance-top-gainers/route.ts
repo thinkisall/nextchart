@@ -27,8 +27,15 @@ export async function GET() {
   const API_URL = 'https://api.binance.com/api/v3/ticker/24hr';
   
   try {
-    // API 호출 (Next.js의 확장된 fetch 사용)
+    console.log('🔥 Fetching from Binance API:', API_URL);
+    
+    // 서버사이드에서 바이낸스 API 호출 (CORS 우회)
     const response = await fetch(API_URL, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'NextJS-Server/1.0',
+      },
       // 5분마다 데이터를 새로고침하도록 캐시 설정
       next: {
         revalidate: 300, // 300초 (5분)
@@ -36,12 +43,13 @@ export async function GET() {
     });
 
     if (!response.ok) {
-      // API 응답이 실패한 경우 에러를 발생시킵니다.
-      throw new Error(`바이낸스 API 오류: ${response.statusText}`);
+      console.error('❌ Binance API response not ok:', response.status, response.statusText);
+      throw new Error(`바이낸스 API 오류: ${response.status} ${response.statusText}`);
     }
 
     // JSON 형태로 데이터를 파싱합니다.
     const tickers: BinanceTicker[] = await response.json();
+    console.log('✅ Binance API response received, total tickers:', tickers.length);
 
     // 1. USDT 마켓 필터링: USDT로 거래되는 페어만 대상으로 합니다.
     // 2. 최소 거래량 필터링: 너무 작은 거래량 제외
@@ -56,6 +64,8 @@ export async function GET() {
         return isUSDTPair && volume >= 1000000 && changePercent > 0;
       })
       .sort((a, b) => parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent));
+
+    console.log('✅ Filtered tickers:', filteredAndSorted.length);
 
     // 4. 상위 10개 추출 및 데이터 가공
     const top10Gainers: BinanceTopGainer[] = filteredAndSorted
@@ -75,17 +85,51 @@ export async function GET() {
         };
       });
     
+    console.log('✅ Top 10 gainers processed successfully:', top10Gainers.map(g => `${g.baseAsset}: +${g.priceChangePercent.toFixed(1)}%`));
+    
     // 최종 결과를 JSON 형태로 반환합니다.
     return NextResponse.json({
       data: top10Gainers,
       timestamp: new Date().toISOString(),
       source: 'Binance API',
+      success: true,
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      },
     });
     
   } catch (error) {
-    console.error('Binance API Error:', error);
-    const errorMessage = error instanceof Error ? error.message : '바이낸스 데이터를 불러올 수 없습니다.';
-    // 에러 발생 시 500 상태 코드와 함께 에러 메시지를 반환합니다.
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    console.error('❌ Binance API Error:', error);
+    
+    // 구체적인 에러 메시지 제공
+    let errorMessage = '바이낸스 데이터를 불러올 수 없습니다.';
+    let statusCode = 500;
+    
+    if (error instanceof Error) {
+      if (error.message.includes('timeout')) {
+        errorMessage = '바이낸스 서버 응답 시간 초과';
+        statusCode = 504;
+      } else if (error.message.includes('network')) {
+        errorMessage = '네트워크 연결 오류';
+        statusCode = 503;
+      } else if (error.message.includes('rate limit')) {
+        errorMessage = '요청 한도 초과, 잠시 후 다시 시도해주세요';
+        statusCode = 429;
+      } else {
+        errorMessage = error.message;
+      }
+    }
+    
+    return NextResponse.json({ 
+      error: errorMessage,
+      success: false,
+      timestamp: new Date().toISOString(),
+    }, { 
+      status: statusCode,
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    });
   }
 }
