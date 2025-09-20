@@ -17,6 +17,8 @@ interface BinanceTopGainersResponse {
   timestamp: string;
   source: string;
   success: boolean;
+  fallback?: boolean;
+  lastError?: string;
 }
 
 export function useBinanceTopGainers() {
@@ -25,6 +27,7 @@ export function useBinanceTopGainers() {
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [isFallback, setIsFallback] = useState(false);
 
   const fetchBinanceTopGainers = useCallback(async (isRetry = false) => {
     try {
@@ -59,6 +62,7 @@ export function useBinanceTopGainers() {
       
       setData(result.data);
       setLastUpdated(result.timestamp);
+      setIsFallback(result.fallback || false);
       setRetryCount(0); // 성공 시 재시도 카운터 리셋
       
     } catch (error) {
@@ -112,6 +116,7 @@ export function useBinanceTopGainers() {
     error,
     lastUpdated,
     retryCount,
+    isFallback,
     refetch: () => fetchBinanceTopGainers(false),
   };
 }

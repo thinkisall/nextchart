@@ -12,7 +12,7 @@ interface BinanceTopGainersProps {
 export const BinanceTopGainers = memo(function BinanceTopGainers({ 
   className = '' 
 }: BinanceTopGainersProps) {
-  const { data, loading, error, lastUpdated, refetch } = useBinanceTopGainers();
+  const { data, loading, error, lastUpdated, isFallback, refetch } = useBinanceTopGainers();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const formatLastUpdated = (timestamp: string | null) => {
@@ -139,7 +139,14 @@ export const BinanceTopGainers = memo(function BinanceTopGainers({
         {/* 업데이트 시간 (별도 라인) */}
         <div className="flex items-center justify-between mt-2 pt-2 border-t border-yellow-200 dark:border-yellow-700/50">
           <div className="text-xs text-yellow-600 dark:text-yellow-400">
-            업데이트: {lastUpdated ? formatLastUpdated(lastUpdated) : '실시간'}
+            {isFallback ? (
+              <span className="flex items-center space-x-1">
+                <span>⚠️</span>
+                <span>데모 데이터 (API 일시 제한)</span>
+              </span>
+            ) : (
+              <span>업데이트: {lastUpdated ? formatLastUpdated(lastUpdated) : '실시간'}</span>
+            )}
           </div>
           <button 
             onClick={refetch}
@@ -186,12 +193,25 @@ export const BinanceTopGainers = memo(function BinanceTopGainers({
             {/* 푸터 정보 - 모바일 최적화 */}
             <div className="mt-4 pt-3 border-t border-yellow-200 dark:border-yellow-700/50">
               <div className="flex flex-col space-y-1 text-xs text-yellow-600 dark:text-yellow-400">
-                <div className="text-center">
-                  💡 USDT 페어 | 최소 거래량: $1M
-                </div>
-                <div className="text-center">
-                  데이터 제공: Binance API
-                </div>
+                {isFallback ? (
+                  <>
+                    <div className="text-center">
+                      ⚠️ 바이낸스 API 일시 제한으로 데모 데이터를 표시중입니다
+                    </div>
+                    <div className="text-center">
+                      잠시 후 새로고침을 시도해주세요
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-center">
+                      💡 USDT 페어 | 최소 거래량: $1M
+                    </div>
+                    <div className="text-center">
+                      데이터 제공: Binance API
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
