@@ -38,7 +38,7 @@ export const BinanceTopGainers = memo(function BinanceTopGainers({
         <div className="flex items-center justify-center py-4">
           <LoadingSpinner size="sm" />
           <span className="ml-2 text-yellow-700 dark:text-yellow-300 text-sm">
-            바이낸스 급등주 로딩 중...
+            글로벌 급등주 로딩 중...
           </span>
         </div>
       </section>
@@ -76,7 +76,7 @@ export const BinanceTopGainers = memo(function BinanceTopGainers({
               <div className="flex items-center space-x-2">
                 <span className="text-lg">⚡</span>
                 <h2 className="text-base font-bold text-yellow-800 dark:text-yellow-200">
-                  바이낸스 TOP 10
+                  글로벌 급등주
                 </h2>
                 <div className="flex items-center space-x-1 bg-yellow-200 dark:bg-yellow-800/50 px-2 py-0.5 rounded-full">
                   <div className="w-1 h-1 bg-yellow-500 rounded-full animate-pulse"></div>
@@ -185,7 +185,7 @@ export const BinanceTopGainers = memo(function BinanceTopGainers({
               <div className="text-center py-6">
                 <div className="text-yellow-400 text-3xl mb-2">⚡</div>
                 <p className="text-yellow-700 dark:text-yellow-300 text-sm">
-                  바이낸스 급등주 데이터를 불러올 수 없습니다
+                  글로벌 급등주 데이터를 불러올 수 없습니다
                 </p>
               </div>
             )}
@@ -196,7 +196,7 @@ export const BinanceTopGainers = memo(function BinanceTopGainers({
                 {isFallback ? (
                   <>
                     <div className="text-center">
-                      ⚠️ 바이낸스 API 일시 제한으로 데모 데이터를 표시중입니다
+                      ⚠️ 실시간 API 일시 제한으로 데모 데이터를 표시중입니다
                     </div>
                     <div className="text-center">
                       잠시 후 새로고침을 시도해주세요
@@ -205,10 +205,10 @@ export const BinanceTopGainers = memo(function BinanceTopGainers({
                 ) : (
                   <>
                     <div className="text-center">
-                      💡 USDT 페어 | 최소 거래량: $1M
+                      💡 글로벌 암호화폐 거래소 데이터 기반
                     </div>
                     <div className="text-center">
-                      데이터 제공: Binance API
+                      데이터 제공: CoinGecko API
                     </div>
                   </>
                 )}

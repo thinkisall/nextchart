@@ -136,7 +136,7 @@ export default function Home() {
               {/* 인아티클 광고 1 */}
               <InArticleAd />
 
-              {/* 바이낸스 TOP 10 */}
+              {/* 글로벌 급등주 TOP 10 */}
               <ClientOnly
                   fallback={
                     <div className="w-full bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-2xl shadow-xl border border-yellow-200 dark:border-yellow-700/50 p-6">
@@ -144,7 +144,7 @@ export default function Home() {
                         <div className="text-center">
                           <div className="text-yellow-400 text-lg mb-2">⚡</div>
                           <p className="text-yellow-600 dark:text-yellow-400">
-                            바이낸스 급등주 로딩 중...
+                            글로벌 급등주 로딩 중...
                           </p>
                         </div>
                       </div>
