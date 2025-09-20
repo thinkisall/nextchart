@@ -1,350 +1,175 @@
 "use client";
 
-import { CryptoMarket } from "./features/crypto";
-import { FloatingFeatureButton } from "./features/feature-request";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ClientOnly } from "./hooks/useIsClient";
-import { HeaderAd, FooterAd, InArticleAd, LargeDesktopAd, StickyAd, NativeAd } from "./components/AdSenseV2";
-import { BitcoinDominance } from "./components/molecules/BitcoinDominance";
 import { useCryptoData } from "./features/crypto/hooks/useCryptoData";
-import Link from "next/link";
-import dynamic from "next/dynamic";
-
-// 큰 컴포넌트들을 Dynamic Import로 최적화 (Fast Origin Transfer 절약)
-const ExchangePerformanceAnalysis = dynamic(
-  () => import("./features/exchange-performance").then(mod => ({ default: mod.ExchangePerformanceAnalysis })),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="space-y-6">
-        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-200 dark:border-gray-700 animate-pulse">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-);
-
-const NewListingsContainer = dynamic(
-  () => import("./features/new-listings").then(mod => ({ default: mod.NewListingsContainer })),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-pulse">
-        <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 h-24 rounded-t-3xl"></div>
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-48 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-);
+import { UpbitStyleRanking } from "./components/organisms/UpbitStyleRanking";
+import { ExchangeFilterButtons } from "./components/organisms/ExchangeFilterButtons";
+import { BtcDominance } from "./components/organisms/BtcDominance";
+import { GlobalTopGainers } from "./components/organisms/GlobalTopGainers";
+import { BinanceTopGainers } from "./components/organisms/BinanceTopGainers";
+import { useExchangeFilter } from "./hooks/useExchangeFilter";
 
 export default function Home() {
   // 실시간 데이터 (SSE + WebSocket + REST API 통합)
   const { primaryData } = useCryptoData();
+  
+  // 거래소별 필터링
+  const { 
+    selectedExchange, 
+    setSelectedExchange, 
+    filteredData, 
+    exchangeCounts 
+  } = useExchangeFilter(primaryData || []);
 
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        {/* 프로페셔널 헤더 & 네비게이션 */}
+        {/* 모바일 최적화된 헤더 & 네비게이션 */}
         <header className="relative bg-gradient-to-br from-white via-gray-50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900 overflow-hidden">
           {/* 백그라운드 패턴 */}
           <div className="absolute inset-0 bg-[linear-gradient(30deg,transparent_12%,rgba(59,130,246,0.05)_12.5%,rgba(59,130,246,0.05)_87%,transparent_87.5%)] bg-[length:16px_16px]"></div>
 
-          {/* 글로우 효과 */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+          {/* 글로우 효과 - 모바일에서 축소 */}
+          <div className="absolute top-0 right-0 w-48 h-48 sm:w-96 sm:h-96 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-96 sm:h-96 bg-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
           <div className="relative">
-            {/* 상단 네비게이션 */}
-            <nav className="flex items-center justify-between px-6 py-4 border-b border-gray-200/50 dark:border-white/10">
-              <div className="flex items-center space-x-8">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">D</span>
-                  </div>
-                  <span className="text-gray-900 dark:text-white font-bold text-xl">
-                    DAMOABOM
-                  </span>
+            {/* 모바일 최적화된 상단 네비게이션 */}
+            <nav className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200/50 dark:border-white/10">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-xs sm:text-sm">D</span>
                 </div>
-
-                <div className="hidden md:flex items-center space-x-6">
-                  <a
-                    href="#market"
-                    className="text-gray-700 dark:text-blue-100 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
-                  >
-                    시장현황
-                  </a>
-                  <a
-                    href="#exchange"
-                    className="text-gray-700 dark:text-blue-100 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
-                  >
-                    거래소분석
-                  </a>
-                  <Link
-                    href="/coin-roulette"
-                    className="text-gray-700 dark:text-blue-100 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
-                    prefetch={false}
-                  >
-                    코인룰렛
-                  </Link>
-                </div>
+                <span className="text-gray-900 dark:text-white font-bold text-lg sm:text-xl">
+                  <span className="hidden xs:inline">DAMOABOM</span>
+                  <span className="xs:hidden">다모아봄</span>
+                </span>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2 bg-green-100/80 dark:bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-green-200 dark:border-green-400/30">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-gray-800 dark:text-green-300 text-xs font-medium">
-                    LIVE
-                  </span>
-                </div>
+              <div className="flex items-center space-x-2 bg-green-100/80 dark:bg-white/10 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1 border border-green-200 dark:border-green-400/30">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-gray-800 dark:text-green-300 text-xs font-medium">
+                  LIVE
+                </span>
               </div>
             </nav>
 
-            {/* 히어로 섹션 */}
-            <div className="px-4 sm:px-6 py-8 sm:py-12 md:py-16">
-              <div className="max-w-7xl mx-auto">
-                <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
-                  {/* 왼쪽: 메인 콘텐츠 */}
-                  <div className="space-y-8">
-                    <div className="space-y-4">
-                      <div className="inline-flex items-center space-x-2 bg-blue-100/80 dark:bg-blue-500/20 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-200 dark:border-blue-400/30">
-                        <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
-                        <span className="text-gray-800 dark:text-blue-300 text-sm font-medium">
-                          실시간 업데이트
-                        </span>
-                      </div>
-
-                      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                        <span className="text-gray-900 dark:text-white">
-                          실시간
-                        </span>
-                        <br />
-                        <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-500 bg-clip-text text-transparent">
-                          코인섹터 분석
-                        </span>
-                      </h1>
-
-                      <p className="text-gray-700 dark:text-blue-100/80 text-lg leading-relaxed max-w-lg">
-                        실시간 데이터 기반의 섹터 분석, 거래소 성과 비교,
-                        스마트한 투자 인사이트를 제공하는 프로페셔널 플랫폼
-                      </p>
-                    </div>
-
-                    {/* CTA 버튼들 */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <Link href="/coin-roulette">
-                        <button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-                          <span className="relative z-10 flex items-center space-x-2">
-                            <span>🎰</span>
-                            <span>코인 룰렛 체험</span>
-                          </span>
-                          <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </button>
-                      </Link>
-
-                      <button
-                        onClick={() =>
-                          document
-                            .getElementById("market")
-                            ?.scrollIntoView({ behavior: "smooth" })
-                        }
-                        className="bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm hover:bg-gray-200/80 dark:hover:bg-white/20 text-gray-800 dark:text-white px-8 py-4 rounded-2xl font-semibold border border-gray-200 dark:border-white/20 hover:border-gray-300 dark:hover:border-white/30 transition-all duration-300"
-                      >
-                        시장 분석 보기
-                      </button>
-                    </div>
+            {/* 모바일 최적화된 히어로 섹션 */}
+            <div className="px-3 sm:px-6 py-6 sm:py-8 md:py-12">
+              <div className="max-w-7xl mx-auto text-center">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="inline-flex items-center space-x-2 bg-blue-100/80 dark:bg-blue-500/20 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 border border-blue-200 dark:border-blue-400/30">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full animate-pulse"></span>
+                    <span className="text-gray-800 dark:text-blue-300 text-xs sm:text-sm font-medium">
+                      실시간 업데이트
+                    </span>
                   </div>
 
-                  {/* 오른쪽: 실시간 통계 대시보드 */}
-                  <div className="space-y-6">
-                    <div className="bg-gray-50/80 dark:bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-gray-200 dark:border-white/20">
-                      <h3 className="text-gray-800 dark:text-white font-semibold text-lg mb-4">
-                        실시간 마켓 데이터
-                      </h3>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-gray-100/50 dark:bg-white/10 rounded-2xl p-4 text-center">
-                          <div className="text-2xl font-bold text-gray-800 dark:text-white">
-                            200+
-                          </div>
-                          <div className="text-gray-600 dark:text-blue-200 text-sm">
-                            추적 코인
-                          </div>
-                        </div>
-                        <div className="bg-gray-100/50 dark:bg-white/10 rounded-2xl p-4 text-center">
-                          <div className="text-2xl font-bold text-gray-800 dark:text-white">
-                            3
-                          </div>
-                          <div className="text-gray-600 dark:text-blue-200 text-sm">
-                            주요 거래소
-                          </div>
-                        </div>
-                        <div className="bg-gray-100/50 dark:bg-white/10 rounded-2xl p-4 text-center">
-                          <div className="text-2xl font-bold text-gray-800 dark:text-white">
-                            10+
-                          </div>
-                          <div className="text-gray-600 dark:text-blue-200 text-sm">
-                            섹터 분류
-                          </div>
-                        </div>
-                        <div className="bg-gray-100/50 dark:bg-white/10 rounded-2xl p-4 text-center">
-                          <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                            실시간
-                          </div>
-                          <div className="text-gray-600 dark:text-blue-200 text-sm">
-                            업데이트
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    <span className="text-gray-900 dark:text-white">
+                      실시간
+                    </span>
+                    <br />
+                    <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-500 bg-clip-text text-transparent">
+                      변동률 순위
+                    </span>
+                  </h1>
+
+                  <p className="text-gray-700 dark:text-blue-100/80 text-sm sm:text-base md:text-lg leading-relaxed max-w-sm sm:max-w-lg mx-auto">
+                    24시간 변동률 기준으로 코인들의 실시간 순위를 확인하세요
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </header>
 
-        {/* 메인 콘텐츠 */}
+        {/* 모바일 최적화된 메인 콘텐츠 */}
         <main className="relative">
-          {/* 스티키 광고 (고수익) */}
-          <div className="hidden lg:block fixed top-20 right-4 z-50">
-            <ClientOnly fallback={<div className="w-80 h-12 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>}>
-              <StickyAd />
-            </ClientOnly>
-          </div>
-
-          {/* Header Advertisement */}
-          <div className="px-3 sm:px-6 py-2 sm:py-4">
-            <HeaderAd />
-          </div>
-
-          {/* Bitcoin Dominance - 글로벌 마켓 개요 */}
-          <section className="px-3 sm:px-6 py-4 sm:py-6 md:py-8" id="market">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-4 sm:mb-6 md:mb-8">
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
-                  글로벌 마켓 현황
-                </h2>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                  비트코인 도미넌스와 주요 지표를 한눈에 확인하세요
-                </p>
-              </div>
-
-              <ClientOnly
-                fallback={
-                  <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-200 dark:border-gray-700 animate-pulse">
-                    <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
-                  </div>
-                }
-              >
-                <BitcoinDominance />
-              </ClientOnly>
-
-              {/* 첫 번째 In-Article 광고 */}
-              <div className="mt-6">
-                <ClientOnly fallback={<div className="h-20 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>}>
-                  <InArticleAd />
-                </ClientOnly>
-              </div>
-            </div>
-          </section>
-
-          {/* 신규상장 알림 섹션 */}
           <section className="px-3 sm:px-6 py-4 sm:py-6 md:py-8">
-            <div className="max-w-md sm:max-w-2xl lg:max-w-5xl xl:max-w-7xl mx-auto">
+            <div className="max-w-sm sm:max-w-2xl lg:max-w-5xl xl:max-w-7xl mx-auto space-y-4 sm:space-y-6">
+              {/* 비트코인 도미넌스 */}
               <ClientOnly
                 fallback={
-                  <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-pulse">
-                    <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 h-24 rounded-t-3xl"></div>
-                    <div className="p-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[...Array(3)].map((_, i) => (
-                          <div
-                            key={i}
-                            className="h-48 bg-gray-200 dark:bg-gray-700 rounded-2xl"
-                          ></div>
-                        ))}
+                  <div className="w-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl p-4 border border-orange-200/50 dark:border-orange-700/30 mb-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center animate-pulse">
+                          <span className="text-white font-bold text-lg">₿</span>
+                        </div>
+                        <div>
+                          <div className="w-24 h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                          <div className="w-16 h-3 bg-gray-200 dark:bg-gray-700 rounded mt-1 animate-pulse"></div>
+                        </div>
                       </div>
+                      <div className="w-16 h-8 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
                     </div>
                   </div>
                 }
               >
-                <NewListingsContainer maxItems={6} />
+                <BtcDominance />
               </ClientOnly>
 
-              {/* 큰 데스크톱 광고 */}
-              <div className="mt-6">
-                <ClientOnly fallback={<div className="h-64 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>}>
-                  <LargeDesktopAd />
-                </ClientOnly>
-              </div>
-            </div>
-          </section>
-
-          {/* 거래소별 성과 분석 */}
-          <section
-            className="px-6 py-8 bg-gray-50 dark:bg-gray-900/50"
-            id="exchange"
-          >
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-4 sm:mb-6 md:mb-8">
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
-                  거래소별 성과 분석
-                </h2>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                  빗썸, 바이낸스, 업비트의 실시간 성과를 비교 분석합니다
-                </p>
-              </div>
-
-              {/* 거래소별 성과 분석 섹션 광고 */}
-              <div className="mb-6">
-                <ClientOnly fallback={<div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse"></div>}>
-                  <HeaderAd />
-                </ClientOnly>
-              </div>
-
+              {/* 해외 급등주 TOP 10 */}
               <ClientOnly
-                fallback={
-                  <div className="space-y-6">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-200 dark:border-gray-700 animate-pulse">
-                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                        {[...Array(4)].map((_, i) => (
-                          <div
-                            key={i}
-                            className="h-20 bg-gray-200 dark:bg-gray-700 rounded-xl"
-                          ></div>
-                        ))}
+                  fallback={
+                    <div className="w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-6">
+                      <div className="flex items-center justify-center py-8">
+                        <div className="text-center">
+                          <div className="text-gray-400 text-lg mb-2">🚀</div>
+                          <p className="text-gray-500 dark:text-gray-400">
+                            해외 급등주 로딩 중...
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                }
-              >
-                <ExchangePerformanceAnalysis coins={primaryData} />
-              </ClientOnly>
-            </div>
-          </section>
+                  }
+                >
+                  <GlobalTopGainers />
+                </ClientOnly>
 
-          {/* 메인 암호화폐 테이블 */}
-          <section className="px-3 sm:px-6 py-4 sm:py-6 md:py-8">
-            <div className="max-w-md sm:max-w-2xl lg:max-w-5xl xl:max-w-7xl mx-auto">
-              <div className="text-center mb-4 sm:mb-6 md:mb-8">
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
-                  실시간 암호화폐 시세
-                </h2>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                  전체 코인의 실시간 가격, 변동률, 거래량을 확인하세요
-                </p>
-              </div>
+              {/* 바이낸스 TOP 10 */}
+              <ClientOnly
+                  fallback={
+                    <div className="w-full bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-2xl shadow-xl border border-yellow-200 dark:border-yellow-700/50 p-6">
+                      <div className="flex items-center justify-center py-8">
+                        <div className="text-center">
+                          <div className="text-yellow-400 text-lg mb-2">⚡</div>
+                          <p className="text-yellow-600 dark:text-yellow-400">
+                            바이낸스 급등주 로딩 중...
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                >
+                  <BinanceTopGainers />
+                </ClientOnly>
 
+              {/* 거래소별 필터 버튼 */}
+              <ClientOnly
+                  fallback={
+                    <div className="w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+                      <div className="flex items-center justify-center py-8">
+                        <div className="text-center">
+                          <div className="text-gray-400 text-lg mb-2">⚙️</div>
+                          <p className="text-gray-500 dark:text-gray-400">
+                            필터 로딩 중...
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                >
+                  <ExchangeFilterButtons
+                    selectedExchange={selectedExchange}
+                    onExchangeChange={setSelectedExchange}
+                    counts={exchangeCounts}
+                  />
+                </ClientOnly>
+
+              {/* 변동률 순위 */}
               <ClientOnly
                 fallback={
                   <div className="flex items-center justify-center py-20">
@@ -367,26 +192,14 @@ export default function Home() {
                   </div>
                 }
               >
-                <CryptoMarket />
+                <UpbitStyleRanking 
+                  data={filteredData.length > 0 ? filteredData : primaryData || []} 
+                  maxItems={50} 
+                />
               </ClientOnly>
-
-              {/* 두 번째 In-Article 광고 + 네이티브 광고 */}
-              <div className="mt-8 space-y-4">
-                <ClientOnly fallback={<div className="h-20 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>}>
-                  <NativeAd />
-                </ClientOnly>
-              </div>
             </div>
           </section>
-
-          {/* Footer Advertisement */}
-          <div className="px-3 sm:px-6 py-2 sm:py-4">
-            <FooterAd />
-          </div>
         </main>
-
-        {/* 플로팅 기능 요청 버튼 */}
-        <FloatingFeatureButton />
       </div>
     </ErrorBoundary>
   );

@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* 커스텀 브레이크포인트 추가 */
+@media (min-width: 420px) {
+  .xs\:inline { display: inline; }
+  .xs\:hidden { display: none; }
+  .xs\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .xs\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .xs\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
 :root {
   --background: #fefefe;
   --foreground: #1e293b;
@@ -900,3 +909,13 @@ body {
 
 /* 성능 최적화 CSS Import */
 @import './styles/performance.css';
+
+
+/* 스크롤바 숨기기 */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}

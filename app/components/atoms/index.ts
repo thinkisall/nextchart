@@ -14,3 +14,5 @@ export { FavoriteButton } from './FavoriteButton';
 export { MobilePriceChange } from './MobilePriceChange';
 export { RankingButton } from './RankingButton';
 export { SectorBadge } from './SectorBadge';
+export { TopGainerCoinCard } from './TopGainerCoinCard';
+export { BinanceCoinCard } from './BinanceCoinCard';

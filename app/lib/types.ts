@@ -86,3 +86,13 @@ export interface BinanceExchangeInfo {
   exchangeFilters: any[];
   symbols: BinanceSymbolInfo[];
 }
+
+// 거래소 필터링 타입
+export type ExchangeType = 'ALL' | 'BITHUMB' | 'UPBIT' | 'BINANCE' | 'BINANCE_ALPHA';
+
+export interface ExchangeFilter {
+  id: ExchangeType;
+  name: string;
+  icon: string;
+  count?: number;
+}
