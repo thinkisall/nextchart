@@ -8,6 +8,7 @@ import { ExchangeFilterButtons } from "./components/organisms/ExchangeFilterButt
 import { BtcDominance } from "./components/organisms/BtcDominance";
 import { GlobalTopGainers } from "./components/organisms/GlobalTopGainers";
 import { BinanceTopGainers } from "./components/organisms/BinanceTopGainers";
+import { HeaderAd, InArticleAd, NativeAd, LargeDesktopAd, MobileAd } from "./components/AdSenseV2";
 import { useExchangeFilter } from "./hooks/useExchangeFilter";
 
 export default function Home() {
@@ -111,6 +112,9 @@ export default function Home() {
                 <BtcDominance />
               </ClientOnly>
 
+              {/* 헤더 광고 */}
+              <HeaderAd />
+
               {/* 해외 급등주 TOP 10 */}
               <ClientOnly
                   fallback={
@@ -129,6 +133,9 @@ export default function Home() {
                   <GlobalTopGainers />
                 </ClientOnly>
 
+              {/* 인아티클 광고 1 */}
+              <InArticleAd />
+
               {/* 바이낸스 TOP 10 */}
               <ClientOnly
                   fallback={
@@ -146,6 +153,9 @@ export default function Home() {
                 >
                   <BinanceTopGainers />
                 </ClientOnly>
+
+              {/* 네이티브 광고 */}
+              <NativeAd />
 
               {/* 거래소별 필터 버튼 */}
               <ClientOnly
@@ -168,6 +178,10 @@ export default function Home() {
                     counts={exchangeCounts}
                   />
                 </ClientOnly>
+
+              {/* 대형 데스크톱 광고 + 모바일 광고 */}
+              <LargeDesktopAd />
+              <MobileAd />
 
               {/* 변동률 순위 */}
               <ClientOnly
@@ -197,6 +211,11 @@ export default function Home() {
                   maxItems={50} 
                 />
               </ClientOnly>
+
+              {/* 푸터 영역 인아티클 광고 */}
+              <div className="mt-8">
+                <InArticleAd />
+              </div>
             </div>
           </section>
         </main>
