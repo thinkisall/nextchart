@@ -7,7 +7,7 @@ import { UpbitStyleRanking } from "./components/organisms/UpbitStyleRanking";
 import { ExchangeFilterButtons } from "./components/organisms/ExchangeFilterButtons";
 import { BtcDominance } from "./components/organisms/BtcDominance";
 import { GlobalTopGainers } from "./components/organisms/GlobalTopGainers";
-import { BinanceTopGainers } from "./components/organisms/BinanceTopGainers";
+import { AltcoinSeasonIndex } from "./components/organisms/AltcoinSeasonIndex";
 import { HeaderAd, InArticleAd, NativeAd, LargeDesktopAd, MobileAd } from "./components/AdSenseV2";
 import { useExchangeFilter } from "./hooks/useExchangeFilter";
 
@@ -136,22 +136,22 @@ export default function Home() {
               {/* 인아티클 광고 1 */}
               <InArticleAd />
 
-              {/* 글로벌 급등주 TOP 10 */}
+              {/* 알트코인 시즌 지수 */}
               <ClientOnly
                   fallback={
-                    <div className="w-full bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-2xl shadow-xl border border-yellow-200 dark:border-yellow-700/50 p-6">
-                      <div className="flex items-center justify-center py-8">
+                    <div className="w-full bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl shadow-lg border border-green-200 dark:border-green-700/50 p-4">
+                      <div className="flex items-center justify-center py-4">
                         <div className="text-center">
-                          <div className="text-yellow-400 text-lg mb-2">⚡</div>
-                          <p className="text-yellow-600 dark:text-yellow-400">
-                            글로벌 급등주 로딩 중...
+                          <div className="text-green-400 text-lg mb-2">📊</div>
+                          <p className="text-green-600 dark:text-green-400 text-sm">
+                            알트코인 시즌 지수 로딩 중...
                           </p>
                         </div>
                       </div>
                     </div>
                   }
                 >
-                  <BinanceTopGainers />
+                  <AltcoinSeasonIndex />
                 </ClientOnly>
 
               {/* 네이티브 광고 */}

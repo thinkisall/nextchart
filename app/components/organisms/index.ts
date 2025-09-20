@@ -5,4 +5,4 @@ export { MobileCryptoRanking } from './MobileCryptoRanking';
 export { VirtualizedCryptoList } from './VirtualizedCryptoList';
 export { UpbitStyleRanking } from './UpbitStyleRanking';
 export { GlobalTopGainers } from './GlobalTopGainers';
-export { BinanceTopGainers } from './BinanceTopGainers';
+export { AltcoinSeasonIndex } from './AltcoinSeasonIndex';
