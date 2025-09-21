@@ -2,6 +2,7 @@
 
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { CoinRoulette } from "../features/coin-roulette";
+import { FloatingFeatureButton } from "../features/feature-request";
 import Link from "next/link";
 
 export default function CoinRoulettePage() {
@@ -95,6 +96,9 @@ export default function CoinRoulettePage() {
 
           </div>
         </div>
+        
+        {/* 플로팅 기능 요청 버튼 */}
+        <FloatingFeatureButton />
       </div>
     </ErrorBoundary>
   );

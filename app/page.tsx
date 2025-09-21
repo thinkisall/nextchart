@@ -11,6 +11,7 @@ import { AltcoinSeasonIndex } from "./components/organisms/AltcoinSeasonIndex";
 import { GlobalNavigation } from "./components/organisms/GlobalNavigation";
 import { HeaderAd, InArticleAd, NativeAd, LargeDesktopAd, MobileAd } from "./components/AdSenseV2";
 import { useExchangeFilter } from "./hooks/useExchangeFilter";
+import { FloatingFeatureButton } from "./features/feature-request";
 
 // shadcn/ui imports
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
@@ -227,6 +228,9 @@ export default function Home() {
           </section>
         </main>
       </div>
+      
+      {/* 플로팅 기능 요청 버튼 */}
+      <FloatingFeatureButton />
     </ErrorBoundary>
   );
 }

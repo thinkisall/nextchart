@@ -7,14 +7,14 @@ import type { FeatureRequest, EmailTemplate } from '../types';
  */
 export class EmailService {
   
-  // EmailJS 설정
-  private static readonly SERVICE_ID = 'service_5cgxi7h';
-  private static readonly TEMPLATE_ID = 'template_b48xnbm';
-  private static readonly PUBLIC_KEY = '3n5QreFtI0daC2QTM';
+  // EmailJS 설정 - 환경변수 사용
+  private static readonly SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_damoabom';
+  private static readonly TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_feature_request';
+  private static readonly PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'WoSekMQr8_8St4PUa';
   private static readonly USE_DUMMY_MODE = false; // 실제 이메일 전송 활성화!
   
-  // Gmail 주소로 변경
-  private static readonly ENCODED_EMAIL = 'dGhpbmtpc2FsbEBnbWFpbC5jb20='; // thinkisall@gmail.com
+  // 관리자 이메일 (Base64 인코딩됨)
+  private static readonly ENCODED_EMAIL = 'dGhpbmtpc2FsbEBuYXZlci5jb20='; // thinkisall@naver.com
   
   private static getAdminEmail(): string {
     return atob(this.ENCODED_EMAIL);

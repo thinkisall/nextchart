@@ -4,6 +4,7 @@ import { DashboardLayout } from '../features/charts/components/DashboardLayout';
 import { ChartGrid } from '../features/charts/components/ChartGrid';
 import { TrendingDashboard } from '../components/organisms/TrendingDashboard';
 import { GlobalNavigation } from '../components/organisms/GlobalNavigation';
+import { FloatingFeatureButton } from '../features/feature-request';
 import { Separator } from '@/components/ui/separator';
 
 export default function DashboardPage() {
@@ -55,6 +56,9 @@ export default function DashboardPage() {
           <ChartGrid />
         </DashboardLayout>
       </div>
+      
+      {/* 플로팅 기능 요청 버튼 */}
+      <FloatingFeatureButton />
     </>
   );
 }

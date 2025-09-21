@@ -12,6 +12,7 @@ import { useFavorites } from "../../hooks/useFavorites";
 import { CRYPTO_SECTORS } from "../../lib/crypto";
 import { HeaderAd, FooterAd, SquareAd } from "../../components/AdSenseV2";
 import { SelectedCoinInfo } from "../../features/crypto/components/SelectedCoinInfo";
+import { FloatingFeatureButton } from "../../features/feature-request";
 import { CryptoPrice } from "../../lib/types";
 
 export default function SectorPage() {
@@ -303,6 +304,9 @@ export default function SectorPage() {
           selectedCoin={selectedCoin} 
           onClose={handleCloseCoinInfo} 
         />
+        
+        {/* 플로팅 기능 요청 버튼 */}
+        <FloatingFeatureButton />
       </div>
     </div>
   );
