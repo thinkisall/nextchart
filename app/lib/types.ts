@@ -49,6 +49,11 @@ export interface CryptoPrice {
   // 업비트 관련 정보
   isOnUpbit?: boolean;
   upbitSymbol?: string;
+  // 빗썸 관련 정보
+  isOnBithumb?: boolean;
+  bithumbSymbol?: string;
+  // 시가총액 정보
+  market_cap?: number;
 }
 
 export interface WebSocketMessage {

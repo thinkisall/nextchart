@@ -11,6 +11,12 @@ import { SectorBadge } from '../atoms/SectorBadge';
 import { hasUpbitUsdtPair } from '../../lib/exchanges';
 import { CRYPTO_SECTORS } from '../../lib/crypto/sectors';
 
+// shadcn/ui imports
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Badge } from '../../../components/ui/badge';
+import { Button } from '../../../components/ui/button';
+import { Separator } from '../../../components/ui/separator';
+
 interface UpbitStyleRankingProps {
   data: CryptoPrice[];
   maxItems?: number;
@@ -48,62 +54,50 @@ export function UpbitStyleRanking({
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-t-3xl overflow-hidden shadow-lg">
-        <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 px-4 py-6">
+      <Card className="w-full">
+        <CardHeader className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center">
                 <span className="text-white text-xl">📈</span>
               </div>
               <div>
-                <h1 className="text-lg font-bold text-white">변동률 순위</h1>
-                <p className="text-sm text-slate-300">24시간 변동률 기준</p>
+                <CardTitle className="text-lg text-white">변동률 순위</CardTitle>
+                <CardDescription className="text-slate-300">24시간 변동률 기준</CardDescription>
               </div>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-              <span className="text-gray-300 text-sm">대기중</span>
+              <Badge variant="secondary" className="bg-gray-600 text-gray-300">대기중</Badge>
             </div>
           </div>
-        </div>
-        <div className="flex items-center justify-center py-12">
+        </CardHeader>
+        <CardContent className="flex items-center justify-center py-12">
           <div className="text-center">
-            <div className="text-gray-400 text-lg mb-2">📊</div>
-            <p className="text-gray-500 dark:text-gray-400">
+            <div className="text-muted-foreground text-lg mb-2">📊</div>
+            <p className="text-muted-foreground">
               데이터를 불러오는 중입니다...
             </p>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     );
   }
+
   const getRankBadge = (rank: number) => {
     const getRankStyle = (rank: number) => {
       if (rank <= 3) {
-        return {
-          bg: 'bg-gradient-to-br from-yellow-400 to-amber-500',
-          text: 'text-white',
-          border: 'border-yellow-300/50'
-        };
+        return 'bg-gradient-to-br from-yellow-400 to-amber-500 text-white border-yellow-300/50';
       } else if (rank <= 5) {
-        return {
-          bg: 'bg-gradient-to-br from-purple-500 to-indigo-600',
-          text: 'text-white',
-          border: 'border-purple-400/50'
-        };
+        return 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white border-purple-400/50';
       } else {
-        return {
-          bg: 'bg-gradient-to-br from-slate-600 to-gray-700',
-          text: 'text-white',
-          border: 'border-slate-500/50'
-        };
+        return 'bg-gradient-to-br from-slate-600 to-gray-700 text-white border-slate-500/50';
       }
     };
 
-    const style = getRankStyle(rank);
     return (
       <div className={`
-        ${style.bg} ${style.text} ${style.border} 
+        ${getRankStyle(rank)}
         w-7 h-7 flex items-center justify-center 
         rounded-lg font-bold border shadow-lg
         transition-all duration-200 hover:scale-105 text-sm
@@ -132,111 +126,120 @@ export function UpbitStyleRanking({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-t-3xl overflow-hidden shadow-xl">
+    <Card className="w-full shadow-xl">
       {/* 헤더 */}
-      <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 px-4 py-6">
+      <CardHeader className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white rounded-t-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center">
               <span className="text-white text-xl">📈</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-white">변동률 순위</h1>
-              <p className="text-sm text-slate-300">24시간 변동률 기준</p>
+              <CardTitle className="text-lg text-white">변동률 순위</CardTitle>
+              <CardDescription className="text-slate-300">24시간 변동률 기준</CardDescription>
             </div>
           </div>
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-              <span className="text-emerald-300 text-sm font-medium">LIVE</span>
+              <Badge variant="secondary" className="bg-emerald-600 text-emerald-100">LIVE</Badge>
             </div>
-            <div className="text-slate-300 text-sm">{sortedData.length} / {sortedData.length}</div>
+            <Badge variant="outline" className="border-slate-500 text-slate-300">
+              {sortedData.length} / {sortedData.length}
+            </Badge>
           </div>
         </div>
-      </div>
+      </CardHeader>
       
       {/* 리스트 */}
-      <div className="max-h-[70vh] overflow-y-auto">
-        {sortedData.map((item, index) => (
-          <div 
-            key={item.symbol}
-            className="
-              flex items-center justify-between 
-              bg-white dark:bg-gray-800 
-              hover:bg-gray-50 dark:hover:bg-gray-750
-              border-b border-gray-100 dark:border-gray-700
-              px-3 py-3
-              transition-colors duration-200
-              cursor-pointer
-              active:bg-gray-100 dark:active:bg-gray-700
-            "
-            onClick={() => onItemClick?.(item)}
-          >
-            {/* 왼쪽: 순위 + 코인 정보 */}
-            <div className="flex items-center space-x-2 flex-1 min-w-0">
-              {getRankBadge(index + 1)}
-              
-              <div className="flex-1 min-w-0">
-                <div className="mb-1">
-                  <div className="font-bold text-gray-900 dark:text-white text-base truncate mb-1">
-                    {item.korean_name}
-                  </div>
-                  {/* 거래소 배지들을 코인 이름 바로 아래에 배치 */}
-                  <div className="flex items-center space-x-1 flex-wrap">
-                    {item.isBinanceAlpha && <AlphaIcon />}
-                    {item.isOnBinance && <BinanceBadge size="sm" />}
-                    {item.isOnUpbit && <UpbitBadge size="sm" />}
-                    {hasUpbitUsdtPair(item.symbol) && <UPusdtBadge size="sm" />}
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                    {item.symbol}
-                  </div>
-                  {/* 섹터 뱃지를 심볼 옆에 배치 */}
-                  <SectorBadge 
-                    sector={item.sector || CRYPTO_SECTORS[item.symbol] || '기타'} 
-                    size="sm" 
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 오른쪽: 가격 + 변동률 + 즐겨찾기 */}
-            <div className="flex items-center space-x-2">
-              <div className="text-right">
-                <div className="font-bold text-gray-900 dark:text-white text-sm">
-                  {formatPrice(item.current_price)}
-                </div>
-                <div className={`
-                  flex items-center font-bold tracking-tight text-xs
-                  ${item.is_positive 
-                    ? 'text-emerald-600 dark:text-emerald-400' 
-                    : 'text-red-600 dark:text-red-400'
-                  }
-                `}>
-                  <span className="mr-1">
-                    {item.is_positive ? '▲' : '▼'}
-                  </span>
-                  <span>
-                    {item.is_positive ? '+' : ''}{item.change_rate.toFixed(2)}%
-                  </span>
-                </div>
-              </div>
-              
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleFavoriteToggle(item.symbol);
-                }}
-                className="w-4 h-4 flex items-center justify-center text-gray-400 hover:text-yellow-500 transition-colors duration-200"
+      <CardContent className="p-0">
+        <div className="max-h-[70vh] overflow-y-auto">
+          {sortedData.map((item, index) => (
+            <div key={item.symbol}>
+              <div 
+                className="
+                  flex items-center justify-between 
+                  hover:bg-accent
+                  p-3
+                  transition-colors duration-200
+                  cursor-pointer
+                  active:bg-accent/80
+                "
+                onClick={() => onItemClick?.(item)}
               >
-                {favorites.has(item.symbol) ? '⭐' : '☆'}
-              </button>
+                {/* 왼쪽: 순위 + 코인 정보 */}
+                <div className="flex items-center space-x-2 flex-1 min-w-0">
+                  {getRankBadge(index + 1)}
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="mb-1">
+                      <div className="font-bold text-foreground text-base truncate mb-1">
+                        {item.korean_name}
+                      </div>
+                      {/* 거래소 배지들을 코인 이름 바로 아래에 배치 */}
+                      <div className="flex items-center space-x-1 flex-wrap">
+                        {item.isBinanceAlpha && <AlphaIcon />}
+                        {item.isOnBinance && <BinanceBadge size="sm" />}
+                        {item.isOnUpbit && <UpbitBadge size="sm" />}
+                        {hasUpbitUsdtPair(item.symbol) && <UPusdtBadge size="sm" />}
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="text-sm text-muted-foreground truncate">
+                        {item.symbol}
+                      </div>
+                      {/* 섹터 뱃지를 심볼 옆에 배치 */}
+                      <SectorBadge 
+                        sector={item.sector || CRYPTO_SECTORS[item.symbol] || '기타'} 
+                        size="sm" 
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 오른쪽: 가격 + 변동률 + 즐겨찾기 */}
+                <div className="flex items-center space-x-2">
+                  <div className="text-right">
+                    <div className="font-bold text-foreground text-sm">
+                      {formatPrice(item.current_price)}
+                    </div>
+                    <Badge 
+                      variant={item.is_positive ? "default" : "destructive"}
+                      className={`
+                        text-xs font-bold
+                        ${item.is_positive 
+                          ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                          : 'bg-red-600 hover:bg-red-700 text-white'
+                        }
+                      `}
+                    >
+                      <span className="mr-1">
+                        {item.is_positive ? '▲' : '▼'}
+                      </span>
+                      <span>
+                        {item.is_positive ? '+' : ''}{item.change_rate.toFixed(2)}%
+                      </span>
+                    </Badge>
+                  </div>
+                  
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-8 h-8 p-0 hover:bg-accent"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleFavoriteToggle(item.symbol);
+                    }}
+                  >
+                    {favorites.has(item.symbol) ? '⭐' : '☆'}
+                  </Button>
+                </div>
+              </div>
+              {index < sortedData.length - 1 && <Separator />}
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

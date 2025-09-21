@@ -16,3 +16,8 @@ export { RankingButton } from './RankingButton';
 export { SectorBadge } from './SectorBadge';
 export { TopGainerCoinCard } from './TopGainerCoinCard';
 export { BinanceCoinCard } from './BinanceCoinCard';
+
+// 새로 추가된 트렌딩 컴포넌트들
+export { TrendingCoinCard } from './TrendingCoinCard';
+export { TrendingNFTCard } from './TrendingNFTCard';
+export { TrendingCategoryCard } from './TrendingCategoryCard';
