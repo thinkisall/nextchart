@@ -4,6 +4,8 @@ import { useTrendingData } from '../../hooks/useTrendingData';
 import { TrendingCoins } from './TrendingCoins';
 import { TrendingNFTs } from './TrendingNFTs';
 import { TrendingCategories } from './TrendingCategories';
+import { BtcDominance } from './BtcDominance';
+import { AltcoinSeasonIndex } from './AltcoinSeasonIndex';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -12,6 +14,10 @@ import type { TrendingCoin, TrendingNFT, TrendingCategory } from '../../lib/serv
 
 export function TrendingDashboard() {
   const { data, loading, error, refetch, lastUpdated } = useTrendingData();
+
+  const handleWonyotiClick = () => {
+    window.open('https://www.binance.com/en/futures-activity/leaderboard/user/um?encryptedUid=14EA12E7412DC5A21DFF5E7EAC6013B9', '_blank');
+  };
 
   const handleCoinClick = (coin: TrendingCoin) => {
     console.log('Opening Binance for coin:', coin.name, coin.symbol);
@@ -88,6 +94,44 @@ export function TrendingDashboard() {
           </div>
         </CardHeader>
       </Card>
+
+      {/* 시장 지표 섹션 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 비트코인 도미넌스 */}
+        <div className="lg:col-span-1">
+          <BtcDominance />
+        </div>
+        
+        {/* 알트코인 시즌 지수 */}
+        <div className="lg:col-span-1">
+          <AltcoinSeasonIndex />
+        </div>
+        
+        {/* 워뇨띠 포지션 버튼 */}
+        <div className="lg:col-span-1 flex items-center">
+          <Card className="w-full bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 border-blue-200/50 dark:border-blue-700/30 shadow-lg">
+            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-xl">📊</span>
+              </div>
+              <div>
+                <CardTitle className="text-lg bg-gradient-to-r from-blue-700 to-purple-600 dark:from-blue-300 dark:to-purple-200 bg-clip-text text-transparent">
+                  워뇨띠 포지션
+                </CardTitle>
+                <CardDescription className="text-blue-600 dark:text-blue-300 font-medium text-sm">
+                  바이낸스 리더보드
+                </CardDescription>
+              </div>
+              <Button 
+                onClick={handleWonyotiClick}
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-200 hover:shadow-lg"
+              >
+                워뇨띠 포지션 바로보기
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
 
       {/* 트렌딩 섹션들 */}
       <div className="space-y-8">

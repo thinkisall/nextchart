@@ -9,7 +9,8 @@ import { BtcDominance } from "./components/organisms/BtcDominance";
 import { GlobalTopGainers } from "./components/organisms/GlobalTopGainers";
 import { AltcoinSeasonIndex } from "./components/organisms/AltcoinSeasonIndex";
 import { GlobalNavigation } from "./components/organisms/GlobalNavigation";
-import { HeaderAd, InArticleAd, NativeAd, LargeDesktopAd, MobileAd } from "./components/AdSenseV2";
+import { WonyottiPositionButton } from "./components/organisms/WonyottiPositionButton";
+import { HeaderAd, LargeDesktopAd, MobileAd } from "./components/AdSenseV2";
 import { useExchangeFilter } from "./hooks/useExchangeFilter";
 import { FloatingFeatureButton } from "./features/feature-request";
 
@@ -96,29 +97,48 @@ export default function Home() {
         <main className="relative">
           <section className="px-3 sm:px-6 py-4 sm:py-6 md:py-8">
             <div className="max-w-sm sm:max-w-2xl lg:max-w-5xl xl:max-w-7xl mx-auto space-y-4 sm:space-y-6">
-              {/* 비트코인 도미넌스 */}
-              <ClientOnly
-                fallback={
-                  <Card className="w-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border-orange-200/50 dark:border-orange-700/30 mb-6">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center animate-pulse">
-                            <span className="text-white font-bold text-lg">₿</span>
+              {/* 비트코인 도미넌스 & 알트코인 시즌 지수 - 한 줄 배치 */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                <ClientOnly
+                  fallback={
+                    <Card className="w-full bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border-orange-200/50 dark:border-orange-700/30">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center animate-pulse">
+                              <span className="text-white font-bold text-lg">₿</span>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="w-24 h-4 bg-muted rounded animate-pulse"></div>
+                              <div className="w-16 h-3 bg-muted rounded animate-pulse"></div>
+                            </div>
                           </div>
-                          <div className="space-y-2">
-                            <div className="w-24 h-4 bg-muted rounded animate-pulse"></div>
-                            <div className="w-16 h-3 bg-muted rounded animate-pulse"></div>
-                          </div>
+                          <div className="w-16 h-8 bg-muted rounded animate-pulse"></div>
                         </div>
-                        <div className="w-16 h-8 bg-muted rounded animate-pulse"></div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                }
-              >
-                <BtcDominance />
-              </ClientOnly>
+                      </CardContent>
+                    </Card>
+                  }
+                >
+                  <BtcDominance />
+                </ClientOnly>
+
+                <ClientOnly
+                  fallback={
+                    <Card className="w-full bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-700/50">
+                      <CardContent className="flex items-center justify-center py-4">
+                        <div className="text-center">
+                          <div className="text-green-400 text-lg mb-2">📊</div>
+                          <p className="text-green-600 dark:text-green-400 text-sm">
+                            알트코인 시즌 지수 로딩 중...
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  }
+                >
+                  <AltcoinSeasonIndex />
+                </ClientOnly>
+              </div>
 
               {/* 헤더 광고 */}
               <HeaderAd />
@@ -141,29 +161,8 @@ export default function Home() {
                   <GlobalTopGainers />
                 </ClientOnly>
 
-              {/* 인아티클 광고 1 */}
-              <InArticleAd />
-
-              {/* 알트코인 시즌 지수 */}
-              <ClientOnly
-                  fallback={
-                    <Card className="w-full bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-lg border-green-200 dark:border-green-700/50">
-                      <CardContent className="flex items-center justify-center py-4">
-                        <div className="text-center">
-                          <div className="text-green-400 text-lg mb-2">📊</div>
-                          <p className="text-green-600 dark:text-green-400 text-sm">
-                            알트코인 시즌 지수 로딩 중...
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  }
-                >
-                  <AltcoinSeasonIndex />
-                </ClientOnly>
-
-              {/* 네이티브 광고 */}
-              <NativeAd />
+              {/* 워뇨띠 포지션 버튼 */}
+              <WonyottiPositionButton />
 
               {/* 거래소별 필터 버튼 */}
               <ClientOnly
@@ -220,9 +219,8 @@ export default function Home() {
                 />
               </ClientOnly>
 
-              {/* 푸터 영역 인아티클 광고 */}
+              {/* 푸터 영역 */}
               <div className="mt-8">
-                <InArticleAd />
               </div>
             </div>
           </section>

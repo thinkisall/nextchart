@@ -130,10 +130,9 @@ export function ExchangeFilterButtons({
             </Badge>
           </div>
           
-          {/* 다른 거래소들 미리보기 */}
+          {/* 다른 거래소들 미리보기 - 모든 거래소 표시 */}
           {(Object.keys(exchangeConfig) as Array<keyof typeof exchangeConfig>)
             .filter(exchange => exchange !== selectedExchange)
-            .slice(0, 4)
             .map((exchange) => {
               const config = exchangeConfig[exchange];
               const count = counts?.[exchange] || 0;

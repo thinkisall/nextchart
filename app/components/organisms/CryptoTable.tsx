@@ -13,6 +13,7 @@ interface CryptoTableProps {
   onToggleFavorite?: (symbol: string) => void;
   isFavorite?: (symbol: string) => boolean;
   useVirtualScrolling?: boolean; // Virtual Scrolling 옵션 추가
+  itemsPerPage?: number; // 페이지 당 아이템 수 설정 옵션 추가
 }
 
 export function CryptoTable({ 
@@ -22,7 +23,8 @@ export function CryptoTable({
   onCryptoClick, 
   onToggleFavorite, 
   isFavorite, 
-  useVirtualScrolling = false 
+  useVirtualScrolling = false,
+  itemsPerPage = 50 // 기본값을 50으로 증가
 }: CryptoTableProps) {
   const {
     currentItems,
@@ -37,7 +39,7 @@ export function CryptoTable({
     stats
   } = usePagination({
     items: cryptos,
-    itemsPerPage: useVirtualScrolling ? 50 : 20 // Virtual Scrolling 시 50개씩 표시
+    itemsPerPage: useVirtualScrolling ? itemsPerPage * 2 : itemsPerPage // Virtual Scrolling 시 더 많이 표시
   });
 
   if (loading) {
@@ -194,7 +196,7 @@ export function CryptoTable({
                     onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
                     isFavorite={isFavorite?.(crypto.symbol) || false}
                     variant="desktop"
-                    index={index + (currentPage - 1) * 20}
+                    index={index + (currentPage - 1) * itemsPerPage}
                   />
                 ))}
               </tbody>
@@ -231,7 +233,7 @@ export function CryptoTable({
                     onToggleFavorite={() => onToggleFavorite?.(crypto.symbol)}
                     isFavorite={isFavorite?.(crypto.symbol) || false}
                     variant="tablet"
-                    index={index + (currentPage - 1) * 20}
+                    index={index + (currentPage - 1) * itemsPerPage}
                   />
                 ))}
               </tbody>
