@@ -9,7 +9,14 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "analyze": "ANALYZE=true npm run build"
+    "analyze": "ANALYZE=true npm run build",
+    "lighthouse:mobile": "lighthouse --preset=perf --form-factor=mobile --chrome-flags=\"--headless\" http://localhost:3000",
+    "lighthouse:desktop": "lighthouse --preset=perf --form-factor=desktop --chrome-flags=\"--headless\" http://localhost:3000",
+    "test:mobile": "echo \"Mobile testing setup needed\"",
+    "test:touch": "echo \"Touch testing setup needed\"",
+    "test:a11y": "echo \"Accessibility testing setup needed\"",
+    "pwa:validate": "echo \"PWA validation setup needed\"",
+    "dev:mobile": "next dev --port 3000 --hostname 0.0.0.0"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

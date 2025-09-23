@@ -42,6 +42,7 @@ export interface CryptoPrice {
   volume: number;
   is_positive: boolean;
   sector?: string;
+  exchange?: string; // 거래소 정보 추가
   // 바이낸스 관련 정보
   isOnBinance?: boolean;
   binanceSymbol?: string;
@@ -54,6 +55,10 @@ export interface CryptoPrice {
   bithumbSymbol?: string;
   // 시가총액 정보
   market_cap?: number;
+  // 추가 필드들
+  closing_price?: number;
+  fluctate_rate_24H?: number;
+  fluctate_24H?: number;
 }
 
 export interface WebSocketMessage {

@@ -16,3 +16,6 @@ export { TrendingCoins } from './TrendingCoins';
 export { TrendingNFTs } from './TrendingNFTs';
 export { TrendingCategories } from './TrendingCategories';
 export { TrendingDashboard } from './TrendingDashboard';
+
+// 섹터 분석 버튼
+export { SectorAnalysisButton } from './SectorAnalysisButton';

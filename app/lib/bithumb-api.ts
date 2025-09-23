@@ -420,7 +420,7 @@ const UPBIT_COINS = new Set([
   "OGN",
   "OM",
   "OMNI",
-  "ONDO",
+  "BARD",
   "ONG",
   "ONT",
   "OP",
@@ -580,34 +580,39 @@ const BINANCE_ALPHA_COINS = new Set([
 /**
  * 안전한 fetch 함수
  */
-async function safeFetch(url: string, options: RequestInit = {}): Promise<Response> {
+async function safeFetch(
+  url: string,
+  options: RequestInit = {}
+): Promise<Response> {
   const controller = new AbortController();
-  
+
   const timeoutId = setTimeout(() => {
     controller.abort();
   }, 15000); // 15초 타임아웃
-  
+
   try {
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,
     });
-    
+
     clearTimeout(timeoutId);
     return response;
   } catch (error) {
     clearTimeout(timeoutId);
-    
+
     // 네트워크 오류 세분화
     if (error instanceof Error) {
-      if (error.name === 'AbortError') {
-        throw new Error('요청 시간 초과 (15초) - 서버 응답이 지연되고 있습니다');
+      if (error.name === "AbortError") {
+        throw new Error(
+          "요청 시간 초과 (15초) - 서버 응답이 지연되고 있습니다"
+        );
       }
-      if (error.message.includes('Failed to fetch')) {
-        throw new Error('네트워크 연결 오류 - 인터넷 연결을 확인해주세요');
+      if (error.message.includes("Failed to fetch")) {
+        throw new Error("네트워크 연결 오류 - 인터넷 연결을 확인해주세요");
       }
     }
-    
+
     throw error;
   }
 }
@@ -615,7 +620,9 @@ async function safeFetch(url: string, options: RequestInit = {}): Promise<Respon
 /**
  * 전체 암호화폐 시세 조회 (간소화 버전)
  */
-export async function getAllTickers(forceRefresh: boolean = false): Promise<CryptoPrice[]> {
+export async function getAllTickers(
+  forceRefresh: boolean = false
+): Promise<CryptoPrice[]> {
   try {
     // 서버 사이드에서는 절대 URL 필요
     const baseUrl =
@@ -626,17 +633,23 @@ export async function getAllTickers(forceRefresh: boolean = false): Promise<Cryp
           "http://localhost:3000"; // 서버 사이드
 
     // 강제 새로고침 파라미터 추가
-    const refreshParam = forceRefresh ? '?refresh=true' : '';
+    const refreshParam = forceRefresh ? "?refresh=true" : "";
     const apiUrl = `${baseUrl}/api/crypto${refreshParam}`;
-    
-    console.log("🔗 Fetching from API:", apiUrl, forceRefresh ? '(forced refresh)' : '');
+
+    console.log(
+      "🔗 Fetching from API:",
+      apiUrl,
+      forceRefresh ? "(forced refresh)" : ""
+    );
 
     const response = await safeFetch(apiUrl, {
       headers: {
-        "Cache-Control": forceRefresh ? "no-cache, no-store, must-revalidate" : "no-cache",
-        ...(forceRefresh && { "Pragma": "no-cache" }),
-        ...(forceRefresh && { "Expires": "0" }),
-        "Accept": "application/json",
+        "Cache-Control": forceRefresh
+          ? "no-cache, no-store, must-revalidate"
+          : "no-cache",
+        ...(forceRefresh && { Pragma: "no-cache" }),
+        ...(forceRefresh && { Expires: "0" }),
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
     });
@@ -649,7 +662,7 @@ export async function getAllTickers(forceRefresh: boolean = false): Promise<Cryp
         statusText: response.statusText,
         url: response.url,
       });
-      
+
       // 구체적인 에러 메시지 제공
       let errorMessage = `서버 오류 (${response.status})`;
       if (response.status === 429) {
@@ -659,7 +672,7 @@ export async function getAllTickers(forceRefresh: boolean = false): Promise<Cryp
       } else if (response.status === 404) {
         errorMessage = "API 엔드포인트를 찾을 수 없습니다";
       }
-      
+
       throw new Error(errorMessage);
     }
 
@@ -681,7 +694,9 @@ export async function getAllTickers(forceRefresh: boolean = false): Promise<Cryp
       console.log("✅ JSON parsed successfully. Status:", data.status);
     } catch (jsonError) {
       console.error("❌ JSON parse error:", jsonError);
-      throw new Error("서버 응답을 처리할 수 없습니다 - 잠시 후 다시 시도해주세요");
+      throw new Error(
+        "서버 응답을 처리할 수 없습니다 - 잠시 후 다시 시도해주세요"
+      );
     }
 
     // API 응답 상태 확인
@@ -692,7 +707,7 @@ export async function getAllTickers(forceRefresh: boolean = false): Promise<Cryp
     }
 
     // 데이터 유효성 검사
-    if (!data.data || typeof data.data !== 'object') {
+    if (!data.data || typeof data.data !== "object") {
       throw new Error("서버에서 올바르지 않은 데이터를 받았습니다");
     }
 
@@ -710,20 +725,26 @@ export async function getAllTickers(forceRefresh: boolean = false): Promise<Cryp
 
           const tickerData = ticker as BithumbTickerData;
           const cryptoInfo = getCryptoInfo(symbol);
-          
+
           const currentPrice = safeParseFloat(tickerData.closing_price);
-          const prevPrice = safeParseFloat(tickerData.prev_closing_price || tickerData.opening_price);
+          const prevPrice = safeParseFloat(
+            tickerData.prev_closing_price || tickerData.opening_price
+          );
           const changeAmount = safeParseFloat(tickerData.fluctate_24H);
           const changeRate = safeParseFloat(tickerData.fluctate_rate_24H);
 
           return {
             symbol,
             korean_name: CRYPTO_KOREAN_NAMES[symbol] || symbol,
+            english_name: symbol,
             current_price: currentPrice,
             change_amount: changeAmount,
             change_rate: changeRate,
+            high_price: safeParseFloat(tickerData.max_price),
+            low_price: safeParseFloat(tickerData.min_price),
             is_positive: changeAmount >= 0,
             volume: safeParseFloat(tickerData.acc_trade_value_24H),
+            exchange: 'bithumb', // 빗썸에서 오는 데이터
             isOnBinance: BINANCE_COINS.has(symbol),
             isOnUpbit: UPBIT_COINS.has(symbol),
             isBinanceAlpha: BINANCE_ALPHA_COINS.has(symbol),

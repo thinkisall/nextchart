@@ -173,13 +173,14 @@ export async function GET(request: NextRequest) {
       if (key !== 'date' && typeof data.data[key] === 'object') {
         optimizedData.data[key] = {
           opening_price: data.data[key].opening_price,
-          closing_price: data.data[key].closing_price,
-          min_price: data.data[key].min_price,
-          max_price: data.data[key].max_price,
-          units_traded_24H: data.data[key].units_traded_24H,
-          acc_trade_value_24H: data.data[key].acc_trade_value_24H,
-          fluctate_24H: data.data[key].fluctate_24H,
-          fluctate_rate_24H: data.data[key].fluctate_rate_24H,
+          closing_price: parseFloat(data.data[key].closing_price) || 0,
+          min_price: parseFloat(data.data[key].min_price) || 0,
+          max_price: parseFloat(data.data[key].max_price) || 0,
+          units_traded_24H: parseFloat(data.data[key].units_traded_24H) || 0,
+          acc_trade_value_24H: parseFloat(data.data[key].acc_trade_value_24H) || 0,
+          fluctate_24H: parseFloat(data.data[key].fluctate_24H) || 0,
+          fluctate_rate_24H: parseFloat(data.data[key].fluctate_rate_24H) || 0,
+          is_positive: parseFloat(data.data[key].fluctate_rate_24H) >= 0,
         };
       }
     });

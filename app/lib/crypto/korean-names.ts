@@ -174,6 +174,7 @@ export const CRYPTO_KOREAN_NAMES: { [key: string]: string } = {
   ONDO: "온도 파이낸스",
   ETHFI: "이더파이",
   PUFFER: "퍼퍼",
+  BARD: "룸바드",
   ENA: "에테나",
   MORPHO: "모르포",
   AERO: "에어로드롬",

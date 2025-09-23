@@ -21,3 +21,7 @@ export { BinanceCoinCard } from './BinanceCoinCard';
 export { TrendingCoinCard } from './TrendingCoinCard';
 export { TrendingNFTCard } from './TrendingNFTCard';
 export { TrendingCategoryCard } from './TrendingCategoryCard';
+
+// 섹터 분석 버튼
+export { SectorAnalysisButton } from './SectorAnalysisButton';
+export { MobileSectorAnalysisButton } from './MobileSectorAnalysisButton';

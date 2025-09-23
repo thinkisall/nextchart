@@ -1,0 +1,468 @@
+/* 모바일 최적화 CSS - 핸드폰 사이즈 전용 */
+
+/* 기본 반응형 유틸리티 */
+@layer utilities {
+  /* 모바일 전용 클래스들 */
+  .mobile-container {
+    max-width: 100vw;
+    overflow-x: hidden;
+    padding: 0 1rem;
+  }
+
+  .mobile-safe-area {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* 작은 화면에서 넘치지 않게 */
+  .mobile-no-overflow {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 텍스트가 잘리지 않게 */
+  .mobile-text-wrap {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* 터치 친화적 크기 */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* 모바일 브레이크포인트 커스텀 */
+@media (max-width: 480px) {
+  /* 컨테이너 최적화 */
+  .container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* 카드 최적화 */
+  .card {
+    margin: 0.5rem 0 !important;
+    border-radius: 0.75rem !important;
+  }
+
+  /* 테이블을 카드로 변환 */
+  .mobile-table-to-card {
+    display: block !important;
+  }
+
+  .mobile-table-to-card thead {
+    display: none !important;
+  }
+
+  .mobile-table-to-card tbody,
+  .mobile-table-to-card tr {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .mobile-table-to-card tr {
+    margin-bottom: 1rem !important;
+    padding: 1rem !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 0.75rem !important;
+    background: var(--card) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .mobile-table-to-card td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0.5rem 0 !important;
+    border: none !important;
+  }
+
+  .mobile-table-to-card td:before {
+    content: attr(data-label) !important;
+    font-weight: 600 !important;
+    color: var(--muted-foreground) !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* 버튼 최적화 */
+  .mobile-button-stack {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .mobile-button-full {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* 텍스트 크기 최적화 */
+  .mobile-text-scale {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .mobile-title-scale {
+    font-size: 1.25rem !important;
+    line-height: 1.3 !important;
+  }
+
+  /* 그리드 최적화 */
+  .mobile-grid-1 {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .mobile-grid-2 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  /* 패딩 최적화 */
+  .mobile-padding-sm {
+    padding: 0.75rem !important;
+  }
+
+  .mobile-padding-xs {
+    padding: 0.5rem !important;
+  }
+
+  /* 마진 최적화 */
+  .mobile-margin-sm {
+    margin: 0.5rem !important;
+  }
+
+  /* 스크롤 최적화 */
+  .mobile-scroll-snap {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-scroll-snap > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+/* 아주 작은 화면 (320px 이하) */
+@media (max-width: 320px) {
+  .container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .card {
+    padding: 0.75rem !important;
+  }
+
+  .mobile-text-xs {
+    font-size: 0.75rem !important;
+  }
+
+  .mobile-title-xs {
+    font-size: 1.125rem !important;
+  }
+}
+
+/* 가로 모드 최적화 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .landscape-optimize {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .landscape-header {
+    height: 3rem !important;
+  }
+
+  .landscape-content {
+    padding-top: 0.5rem !important;
+  }
+}
+
+/* 암호화폐 테이블 모바일 최적화 */
+@media (max-width: 480px) {
+  .crypto-ranking-mobile {
+    padding: 0;
+  }
+
+  .crypto-item-mobile {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .crypto-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .crypto-item-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .crypto-item-rank {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    min-width: 2rem;
+    text-align: center;
+  }
+
+  .crypto-item-name {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .crypto-item-symbol {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--foreground);
+  }
+
+  .crypto-item-full-name {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin-top: 0.125rem;
+  }
+
+  .crypto-item-price {
+    text-align: right;
+  }
+
+  .crypto-item-current-price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--foreground);
+  }
+
+  .crypto-item-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .crypto-item-detail {
+    text-align: center;
+    padding: 0.5rem;
+    background: var(--muted);
+    border-radius: 0.5rem;
+  }
+
+  .crypto-item-detail-label {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+
+  .crypto-item-detail-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .crypto-item-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  /* 변동률 색상 */
+  .positive-change {
+    color: #10b981 !important;
+  }
+
+  .negative-change {
+    color: #ef4444 !important;
+  }
+
+  .neutral-change {
+    color: var(--muted-foreground) !important;
+  }
+}
+
+/* 모바일 페이지네이션 */
+@media (max-width: 480px) {
+  .mobile-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .mobile-pagination-button {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .mobile-pagination-info {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+}
+
+/* 모바일 모달 최적화 */
+@media (max-width: 480px) {
+  .mobile-modal {
+    margin: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+  }
+
+  .mobile-modal-content {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-modal-header {
+    position: sticky;
+    top: 0;
+    background: var(--background);
+    z-index: 10;
+    border-bottom: 1px solid var(--border);
+    padding: 1rem;
+  }
+
+  .mobile-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 20;
+  }
+}
+
+/* 모바일 네비게이션 */
+@media (max-width: 480px) {
+  .mobile-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--background);
+    border-top: 1px solid var(--border);
+    padding: 0.75rem;
+    z-index: 50;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .mobile-nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    min-width: 3rem;
+    text-decoration: none;
+  }
+
+  .mobile-nav-item.active {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  .mobile-nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .mobile-nav-label {
+    font-size: 0.625rem;
+    font-weight: 500;
+  }
+}
+
+/* 성능 최적화 */
+@media (max-width: 480px) {
+  /* GPU 가속화 */
+  .mobile-gpu-accelerated {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* 애니메이션 최적화 */
+  .mobile-animation-optimized {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  /* 스크롤 최적화 */
+  .mobile-scroll-optimized {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+/* 다크 모드 모바일 최적화 */
+@media (max-width: 480px) and (prefers-color-scheme: dark) {
+  .crypto-item-mobile {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .crypto-item-detail {
+    background: rgba(51, 65, 85, 0.5);
+  }
+}
+
+/* PWA 모바일 최적화 */
+@media (max-width: 480px) {
+  .pwa-mobile-optimized {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pwa-status-bar-safe {
+    padding-top: calc(env(safe-area-inset-top) + 1rem);
+  }
+}
+
+/* 접근성 개선 */
+@media (max-width: 480px) {
+  .mobile-accessibility-focus:focus {
+    outline: 3px solid rgba(59, 130, 246, 0.6);
+    outline-offset: 2px;
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+
+  .mobile-high-contrast {
+    border: 2px solid var(--foreground);
+    background: var(--background);
+  }
+}

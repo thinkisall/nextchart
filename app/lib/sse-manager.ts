@@ -454,6 +454,7 @@ const UPBIT_COINS = new Set([
   "OM",
   "OMNI",
   "ONDO",
+  "0G",
   "ONG",
   "ONT",
   "OP",

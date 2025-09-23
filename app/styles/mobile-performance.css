@@ -1,0 +1,343 @@
+/* 모바일 성능 최적화 스타일 */
+
+/* 1. GPU 가속 및 하드웨어 가속 */
+.mobile-optimized {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 2. 터치 스크롤 최적화 */
+.mobile-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* 3. 모바일 애니메이션 최적화 */
+@media (max-width: 768px) {
+  /* 모션 감소 설정이 켜져있을 때 애니메이션 비활성화 */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* 배터리 절약을 위한 애니메이션 최적화 */
+  .animate-spin {
+    animation-duration: 1s;
+  }
+  
+  .animate-pulse {
+    animation-duration: 2s;
+  }
+  
+  .animate-bounce {
+    animation-duration: 1.5s;
+  }
+}
+
+/* 4. 모바일 폰트 렌더링 최적화 */
+@media (max-width: 768px) {
+  body {
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* 중요한 텍스트만 고품질 렌더링 */
+  h1, h2, h3, .mobile-title {
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* 5. 모바일 이미지 최적화 */
+@media (max-width: 768px) {
+  img {
+    image-rendering: optimizeSpeed;
+    transform: translateZ(0);
+  }
+  
+  /* 중요한 이미지만 고품질 */
+  .mobile-high-quality img {
+    image-rendering: optimizeQuality;
+  }
+}
+
+/* 6. 모바일 레이아웃 Contain */
+@media (max-width: 768px) {
+  .mobile-card,
+  .mobile-row,
+  .mobile-component {
+    contain: layout style paint;
+  }
+  
+  /* 스크롤 컨테이너 최적화 */
+  .mobile-scroll-container {
+    contain: layout style paint;
+    will-change: scroll-position;
+  }
+}
+
+/* 7. 모바일 CSS Grid 최적화 */
+@media (max-width: 768px) {
+  .mobile-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    contain: layout;
+  }
+  
+  .mobile-grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* 8. 모바일 Flexbox 최적화 */
+@media (max-width: 768px) {
+  .mobile-flex {
+    display: flex;
+    align-items: center;
+    contain: layout;
+  }
+  
+  .mobile-flex-col {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .mobile-flex-between {
+    justify-content: space-between;
+  }
+}
+
+/* 9. 모바일 그림자 최적화 */
+@media (max-width: 768px) {
+  /* 간단한 그림자만 사용 */
+  .mobile-shadow {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobile-shadow-lg {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 복잡한 그림자 제거 */
+  .desktop-shadow {
+    box-shadow: none;
+  }
+}
+
+/* 10. 모바일 테이블 최적화 */
+@media (max-width: 768px) {
+  .mobile-table {
+    display: block;
+    contain: layout;
+  }
+  
+  .mobile-table-row {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    contain: layout style;
+  }
+  
+  .mobile-table-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+  }
+}
+
+/* 11. 모바일 버튼 최적화 */
+@media (max-width: 768px) {
+  .mobile-button {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    contain: layout style;
+  }
+  
+  .mobile-button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* 12. 모바일 모달 최적화 */
+@media (max-width: 768px) {
+  .mobile-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+  
+  .mobile-modal-content {
+    width: 100%;
+    max-height: 90vh;
+    background: var(--background);
+    border-radius: 1rem 1rem 0 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    contain: layout style paint;
+  }
+}
+
+/* 13. 모바일 로딩 최적화 */
+@media (max-width: 768px) {
+  .mobile-loading {
+    contain: layout style paint;
+  }
+  
+  .mobile-skeleton {
+    background: linear-gradient(90deg, 
+      var(--muted) 25%, 
+      var(--muted-foreground) 50%, 
+      var(--muted) 75%
+    );
+    background-size: 200% 100%;
+    animation: mobile-skeleton-wave 1.5s infinite ease-in-out;
+  }
+  
+  @keyframes mobile-skeleton-wave {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
+
+/* 14. 모바일 전용 유틸리티 클래스 */
+@media (max-width: 768px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+  
+  .mobile-block {
+    display: block !important;
+  }
+  
+  .mobile-flex {
+    display: flex !important;
+  }
+  
+  .mobile-grid {
+    display: grid !important;
+  }
+  
+  .mobile-text-xs {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  .mobile-text-base {
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+  }
+  
+  .mobile-p-2 {
+    padding: 0.5rem !important;
+  }
+  
+  .mobile-p-4 {
+    padding: 1rem !important;
+  }
+  
+  .mobile-m-2 {
+    margin: 0.5rem !important;
+  }
+  
+  .mobile-m-4 {
+    margin: 1rem !important;
+  }
+}
+
+/* 15. 가로 모드 최적화 */
+@media (max-width: 768px) and (orientation: landscape) {
+  .landscape-compact {
+    padding: 0.5rem !important;
+  }
+  
+  .landscape-hidden {
+    display: none !important;
+  }
+  
+  .landscape-text-sm {
+    font-size: 0.875rem !important;
+  }
+  
+  /* 가로 모드에서 헤더 높이 줄이기 */
+  .landscape-header {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+}
+
+/* 16. PWA 최적화 */
+@media (display-mode: standalone) {
+  /* PWA 모드에서 추가 최적화 */
+  body {
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  .pwa-optimized {
+    contain: layout style paint;
+    will-change: auto;
+  }
+}
+
+/* 17. 다크모드 성능 최적화 */
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+  .mobile-dark-optimized {
+    color-scheme: dark;
+  }
+  
+  /* 다크모드에서 그림자 줄이기 */
+  .mobile-shadow {
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* 18. 모바일 접근성 최적화 */
+@media (max-width: 768px) {
+  /* 포커스 표시 강화 */
+  .mobile-focus:focus {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+  }
+  
+  /* 터치 타겟 크기 보장 */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* 고대비 모드 지원 */
+  @media (prefers-contrast: high) {
+    .mobile-high-contrast {
+      border: 2px solid currentColor;
+    }
+  }
+}

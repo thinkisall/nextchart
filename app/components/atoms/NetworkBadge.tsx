@@ -3,12 +3,37 @@ import { Badge } from '../../../components/ui/badge';
 import { NETWORK_STYLES, normalizeNetworkName, getCoinMainNetwork, BINANCE_COIN_NETWORKS } from '../../lib/crypto/networks';
 
 interface NetworkBadgeProps {
-  symbol: string;
+  symbol?: string;
+  exchange?: string;
   size?: 'sm' | 'md' | 'lg';
   showAll?: boolean; // 모든 네트워크 표시 여부
 }
 
-export function NetworkBadge({ symbol, size = 'sm', showAll = false }: NetworkBadgeProps) {
+export function NetworkBadge({ symbol, exchange, size = 'sm', showAll = false }: NetworkBadgeProps) {
+  // exchange가 있으면 exchange 기반, 없으면 symbol 기반
+  if (exchange) {
+    // exchange 기반 배지 표시
+    const exchangeStyles = {
+      'upbit': { label: '업비트', className: 'bg-blue-100 text-blue-700 border-blue-200' },
+      'upbit_usdt': { label: 'UP-USDT', className: 'bg-purple-100 text-purple-700 border-purple-200' },
+      'bithumb': { label: '빗썸', className: 'bg-orange-100 text-orange-700 border-orange-200' },
+      'binance': { label: '바이낸스', className: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
+      'binance_alpha': { label: 'BN-Alpha', className: 'bg-green-100 text-green-700 border-green-200' },
+    };
+
+    const style = exchangeStyles[exchange as keyof typeof exchangeStyles];
+    if (!style) return null;
+
+    return (
+      <Badge className={`text-xs px-1 py-0 ${style.className}`}>
+        {style.label}
+      </Badge>
+    );
+  }
+
+  // symbol 기반 (기존 로직)
+  if (!symbol) return null;
+  
   const networks = BINANCE_COIN_NETWORKS[symbol.toUpperCase() as keyof typeof BINANCE_COIN_NETWORKS];
   
   if (!networks || networks.length === 0) {
